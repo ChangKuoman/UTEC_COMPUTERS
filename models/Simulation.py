@@ -38,6 +38,12 @@ class Simulation(db.Model):
         finally:
             db.session.close()
 
+    def format(self):
+        return {
+            "id": self.id,
+            "id_motherboard": self.id_motherboard,
+            "total_price": self.total_price
+        }
 
     def __repr__(self):
         return f'simulation: {self.id}'
