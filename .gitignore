@@ -1,0 +1,6 @@
+venv/
+virtualenv/
+__pycache__
+models/__pycache__
+server/__pycache__
+config.txt
