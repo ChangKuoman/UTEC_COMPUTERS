@@ -24,18 +24,118 @@ def create_app(test_config=None):
         response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
         return response
 
-    @app.route('/', methods=['GET'])
-    def index():
-        m = MotherBoard.query.all()
-        c = Component.query.all()
-        cc = Compatible.query.all()
-        u = User.query.all()
-        s = Simulation.query.all()
-        sc = SimulationComponent.query.all()
-        print(u, cc, c, m, s, sc)
+    @app.route('/motherboards', methods=['GET'])
+    def get_motherboards():
+        motherboards = MotherBoard.query.order_by('id').all()
 
+        if len(motherboards) == 0:
+            abort(404)
+
+        formatted_motherboards = {motherboard.id: motherboard.format() for motherboard in motherboards}
         return jsonify({
-            'success': True
+            'success': True,
+            'motherboards': formatted_motherboards,
+            'total_motherboards': len(motherboards)
+        })
+
+    @app.route('/motherboards/<id>', methods=['DELETE'])
+    def delete_motherboards(id):
+        error_404 = False
+        try:
+            motherboard_to_delete = MotherBoard.query.filter(MotherBoard.id==id).one_or_none()
+
+            if motherboard_to_delete is None:
+                error_404 = True
+                abort(404)
+            
+            motherboard_to_delete.delete()
+
+            motherboards = MotherBoard.query.order_by('id').all()
+            formatted_motherboards = {motherboard.id: motherboard.format() for motherboard in motherboards}
+            return jsonify({
+                'success': True,
+                'deleted': id,
+                'motherboard': formatted_motherboards,
+                'total_motherboard': len(motherboards)
+            })
+
+        except Exception as e:
+            print(e)
+            if error_404:
+                abort(404)
+            else:
+                abort(500)
+              
+
+    @app.route('/components', methods=['GET'])
+    def get_components():
+        selection_component = Component.query.order_by('id').all()
+ 
+        if len(selection_component) == 0:
+            abort(404)
+        
+        lists_component = {list.id: list.format() for list in selection_component}
+        
+        return jsonify({
+            'success': True,
+            'components': lists_component,
+            'total_components': len(selection_component)
         })
     
+    @app.route('/components/<id>', methods=['DELETE'])
+    def delete_componet(id):
+        error_404 = False
+        try:
+            components = Component.query.filter(Component.id==id).one_or_none()
+
+            if components is None:
+                error_404 = True
+                abort(404)
+            
+            components.delete()
+
+            selection = components.query.order_by('id').all()
+            lists_component = {list.id: list.format() for list in selection}
+
+            return jsonify({
+                'success': True,
+                'deleted_ID': id,
+                'com': lists_component,
+                'total_componets': len(selection)
+            })
+
+        except Exception as e:
+            print(e)
+            if error_404:
+                abort(404)
+            else:
+                abort(500)
+
+            
+
+
+    @app.errorhandler(404)
+    def error_404(error):
+        return jsonify({
+            'success': False,
+            'code': 404,
+            'message': 'Resource Not Found'
+        }), 404
+
+    @app.errorhandler(500)
+    def error_500(error):
+        return jsonify({
+            'success': False,
+            'code': 500,
+            'message': 'Internal Server Error'
+        }), 500
+    
+    @app.errorhandler(422)
+    def error_422(error):
+        return jsonify({
+            'success': False,
+            'code': 422,
+            'message': 'Unprocessable'
+        }), 422
+
     return app
