@@ -13,6 +13,7 @@ class MotherBoard(db.Model):
     modify_by = db.Column(db.Integer, ForeignKey('userinfo.id'), nullable=False, default=0)
 
     compatibles = db.relationship('Compatible', backref='motherboard', lazy=True, cascade="all, delete-orphan")
+    simulations = db.relationship('Simulation', backref='motherboard', lazy=True, cascade="all, delete-orphan")
 
     def delete(self):
         try:

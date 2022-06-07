@@ -8,5 +8,36 @@ class Simulation(db.Model):
     date_created = db.Column(db.DateTime, nullable=False, default=func.now())
     create_by = db.Column(db.Integer, ForeignKey('userinfo.id'), nullable=False, default=0)
     total_price = db.Column(db.Float, nullable=False, default=0.0)
+
+    simulation_components = db.relationship('SimulationComponent', backref='simulation', lazy=True, cascade="all, delete-orphan")
+
+    def delete(self):
+        try:
+            db.session.delete(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
+        finally:
+            db.session.close()
+
+    def insert(self):
+        try:
+            db.session.add(self)
+            db.session.commit()
+            return self.id
+        except:
+            db.session.rollback()
+        finally:
+            db.session.close()
+    
+    def update(self):
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+        finally:
+            db.session.close()
+
+
     def __repr__(self):
         return f'simulation: {self.id}'
