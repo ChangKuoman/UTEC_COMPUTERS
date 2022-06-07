@@ -1,6 +1,7 @@
 from config import db
 from sqlalchemy import func, ForeignKey
 
+
 class Simulation(db.Model):
     __tablename__ = 'simulation'
     id = db.Column(db.Integer, primary_key=True)
@@ -11,6 +12,15 @@ class Simulation(db.Model):
 
     simulation_components = db.relationship('SimulationComponent', backref='simulation', lazy=True, cascade="all, delete-orphan")
 
+
+    def format(self):
+        return {
+            "id": self.id,
+            "id_motherboard": self.id_motherboard,
+            "total_price": self.total_price
+        }
+
+
     def delete(self):
         try:
             db.session.delete(self)
@@ -19,6 +29,7 @@ class Simulation(db.Model):
             db.session.rollback()
         finally:
             db.session.close()
+
 
     def insert(self):
         try:
@@ -29,7 +40,8 @@ class Simulation(db.Model):
             db.session.rollback()
         finally:
             db.session.close()
-    
+
+
     def update(self):
         try:
             db.session.commit()
@@ -38,12 +50,6 @@ class Simulation(db.Model):
         finally:
             db.session.close()
 
-    def format(self):
-        return {
-            "id": self.id,
-            "id_motherboard": self.id_motherboard,
-            "total_price": self.total_price
-        }
 
     def __repr__(self):
         return f'simulation: {self.id}'

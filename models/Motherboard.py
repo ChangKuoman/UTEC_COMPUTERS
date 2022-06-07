@@ -1,6 +1,7 @@
 from config import db
 from sqlalchemy import func, ForeignKey
 
+
 class MotherBoard(db.Model):
     __tablename__ = 'motherboard'
     id = db.Column(db.Integer, primary_key=True, unique=True)
@@ -15,6 +16,16 @@ class MotherBoard(db.Model):
     compatibles = db.relationship('Compatible', backref='motherboard', lazy=True, cascade="all, delete-orphan")
     simulations = db.relationship('Simulation', backref='motherboard', lazy=True, cascade="all, delete-orphan")
 
+
+    def format(self):
+        return {
+            "id": self.id,
+            "price": self.price,
+            "name": self.name,
+            "description": self.description
+        }
+
+
     def delete(self):
         try:
             db.session.delete(self)
@@ -23,6 +34,7 @@ class MotherBoard(db.Model):
             db.session.rollback()
         finally:
             db.session.close()
+
 
     def insert(self):
         try:
@@ -33,7 +45,8 @@ class MotherBoard(db.Model):
             db.session.rollback()
         finally:
             db.session.close()
-    
+
+
     def update(self):
         try:
             db.session.commit()
@@ -41,14 +54,7 @@ class MotherBoard(db.Model):
             db.session.rollback()
         finally:
             db.session.close()
-    
-    def format(self):
-        return {
-            "id": self.id,
-            "price": self.price,
-            "name": self.name,
-            "description": self.description
-        }
+
 
     def __repr__(self):
         return f'motherboard: {self.name}'
