@@ -41,6 +41,14 @@ class MotherBoard(db.Model):
             db.session.rollback()
         finally:
             db.session.close()
+    
+    def format(self):
+        return {
+            "id": self.id,
+            "price": self.price,
+            "name": self.name,
+            "description": self.description
+        }
 
     def __repr__(self):
         return f'motherboard: {self.name}'
