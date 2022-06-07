@@ -25,36 +25,7 @@ def create_app(test_config=None):
     def after_requests(response):
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorizations, true')
         response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
-        return response
-
-    @app.route('/motherboards/<id>', methods=['DELETE'])
-    def delete_motherboards(id):
-        error_404 = False
-        try:
-            motherboard_to_delete = MotherBoard.query.filter(MotherBoard.id==id).one_or_none()
-
-            if motherboard_to_delete is None:
-                error_404 = True
-                abort(404)
-            
-            motherboard_to_delete.delete()
-
-            motherboards = MotherBoard.query.order_by('id').all()
-            formatted_motherboards = {motherboard.id: motherboard.format() for motherboard in motherboards}
-            return jsonify({
-                'success': True,
-                'deleted': id,
-                'motherboard': formatted_motherboards,
-                'total_motherboard': len(motherboards)
-            })
-
-        except Exception as e:
-            print(e)
-            if error_404:
-                abort(404)
-            else:
-                abort(500)
-              
+        return response    
 
     @app.route('/components', methods=['GET'])
     def get_components():
@@ -99,32 +70,5 @@ def create_app(test_config=None):
                 abort(404)
             else:
                 abort(500)
-
-            
-
-
-    @app.errorhandler(404)
-    def error_404(error):
-        return jsonify({
-            'success': False,
-            'code': 404,
-            'message': 'Resource Not Found'
-        }), 404
-
-    @app.errorhandler(500)
-    def error_500(error):
-        return jsonify({
-            'success': False,
-            'code': 500,
-            'message': 'Internal Server Error'
-        }), 500
-    
-    @app.errorhandler(422)
-    def error_422(error):
-        return jsonify({
-            'success': False,
-            'code': 422,
-            'message': 'Unprocessable'
-        }), 422
 
     return app
