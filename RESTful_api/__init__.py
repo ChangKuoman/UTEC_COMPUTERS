@@ -7,7 +7,11 @@ from flask import (
 )
 from flask_cors import CORS
 from models.Motherboard import MotherBoard
-from models import User, Component, Compatible
+from models.Component import Component
+from models.User import User
+from models.Compatible import Compatible
+from models.Simulation import Simulation
+from models.SimulationComponent import SimulationComponent
 from config import setup_db
 
 def create_app(test_config=None):
@@ -23,8 +27,15 @@ def create_app(test_config=None):
 
     @app.route('/', methods=['GET'])
     def index():
-        m = MotherBoard.query.get(1)
-        m.delete()
+        m = MotherBoard.query.all()
+        c = Component.query.all()
+        cc = Compatible.query.all()
+        u = User.query.all()
+        s = Simulation.query.all()
+        sc = SimulationComponent.query.all()
+        print(u, cc, c, m, s, sc)
+
+
 
         return jsonify({
             'success': True
