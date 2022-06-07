@@ -1,4 +1,3 @@
-import json
 from flask import (
     Flask,
     abort,
@@ -34,8 +33,6 @@ def create_app(test_config=None):
         s = Simulation.query.all()
         sc = SimulationComponent.query.all()
         print(u, cc, c, m, s, sc)
-
-
 
         return jsonify({
             'success': True
