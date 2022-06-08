@@ -13,5 +13,5 @@ insert into compatible values
 insert into simulation values
     (1, 1, NOW(), 1, 15.5);
 
-insert into simulation_components values
+insert into simulation_component values
     (1, 1);
