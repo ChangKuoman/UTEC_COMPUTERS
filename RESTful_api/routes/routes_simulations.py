@@ -1,9 +1,9 @@
 from flask import abort, jsonify
 from models.Simulation import Simulation
-from RESTful_api.routes.__init__ import route
+from RESTful_api.routes.__init__ import api
 
 
-@route.route('/simulations', methods=['GET'])
+@api.route('/simulations', methods=['GET'])
 def get_simulations():
     simulations_list = Simulation.query.order_by('id').all()
 
@@ -18,7 +18,7 @@ def get_simulations():
     })
 
 
-@route.route('/simulations/<id>', methods=['GET'])
+@api.route('/simulations/<id>', methods=['GET'])
 def get_simulation(id):
     simulation = Simulation.query.filter(Simulation.id==id).one_or_none()
 
@@ -35,7 +35,7 @@ def get_simulation(id):
     })
 
 
-@route.route('/simulations/<id>', methods=['DELETE'])
+@api.route('/simulations/<id>', methods=['DELETE'])
 def delete_simulation(id):
     error_404 = False
     try:

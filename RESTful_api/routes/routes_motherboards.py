@@ -1,9 +1,9 @@
 from flask import abort, jsonify, request
 from models.MotherBoard import MotherBoard
-from RESTful_api.routes.__init__ import route
+from RESTful_api.routes.__init__ import api
 
 
-@route.route('/motherboards', methods=['GET'])
+@api.route('/motherboards', methods=['GET'])
 def get_motherboards():
     motherboards_list = MotherBoard.query.order_by('id').all()
 
@@ -18,7 +18,7 @@ def get_motherboards():
     })
 
 
-@route.route('/motherboards/<id>', methods=['GET'])
+@api.route('/motherboards/<id>', methods=['GET'])
 def get_motherboard(id):
     motherboard = MotherBoard.query.filter(MotherBoard.id==id).one_or_none()
 
@@ -34,7 +34,7 @@ def get_motherboard(id):
     })
 
 
-@route.route('/motherboards/<id>', methods=['DELETE'])
+@api.route('/motherboards/<id>', methods=['DELETE'])
 def delete_motherboard(id):
     error_404 = False
     try:
@@ -63,7 +63,7 @@ def delete_motherboard(id):
             abort(500)
 
 
-@route.route('/motherboards', methods=['POST'])
+@api.route('/motherboards', methods=['POST'])
 def post_motherboard():
     error_422 = False
     try:
@@ -102,7 +102,7 @@ def post_motherboard():
 
 
 
-@route.route('/motherboards/<id>', methods=['PATCH'])
+@api.route('/motherboards/<id>', methods=['PATCH'])
 def patch_motherboard(id):
     error_404 = False
     error_422 = False

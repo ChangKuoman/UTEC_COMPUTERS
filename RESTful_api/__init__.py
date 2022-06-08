@@ -13,13 +13,13 @@ from models.Simulation import Simulation
 from models.SimulationComponent import SimulationComponent
 from config import setup_db
 
-from RESTful_api.routes.__init__ import route
+from RESTful_api.routes.__init__ import api
 
 def create_app(test_config=None):
     app = Flask(__name__)
     setup_db(app)
     CORS(app)
-    app.register_blueprint(route)
+    app.register_blueprint(api)
 
     @app.after_request
     def after_requests(response):

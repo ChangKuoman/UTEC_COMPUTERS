@@ -1,9 +1,9 @@
 from flask import abort, jsonify
 from models.SimulationComponent import SimulationComponent
-from RESTful_api.routes.__init__ import route
+from RESTful_api.routes.__init__ import api
 
 
-@route.route('/simulationComponents', methods=['GET'])
+@api.route('/simulationComponents', methods=['GET'])
 def get_simulation_components():
     simulations_components_list = SimulationComponent.query.order_by('id_simulation').all()
 
