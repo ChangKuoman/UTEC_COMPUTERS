@@ -23,6 +23,11 @@ class User(db.Model, UserMixin):
             return True
         else:
             return False
+    
+
+    def change_password(self, password, new_password):
+        if self.check_password(password):
+            self.password = new_password
 
 
     def __repr__(self):
