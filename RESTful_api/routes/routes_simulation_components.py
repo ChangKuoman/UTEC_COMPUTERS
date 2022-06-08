@@ -5,17 +5,17 @@ from RESTful_api.routes.__init__ import route
 
 @route.route('/simulationComponents', methods=['GET'])
 def get_simulation_components():
-    motherboards = SimulationComponent.query.order_by('id_simulation').all()
+    simulations_components_list = SimulationComponent.query.order_by('id_simulation').all()
 
-    if len(motherboards) == 0:
+    if len(simulations_components_list) == 0:
         abort(404)
-
-    formatted_motherboards = {motherboard.id_simulation: [] for motherboard in motherboards}
-    for  motherboard in motherboards:
-        formatted_motherboards[motherboard.id_simulation].append(motherboard.format())
+    
+    simulations_components_dictionary = {component.id_simulation: [] for component in simulations_components_list}
+    for component in simulations_components_list:
+        simulations_components_dictionary[component.id_simulation].append(component.format())
 
     return jsonify({
         'success': True,
-        'motherboards': formatted_motherboards,
-        'total_motherboards': len(motherboards)
+        'simulation_components': simulations_components_dictionary,
+        'total_simulation_components': len(simulations_components_list)
     })

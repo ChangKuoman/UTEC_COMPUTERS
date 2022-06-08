@@ -18,8 +18,24 @@ def get_motherboards():
     })
 
 
+@route.route('/motherboards/<id>', methods=['GET'])
+def get_motherboard(id):
+    motherboard = MotherBoard.query.filter(MotherBoard.id==id).one_or_none()
+
+    if motherboard is None:
+        abort(404)
+
+    motherboard_dictionary = {motherboard.id: motherboard.format()}
+    motherboards_list = MotherBoard.query.order_by('id').all()
+    return jsonify({
+        'success': True,
+        'motherboards': motherboard_dictionary,
+        'total_motherboards': len(motherboards_list)
+    })
+
+
 @route.route('/motherboards/<id>', methods=['DELETE'])
-def delete_motherboards(id):
+def delete_motherboard(id):
     error_404 = False
     try:
         motherboard_to_delete = MotherBoard.query.filter(MotherBoard.id==id).one_or_none()
@@ -48,31 +64,42 @@ def delete_motherboards(id):
 
 
 @route.route('/motherboards', methods=['POST'])
-def post_motherboards():
-    body = request.get_json()
+def post_motherboard():
+    error_422 = False
+    try:
+        body = request.get_json()
 
-    price = body.get('price', None)
-    name = body.get('name', None)
-    description = body.get('description', None)
-    create_by = body.get('create_by', None)
+        price = body.get('price', None)
+        name = body.get('name', None)
+        description = body.get('description', None)
+        create_by = body.get('create_by', None)
 
-    if price is None or name is None or description is None or create_by is None:
-        abort(422)
+        if price is None or name is None or description is None or create_by is None:
+            abort(422)
 
-    # TODO: verificar unique name, retorna null
-    # TODO: en los modelos hacer server_default = 'current_timestamp'
-    new_motherboard = MotherBoard(price=price, name=name, description=description, create_by=create_by)
-    new_motherboard_id = new_motherboard.id
-    new_motherboard.insert()
+        new_motherboard = MotherBoard(price=price, name=name, description=description, create_by=create_by)
+        new_motherboard_id = new_motherboard.id
+        if new_motherboard_id is None:
+            error_422 = True
+            abort(422)
+        new_motherboard.insert()
 
-    motherboards_list = MotherBoard.query.order_by('id').all()
-    motherboards_dictionary = {motherboard.id: motherboard.format() for motherboard in motherboards_list}
-    return jsonify({
-        'success': True,
-        'created_id': new_motherboard_id,
-        'motherboards': motherboards_dictionary,
-        'total_motherboards': len(motherboards_list)
-    })
+        motherboards_list = MotherBoard.query.order_by('id').all()
+        motherboards_dictionary = {motherboard.id: motherboard.format() for motherboard in motherboards_list}
+        return jsonify({
+            'success': True,
+            'created_id': new_motherboard_id,
+            'motherboards': motherboards_dictionary,
+            'total_motherboards': len(motherboards_list)
+        })
+    except:
+        if error_422:
+            abort(422)
+        else:
+            abort(500)
+
+
+
 
 
 @route.route('/motherboards/<id>', methods=['PATCH'])
