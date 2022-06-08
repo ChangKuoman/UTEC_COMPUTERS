@@ -12,9 +12,12 @@ from models.Simulation import Simulation
 from models.SimulationComponent import SimulationComponent
 from config import setup_db
 
+from server.routes.__init__ import route
+
 def create_app(test_config=None):
     app = Flask(__name__)
     setup_db(app)
+    app.register_blueprint(route)
 
     @app.route('/', methods=['GET'])
     def index():
