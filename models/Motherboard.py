@@ -17,6 +17,14 @@ class MotherBoard(db.Model):
     simulations = db.relationship('Simulation', backref='motherboard', lazy=True, cascade="all, delete-orphan")
 
 
+    def __init__(self, price, name, description, create_by):
+        self.price=price
+        self.name=name
+        self.description=description
+        self.create_by=create_by
+        self.modify_by=create_by
+
+
     def format(self):
         return {
             "id": self.id,
@@ -47,8 +55,10 @@ class MotherBoard(db.Model):
             db.session.close()
 
 
-    def update(self):
+    def update(self, modify_by):
         try:
+            self.modify_by = modify_by
+            self.date_modified = func.now()
             db.session.commit()
         except:
             db.session.rollback()

@@ -60,9 +60,8 @@ def post_motherboards():
         abort(422)
 
     # TODO: verificar unique name, retorna null
-    # TODO: en user server_default = 'user'
     # TODO: en los modelos hacer server_default = 'current_timestamp'
-    new_motherboard = MotherBoard(price=price, name=name, description=description, create_by=create_by, modify_by=create_by)
+    new_motherboard = MotherBoard(price=price, name=name, description=description, create_by=create_by)
     new_motherboard_id = new_motherboard.id
     new_motherboard.insert()
 
@@ -76,29 +75,45 @@ def post_motherboards():
     })
 
 
-@route.route('/todos/<todo_id>', methods=['PATCH'])
-def update_todo(todo_id):
+@route.route('/motherboards/<id>', methods=['PATCH'])
+def patch_motherboard(id):
     error_404 = False
+    error_422 = False
     try:
-        todo = MotherBoard.query.filter(MotherBoard.id==todo_id).one_or_none()
+        motherboard_to_patch = MotherBoard.query.filter(MotherBoard.id==id).one_or_none()
 
-        if todo is None:
+        if motherboard_to_patch is None:
             error_404 = True
             abort(404)
         
         body = request.get_json()
-        if 'description' in body:
-            todo.description = body.get('description')
+        if 'modify_by' not in body:
+            error_422 = True
+            abort(422)
         
-        todo.update()
+        if 'description' in body:
+            motherboard_to_patch.description = body.get('description')
+        if 'price' in body:
+            motherboard_to_patch.price = body.get('price')
+        if 'name' in body:
+            motherboard_to_patch.description = body.get('name')
+        
+        modify_by = body.get('modify_by')
+        motherboard_to_patch.update(modify_by)
 
+        motherboards_list = MotherBoard.query.order_by('id').all()
+        motherboards_dictionary = {motherboard.id: motherboard.format() for motherboard in motherboards_list}
         return jsonify({
             'success': True,
-            'id': todo_id
+            'updated_id': id,
+            'motherboards': motherboards_dictionary,
+            'total_motherboards': len(motherboards_list)
         })
     except Exception as e:
         print(e)
         if error_404:
             abort(404)
+        elif error_422:
+            abort(422)
         else:
             abort(500)
