@@ -2,7 +2,8 @@ from flask import (
     Flask,
     abort,
     jsonify,
-    request
+    request,
+    render_template
 )
 from models.MotherBoard import MotherBoard
 from models.Component import Component
@@ -13,9 +14,10 @@ from models.SimulationComponent import SimulationComponent
 from config import setup_db
 
 from server.routes.__init__ import route
+import os
 
 def create_app(test_config=None):
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder=os.getcwd() + r'\server\frontend\templates')
     setup_db(app)
     app.register_blueprint(route)
 
@@ -29,8 +31,6 @@ def create_app(test_config=None):
         sc = SimulationComponent.query.all()
         print(u, cc, c, m, s, sc)
 
-        return jsonify({
-            'success': True
-        })
+        return render_template('index.html')
     
     return app

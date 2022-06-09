@@ -1,13 +1,22 @@
 import unittest
 from RESTful_api import create_app
-from testing.config import setup_db
+from config import setup_db
 import json
+import configparser
 
 class TestCaseRESTfulapi(unittest.TestCase):
     def setUp(self):
         self.app = create_app()
         self.client = self.app.test_client
-        setup_db(self.app)
+
+        parser = configparser.ConfigParser()
+        parser.read("config.txt")
+        username = parser.get("config", "username")
+        password = parser.get("config", "password")
+        host = parser.get("config", "host")
+        database_name = parser.get("config", "database_name")
+        self.database_path = f'postgresql://{username}:{password}@{host}/{database_name}'
+        setup_db(self.app, self.database_path)
 
         self.new_user = {
             'id': 1,
@@ -34,7 +43,7 @@ class TestCaseRESTfulapi(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(data['total_motherboard'])
         self.assertTrue(len(data['motherboard']))
-    
+
     def test_update_todo_success(self):
         res0 = self.client().post('/todos', json=self.new_todo)
         data0 = json.loads(res0.data)
@@ -68,11 +77,11 @@ class TestCaseRESTfulapi(unittest.TestCase):
         self.assertEqual(data['deleted'], str(deleted_id))
         self.assertTrue(len(data['todos']))
         self.assertTrue(data['total_todos'])
-    
+
     def test_create_todo_success(self):
         res = self.client().post('/todos', json=self.new_todo)
         data = json.loads(res.data)
-        
+
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['todos']))
