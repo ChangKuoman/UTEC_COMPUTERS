@@ -13,29 +13,33 @@ from models.Simulation import Simulation
 from models.SimulationComponent import SimulationComponent
 from config import setup_db
 
+from RESTful_api.routes.__init__ import api
+
 def create_app(test_config=None):
     app = Flask(__name__)
     setup_db(app)
     CORS(app)
+    app.register_blueprint(api)
 
     @app.after_request
     def after_requests(response):
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorizations, true')
         response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
-        return response
+        return response    
 
-    @app.route('/', methods=['GET'])
-    def index():
-        m = MotherBoard.query.all()
-        c = Component.query.all()
-        cc = Compatible.query.all()
-        u = User.query.all()
-        s = Simulation.query.all()
-        sc = SimulationComponent.query.all()
-        print(u, cc, c, m, s, sc)
-
+    @app.route('/components', methods=['GET'])
+    def get_components():
+        selection_component = Component.query.order_by('id').all()
+ 
+        if len(selection_component) == 0:
+            abort(404)
+        
+        lists_component = {list.id: list.format() for list in selection_component}
+        
         return jsonify({
-            'success': True
+            'success': True,
+            'components': lists_component,
+            'total_components': len(selection_component)
         })
 
     #COMPONENT
@@ -115,7 +119,6 @@ def create_app(test_config=None):
                 abort(404)
             else:
                 abort(500)
-    
 
     @app.route('/component/<id>', methods=['DELETE'])
     def delete_componet(id):
@@ -135,6 +138,7 @@ def create_app(test_config=None):
             return jsonify({
                 'success': True,
                 'deleted_ID': id,
+
                 'components': lists_component,
                 'total_componets': len(selection)
             })
@@ -253,7 +257,7 @@ def create_app(test_config=None):
                 abort(404)
             else:
                 abort(500)
-   
+
     #USERS
 
     @app.route('/users', methods=['GET'])
@@ -361,5 +365,5 @@ def create_app(test_config=None):
                 abort(404)
             else:
                 abort(500)
-   
+
     return app
