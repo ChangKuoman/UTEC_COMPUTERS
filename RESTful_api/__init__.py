@@ -13,59 +13,19 @@ from models.Simulation import Simulation
 from models.SimulationComponent import SimulationComponent
 from config import setup_db
 
+from RESTful_api.routes.__init__ import api
+
 def create_app(test_config=None):
     app = Flask(__name__)
     setup_db(app)
     CORS(app)
+    app.register_blueprint(api)
 
     @app.after_request
     def after_requests(response):
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorizations, true')
         response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
-        return response
-
-    @app.route('/motherboards', methods=['GET'])
-    def get_motherboards():
-        motherboards = MotherBoard.query.order_by('id').all()
-
-        if len(motherboards) == 0:
-            abort(404)
-
-        formatted_motherboards = {motherboard.id: motherboard.format() for motherboard in motherboards}
-        return jsonify({
-            'success': True,
-            'motherboards': formatted_motherboards,
-            'total_motherboards': len(motherboards)
-        })
-
-    @app.route('/motherboards/<id>', methods=['DELETE'])
-    def delete_motherboards(id):
-        error_404 = False
-        try:
-            motherboard_to_delete = MotherBoard.query.filter(MotherBoard.id==id).one_or_none()
-
-            if motherboard_to_delete is None:
-                error_404 = True
-                abort(404)
-            
-            motherboard_to_delete.delete()
-
-            motherboards = MotherBoard.query.order_by('id').all()
-            formatted_motherboards = {motherboard.id: motherboard.format() for motherboard in motherboards}
-            return jsonify({
-                'success': True,
-                'deleted': id,
-                'motherboard': formatted_motherboards,
-                'total_motherboard': len(motherboards)
-            })
-
-        except Exception as e:
-            print(e)
-            if error_404:
-                abort(404)
-            else:
-                abort(500)
-              
+        return response    
 
     @app.route('/components', methods=['GET'])
     def get_components():
@@ -110,32 +70,5 @@ def create_app(test_config=None):
                 abort(404)
             else:
                 abort(500)
-
-            
-
-
-    @app.errorhandler(404)
-    def error_404(error):
-        return jsonify({
-            'success': False,
-            'code': 404,
-            'message': 'Resource Not Found'
-        }), 404
-
-    @app.errorhandler(500)
-    def error_500(error):
-        return jsonify({
-            'success': False,
-            'code': 500,
-            'message': 'Internal Server Error'
-        }), 500
-    
-    @app.errorhandler(422)
-    def error_422(error):
-        return jsonify({
-            'success': False,
-            'code': 422,
-            'message': 'Unprocessable'
-        }), 422
 
     return app
