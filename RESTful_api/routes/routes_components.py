@@ -24,24 +24,25 @@ def create_component():
     body = request.get_json()
 
     description = body.get('description', None)
-    completed = body.get('completed', None)
-    list_id = body.get('list_id', None)
-    search = body.get('search', None)
+    name = body.get('name', None)
+    component_type = body.get('type', None)
+    price = body.get('price', None)
+    create_by = body.get('create_by', None)
 
-    if search:
-        selection = Component.query.order_by('id').filter(Component.description.like(f'%{search}%')).all()
-        list_components = {list.id: list.format() for list in selection}
-        return jsonify({
-            'success': True,
-            'components': list_components,
-            'total_components': len(selection)
-        })
-
-    if description is None or list_id is None:
+    if description is None or name is None or component_type is None or price is None or create_by is None:
         abort(422)
 
-    componet = Component(description=description, completed=completed, list_id=list_id)
-    new_component_id = componet.insert()
+    component = Component(
+        description=description,
+        name=name,
+        component_type=component_type,
+        price=price,
+        create_by=create_by
+    )
+    new_component_id = component.insert()
+    print(new_component_id)
+    if new_component_id is None:
+        abort(422)
 
     selection = Component.query.order_by('id').all()
     list_components = {list.id: list.format() for list in selection}

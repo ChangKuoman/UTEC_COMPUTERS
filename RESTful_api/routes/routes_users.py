@@ -20,28 +20,40 @@ def get_users():
 
 
 @api.route('/users', methods=['POST'])
-def create_Users():
+def create_user():
     body = request.get_json()
 
-    description = body.get('description', None)
-    completed = body.get('completed', None)
-    list_id = body.get('list_id', None)
-    search = body.get('search', None)
+    username = body.get('username', None)
+    password = body.get('password', None)
+    password_confirm = body.get('password_confirm', None)
+    login = body.get('login', None)
+    if login:
+        user = User.query.filter(User.username==username).one_or_none()
+        if user is None:
+            abort(404)
+        if not user.check_password(password):
+            abort(422)
 
-    if search:
-        selection = User.query.order_by('id').filter(User.description.like(f'%{search}%')).all()
-        list_users = {list.id: list.format() for list in selection}
+        key = user.generate_key()
         return jsonify({
             'success': True,
-            'Users': list_users,
-            'total_Users': len(selection)
+            'user': user.format(),
+            'token': key
         })
 
-    if description is None or list_id is None:
+    if username is None or password is None or password_confirm is None:
         abort(422)
 
-    user = User(description=description, completed=completed, list_id=list_id)
+    if password != password_confirm:
+        abort(422)
+
+    if not User.check_difficulty_password(password):
+        abort(422)
+
+    user = User(username=username, password=password)
     new_user_id = user.insert()
+    if new_user_id is None:
+        abort(422)
 
     selection = User.query.order_by('id').all()
     list_Users = {list.id: list.format() for list in selection}
