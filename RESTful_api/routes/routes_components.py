@@ -3,7 +3,7 @@ from models.Component import Component
 from RESTful_api.routes.__init__ import api
 
 
-@api.route('/component', methods=['GET'])
+@api.route('/components', methods=['GET'])
 def get_components():
     selection_component = Component.query.order_by('id').all()
 
@@ -19,7 +19,7 @@ def get_components():
     })
 
 
-@api.route('/component', methods=['POST'])
+@api.route('/components', methods=['POST'])
 def create_component():
     body = request.get_json()
 
@@ -54,7 +54,7 @@ def create_component():
     })
 
 
-@api.route('/component/<id>', methods=['PATCH'])
+@api.route('/components/<id>', methods=['PATCH'])
 def update_component(id):
     error_404 = False
     try:
@@ -82,7 +82,7 @@ def update_component(id):
             abort(500)
 
 
-@api.route('/component/<id>', methods=['DELETE'])
+@api.route('/components/<id>', methods=['DELETE'])
 def delete_componet(id):
     error_404 = False
     try:
@@ -100,7 +100,6 @@ def delete_componet(id):
         return jsonify({
             'success': True,
             'deleted_ID': id,
-
             'components': lists_component,
             'total_componets': len(selection)
         })

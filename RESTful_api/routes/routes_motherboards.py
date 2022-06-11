@@ -43,7 +43,7 @@ def delete_motherboard(id):
         if motherboard_to_delete is None:
             error_404 = True
             abort(404)
-        
+
         motherboard_to_delete.delete()
 
         motherboards_list = MotherBoard.query.order_by('id').all()
@@ -78,11 +78,10 @@ def post_motherboard():
             abort(422)
 
         new_motherboard = MotherBoard(price=price, name=name, description=description, create_by=create_by)
-        new_motherboard_id = new_motherboard.id
+        new_motherboard_id = new_motherboard.insert()
         if new_motherboard_id is None:
             error_422 = True
             abort(422)
-        new_motherboard.insert()
 
         motherboards_list = MotherBoard.query.order_by('id').all()
         motherboards_dictionary = {motherboard.id: motherboard.format() for motherboard in motherboards_list}
@@ -112,19 +111,19 @@ def patch_motherboard(id):
         if motherboard_to_patch is None:
             error_404 = True
             abort(404)
-        
+
         body = request.get_json()
         if 'modify_by' not in body:
             error_422 = True
             abort(422)
-        
+
         if 'description' in body:
             motherboard_to_patch.description = body.get('description')
         if 'price' in body:
             motherboard_to_patch.price = body.get('price')
         if 'name' in body:
             motherboard_to_patch.description = body.get('name')
-        
+
         modify_by = body.get('modify_by')
         motherboard_to_patch.update(modify_by)
 

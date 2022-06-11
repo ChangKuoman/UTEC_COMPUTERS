@@ -3,8 +3,8 @@ from models.Compatible import Compatible
 from RESTful_api.routes.__init__ import api
 
 
-@api.route('/compatible', methods=['GET'])
-def get_components():
+@api.route('/compatibles', methods=['GET'])
+def get_compatibles():
     selection_compatible = Compatible.query.order_by('id').all()
 
     if len(selection_compatible) == 0:
@@ -19,7 +19,7 @@ def get_components():
     })
 
 
-@api.route('/compatible', methods=['POST'])
+@api.route('/compatibles', methods=['POST'])
 def create_Compatible():
     body = request.get_json()
 
@@ -54,7 +54,7 @@ def create_Compatible():
     })
 
 
-@api.route('/compatible/<id>', methods=['PATCH'])
+@api.route('/compatibles/<id>', methods=['PATCH'])
 def update_compatible(id):
     error_404 = False
     try:
@@ -82,8 +82,8 @@ def update_compatible(id):
             abort(500)
 
 
-@api.route('/compatible/<id>', methods=['DELETE'])
-def delete_componet(id):
+@api.route('/compatibles/<id>', methods=['DELETE'])
+def delete_compatoble(id):
     error_404 = False
     try:
         compatible = Compatible.query.filter(Compatible.id==id).one_or_none()

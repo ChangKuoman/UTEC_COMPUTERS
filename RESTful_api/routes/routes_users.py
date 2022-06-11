@@ -4,7 +4,7 @@ from RESTful_api.routes.__init__ import api
 
 
 @api.route('/users', methods=['GET'])
-def get_():
+def get_users():
     selection_users = User.query.order_by('id').all()
 
     if len(selection_users) == 0:
