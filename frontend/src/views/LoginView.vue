@@ -56,10 +56,11 @@ export default {
                     'login': false,
                     'logout': true,
                     'admin': admin,
-                    'register': false
+                    'register': false,
+                    'simulator': true
                 })
 
-              //  this.$router.push('/simulator')
+                this.$router.push('/simulator')
             }
             else {
                 console.log(JsonResponse)

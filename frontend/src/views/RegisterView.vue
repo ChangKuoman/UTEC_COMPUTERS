@@ -13,7 +13,7 @@
         <div v-if = "wentWrong">
             Something went wrong!
         </div>
-    <FooterComponent/>
+        <FooterComponent/>
     </div>
 </template>
 

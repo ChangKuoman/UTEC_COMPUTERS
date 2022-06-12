@@ -4,6 +4,7 @@ import RegisterView from '../views/RegisterView.vue'
 import AdminView from '../views/AdminView.vue'
 import HomeView from '../views/HomeView.vue'
 import SimulatorView from '../views/SimulatorView.vue'
+import ErrorView from '../views/ErrorView.vue'
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: '/simulator',
     name: 'simulator',
     component: SimulatorView
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'errorPage',
+    component: ErrorView
   }
 ]
 

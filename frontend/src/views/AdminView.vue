@@ -29,6 +29,14 @@ export default {
             change: false
         }
     },
+    mounted () {
+        if (localStorage.getItem('token')){
+            console.log('get data')
+        }
+        else {
+            this.$router.push('/login')
+        }
+    },
     methods: {
         goHome () {
             this.home = true

@@ -10,7 +10,7 @@
                 such as LoginStore, and proprietary brands such as MSI, AMD, Intel,
                 among others.
             </p>
-            <img class="img-150" src="@/assets/img/cat.gif">
+            <img class="img-150" src="@/assets/img/cat.gif" />
 
             <a href="https://github.com/ChangKuoman/UTEC_COMPUTERS" target="_target">⇨ LINK TO GITHUB </a>
         </div>
@@ -27,7 +27,7 @@ export default {
 
 <style scoped>
     .img-150 {
-        width: 150;
+        width: 150px;
         height: 150px;
     }
 </style>

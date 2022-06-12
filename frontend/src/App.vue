@@ -14,6 +14,7 @@
         <router-link v-if = "data_session.register" to="/register">Register</router-link>
         <router-link v-if = "data_session.admin" to="/admin">Admin</router-link>
         <button @click.prevent = "logout_session" v-if = "data_session.logout">Logout</button>
+        <router-link v-if = "data_session.simulator" to="/simulator">Simulate!</router-link>
       </div>
 
     </nav>
@@ -31,7 +32,8 @@ export default {
         login: true,
         logout: false,
         register: true,
-        admin: false
+        admin: false,
+        simulator: false
       },
       user_info: null
     }
@@ -43,8 +45,10 @@ export default {
           'login': true,
           'logout': false,
           'admin': false,
-          'register': true
+          'register': true,
+          'simulator': false
       })
+      this.change_data_session(null)
       this.$router.push('/')
     },
     change_data_session (data = this.data_session) {
@@ -52,6 +56,7 @@ export default {
       this.data_session.logout = data.logout
       this.data_session.register = data.register
       this.data_session.admin = data.admin
+      this.data_session.simulator = data.simulator
     },
     change_user_info (data) {
       this.user_info = data
