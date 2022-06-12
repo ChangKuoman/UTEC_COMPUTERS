@@ -110,12 +110,13 @@ export default {
                 this.motherboard.error = true
             }
             console.log(this.motherboard.errors_list)
-            if (!this.motherboard.error) {
-                this.createMotherboard
+            if (this.motherboard.error === false) {
+                this.createMotherboard()
             }
         },
         clear () {
             this.motherboard.errors_list = []
+            this.error = false
         },
         createMotherboard () {
             fetch('http://127.0.0.1:5000/motherboards', {

@@ -12,7 +12,7 @@
       <div>
         <router-link v-if = "data_session.login" to="/login">Login</router-link>
         <router-link v-if = "data_session.register" to="/register">Register</router-link>
-        <router-link :user_info = "user_info" v-if = "data_session.admin" to="/admin">Admin</router-link>
+        <router-link v-if = "data_session.admin" to="/admin">Admin</router-link>
         <button @click.prevent = "logout_session" v-if = "data_session.logout">Logout</button>
         <router-link v-if = "data_session.simulator" to="/simulator">Simulate!</router-link>
       </div>
