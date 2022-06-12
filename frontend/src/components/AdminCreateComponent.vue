@@ -6,26 +6,29 @@
 
         <div>
             <h2>CREATE MOTHERBOARD</h2>
-            <form>
+            <form @change = "clear">
                 <p>MOTHERBOARD NAME</p>
-                <input v-model = "motherboardName" type="text"/>
+                <input v-model = "motherboard.name" type="text"/>
                 <p>MOTHERBOARD DESCRIPTION</p>
-                <input v-model = "motherboardDescription" type="text"/>
+                <input v-model = "motherboard.description" type="text"/>
                 <p>MOTHERBOARD PRICE</p>
-                <input v-model = "motherboardPrice" type="number" step="0.01"/>
-                <button @click.prevent = "createMotherboard">CREATE</button>
+                <input v-model = "motherboard.price" type="number" step="0.01"/>
+                <button @click.prevent = "checkFormMotherboard">CREATE</button>
             </form>
+            <ul class = "no-dots" v-if = "motherboard.error">
+                <li v-for = "(error, index) in motherboard.errors_list" :key = "index">{{error}}</li>
+            </ul>
         </div>
 
         <div>
             <h2>CREATE COMPONENT</h2>
             <form>
                 <p>COMPONENT NAME</p>
-                <input v-model = "componentName" type="text"/>
+                <input v-model = "component.name" type="text"/>
                 <p>COMPONENT DESCRIPTION</p>
-                <input v-model = "componentDescription" type="text"/>
+                <input v-model = "component.description" type="text"/>
                 <p>COMPONENT TYPE</p>
-                <select v-model = "componentType">
+                <select v-model = "component.type">
                     <option value="" hidden selected>SELECT AN OPTION</option>
                     <option value="RAM">RAM (Random Access Memory)</option>
                     <option value="SSD">SSD (Solid State Drive)</option>
@@ -37,7 +40,7 @@
                     <option value="Peripheral">Peripheral</option>
                 </select>
                 <p>COMPONENT PRICE</p>
-                <input v-model = "componentPrice" type="number" step="0.01"/>
+                <input v-model = "component.price" type="number" step="0.01"/>
                 <button @click.prevent = "createComponent">CREATE</button>
             </form>
         </div>
@@ -74,25 +77,54 @@
 export default {
     data() {
         return {
-            motherboardName: '',
-            motherboardDescription: '',
-            motherboardPrice: 0,
-            componentName: '',
-            componentDescription: '',
-            componentType: '',
-            componentPrice: 0
+            motherboard: {
+                name: '',
+                description: '',
+                price: 0,
+                errors_list: [],
+                error: false
+            },
+            component: {
+                name: '',
+                description: '',
+                price: 0,
+                type: ''
+            }
         }
     },
     methods: {
-        // TODO: create_by
+        checkFormMotherboard () {
+            if (this.motherboard.name === ''){
+                this.motherboard.errors_list.push('Motherboard name is required.')
+            }
+            if (this.motherboard.description === ''){
+                this.motherboard.errors_list.push('Motherboard description is required')
+            }
+            if (this.motherboard.price === 0){
+                this.motherboard.errors_list.push('Motherboard price cannot de 0')
+            }
+            else if (this.motherboard.price < 0){
+                this.motherboard.errors_list.push('Motherboard price cannot be negative')
+            }
+            if (this.motherboard.errors_list.length) {
+                this.motherboard.error = true
+            }
+            console.log(this.motherboard.errors_list)
+            if (!this.motherboard.error) {
+                this.createMotherboard
+            }
+        },
+        clear () {
+            this.motherboard.errors_list = []
+        },
         createMotherboard () {
             fetch('http://127.0.0.1:5000/motherboards', {
                 method: 'POST',
                 body: JSON.stringify({
-                    'name': this.motherboardName,
-                    'description': this.motherboardDescription,
-                    'price': this.motherboardPrice,
-                    'create_by': 1
+                    'name': this.motherboard.name,
+                    'description': this.motherboard.description,
+                    'price': this.motherboard.price,
+                    'create_by': this.$root.$root.user_info.id
                 }),
                 headers: {
                     'Content-Type': 'application/json'
@@ -102,9 +134,9 @@ export default {
             .then(JsonResponse => {
                 if (JsonResponse['success'] === true) {
                     // TODO: actualizar las motherboards en create compatible
-                    this.motherboardName = '',
-                    this.motherboardDescription = '',
-                    this.motherboardPrice = 0
+                    this.motherboard.name = '',
+                    this.motherboard.description = '',
+                    this.motherboard.price = 0
                     alert("MOTHERBOARD ADDED SUCCESSFULLY")
                 }
                 else {
@@ -116,15 +148,14 @@ export default {
             })
         },
         createComponent () {
-            console.log(this.componentName, this.componentDescription, this.componentType, this.componentPrice)
             fetch('http://127.0.0.1:5000/components', {
                 method: 'POST',
                 body: JSON.stringify({
-                    'name': this.componentName,
-                    'description': this.componentDescription,
-                    'price': this.componentPrice,
-                    'type': this.componentType,
-                    'create_by': 1
+                    'name': this.component.name,
+                    'description': this.component.description,
+                    'price': this.component.price,
+                    'type': this.component.type,
+                    'create_by': this.$root.$root.user_info.id
                 }),
                 headers: {
                     'Content-Type': 'application/json'
@@ -134,10 +165,10 @@ export default {
             .then(JsonResponse => {
                 if (JsonResponse['success'] === true) {
                     // TODO: actualizar las motherboards en create compatible
-                    this.componentName = '',
-                    this.componentDescription = '',
-                    this.componentPrice = 0
-                    this.componentType = '',
+                    this.component.name = '',
+                    this.component.description = '',
+                    this.component.price = 0
+                    this.component.type = '',
                     alert("COMPONENT ADDED SUCCESSFULLY")
                 }
                 else {

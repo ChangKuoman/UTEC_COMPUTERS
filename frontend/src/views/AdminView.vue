@@ -30,6 +30,7 @@ export default {
         }
     },
     mounted () {
+        console.log(this.user_info)
         if (localStorage.getItem('token')){
             console.log('get data')
         }
