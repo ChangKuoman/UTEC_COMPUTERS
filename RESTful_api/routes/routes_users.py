@@ -47,9 +47,6 @@ def create_user():
     if password != password_confirm:
         abort(422)
 
-    if not User.check_difficulty_password(password):
-        abort(422)
-
     user = User(username=username, password=password)
     new_user_id = user.insert()
     if new_user_id is None:

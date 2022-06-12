@@ -38,19 +38,6 @@ class User(db.Model, UserMixin):
         return uuid4()
 
 
-    @staticmethod
-    def check_difficulty_password(password):
-        mayusc_amount = len([i for i in password if i.isupper()])
-        minusc_amount = len([i for i in password if i.islower()])
-        digit_amount = len([i for i in password if i.isdigit()])
-        special_amount = len([i for i in password if i in "!#$%&()=+-."])
-        password_length = True if len(password) >= 6 and len(password) <= 20 else False
-        if mayusc_amount and minusc_amount and digit_amount and special_amount and password_length:
-            return True
-        else:
-            return False
-
-
     def change_password(self, password, new_password):
         if self.check_password(password):
             self.password = new_password

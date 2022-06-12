@@ -94,6 +94,7 @@ export default {
     },
     methods: {
         checkFormMotherboard () {
+            this.clear()
             if (this.motherboard.name === ''){
                 this.motherboard.errors_list.push('Motherboard name is required.')
             }
