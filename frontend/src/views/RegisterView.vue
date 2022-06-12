@@ -1,14 +1,19 @@
 <template>
     <div>
-        <form>
-            <p>USERNAME</p>
-            <input v-model = "username" type="text"/>
-            <p>PASSWORD</p>
-            <input v-model = "password" type="password"/>
-            <p>CONFIRM PASSWORD</p>
-            <input v-model = "password_confirm" type="password"/>
-            <button @click.prevent = "register">REGISTER</button>
-        </form>
+        <div class="contenedor_HOME">
+            <div class="Texto_presentacion">
+                <form>
+                    <p>USERNAME</p>
+                    <input v-model = "username" type="text"/>
+                    <p>PASSWORD</p>
+                    <input v-model = "password" type="password"/>
+                    <p>CONFIRM PASSWORD</p>
+                    <input v-model = "password_confirm" type="password"/>
+                    <button @click.prevent = "register">REGISTER</button>
+                </form>
+            </div>
+        </div>
+
 
         <div v-if = "wentWrong">
             Something went wrong!
