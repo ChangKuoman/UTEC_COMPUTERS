@@ -37,27 +37,33 @@ export default {
         }
     },
     mounted () {
-        fetch('http://127.0.0.1:5000/motherboards', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(JsonReponse => {
-            console.log(JsonReponse)
-            if (JsonReponse['success'] === true){
-                this.motherboards = JsonReponse['motherboards']
-            }
-            else {
-                // TODO: si sale error, que haga error
+        if (localStorage.getItem('token')){
+            fetch('http://127.0.0.1:5000/motherboards', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(JsonReponse => {
+                console.log(JsonReponse)
+                if (JsonReponse['success'] === true){
+                    this.motherboards = JsonReponse['motherboards']
+                }
+                else {
+                    // TODO: si sale error, que haga error
+                    this.error = true
+                }
+                console.log(this.motherboards)
+            })
+            .catch(() =>
                 this.error = true
-            }
-            console.log(this.motherboards)
-        })
-        .catch(() =>
-            this.error = true
-        )
+            )
+        }
+        else {
+            this.$router.push('/login')
+        }
+
     },
     methods: {
         chooseMotherboard() {

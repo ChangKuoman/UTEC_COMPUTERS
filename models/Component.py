@@ -8,13 +8,33 @@ class Component(db.Model):
     name = db.Column(db.String(), nullable=False, unique=True)
     component_type = db.Column(db.String(), nullable=False)
     description = db.Column(db.Text(), nullable=False)
-    date_created = db.Column(db.DateTime, nullable=False, default=func.now())
-    create_by = db.Column(db.Integer, ForeignKey('userinfo.id'), nullable=False, default=0)
-    date_modified = db.Column(db.DateTime, nullable=False, default=func.now())
-    modify_by = db.Column(db.Integer, ForeignKey('userinfo.id'), nullable=False, default=0)
+    date_created = db.Column(db.DateTime, nullable=False, server_default=func.now())
+    create_by = db.Column(db.Integer, ForeignKey('userinfo.id'), nullable=False)
+    date_modified = db.Column(db.DateTime, nullable=False, server_default=func.now())
+    modify_by = db.Column(db.Integer, ForeignKey('userinfo.id'), nullable=False)
 
     compatibles = db.relationship('Compatible', backref='component', lazy=True, cascade="all, delete-orphan")
     simulation_components = db.relationship('SimulationComponent', backref='component', lazy=True, cascade="all, delete-orphan")
+
+
+    def __init__(self, description, name, component_type, price, create_by):
+        self.description=description,
+        self.name=name,
+        self.component_type=component_type,
+        self.price=price,
+        self.create_by=create_by
+        self.modify_by=create_by
+
+
+    def format(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'component_type': self.component_type,
+            'description': self.description,
+            'price': self.price
+        }
+
 
     def delete(self):
         try:
@@ -25,6 +45,7 @@ class Component(db.Model):
         finally:
             db.session.close()
 
+
     def insert(self):
         try:
             db.session.add(self)
@@ -34,7 +55,8 @@ class Component(db.Model):
             db.session.rollback()
         finally:
             db.session.close()
-    
+
+
     def update(self):
         try:
             db.session.commit()
@@ -42,6 +64,7 @@ class Component(db.Model):
             db.session.rollback()
         finally:
             db.session.close()
+
 
     def __repr__(self):
         return f'component: {self.name}'

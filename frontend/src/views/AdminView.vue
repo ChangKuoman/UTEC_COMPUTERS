@@ -1,17 +1,17 @@
 <template>
-
     <div>
-        <button @click.prevent = "goHome">HOME ADMIN</button>
-        <button @click.prevent = "goCreate">CREATE PRODUCTS</button>
-        <button @click.prevent = "goDelete">DELETE PRODUCTS</button>
-        <button @click.prevent = "goChange">CHANGE PRODUCTS</button>
-        <router-link to="/simulator">SIMULATOR</router-link>
+        <div>
+            <button @click.prevent = "goHome">HOME ADMIN</button>
+            <button @click.prevent = "goCreate">CREATE PRODUCTS</button>
+            <button @click.prevent = "goDelete">DELETE PRODUCTS</button>
+            <button @click.prevent = "goChange">CHANGE PRODUCTS</button>
+            <router-link to="/simulator">SIMULATOR</router-link>
+        </div>
+        <div v-if = "home">HOME</div>
+        <AdminCreateComponent v-if = "create" />
+        <AdminDeleteComponent v-if = "delete_" />
+        <AdminChangeComponent v-if = "change" />
     </div>
-    <div v-if = "home">HOME</div>
-    <AdminCreateComponent v-if = "create" />
-    <AdminDeleteComponent v-if = "delete_" />
-    <AdminChangeComponent v-if = "change" />
-
 </template>
 
 <script>
@@ -27,6 +27,14 @@ export default {
             create: false,
             delete_: false,
             change: false
+        }
+    },
+    mounted () {
+        if (localStorage.getItem('token')){
+            console.log('get data')
+        }
+        else {
+            this.$router.push('/login')
         }
     },
     methods: {

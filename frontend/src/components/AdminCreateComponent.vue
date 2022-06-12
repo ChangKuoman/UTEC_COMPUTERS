@@ -1,5 +1,5 @@
 <template>
-    <div class="contenedor_admin">
+    <div>
         <h1>
             WHEN CREATING A PRODUCT, ALL FIELDS MUST BE FILLED
         </h1>
@@ -84,6 +84,7 @@ export default {
         }
     },
     methods: {
+        // TODO: create_by
         createMotherboard () {
             fetch('http://127.0.0.1:5000/motherboards', {
                 method: 'POST',
@@ -115,12 +116,14 @@ export default {
             })
         },
         createComponent () {
+            console.log(this.componentName, this.componentDescription, this.componentType, this.componentPrice)
             fetch('http://127.0.0.1:5000/components', {
                 method: 'POST',
                 body: JSON.stringify({
-                    'name': this.motherboardName,
-                    'description': this.motherboardDescription,
-                    'price': this.motherboardPrice,
+                    'name': this.componentName,
+                    'description': this.componentDescription,
+                    'price': this.componentPrice,
+                    'type': this.componentType,
                     'create_by': 1
                 }),
                 headers: {
