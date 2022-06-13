@@ -51,26 +51,27 @@
         <div>
             <h2>CREATE COMPATIBLE</h2>
 
-            <form>
-                <!--
+            <form @change = "compatible.clear">
+
                 <p>MOTHERBOARD</p>
-                <select>
+                <select v-model = "compatible.motherboard">
                     <option value="" hidden selected>SELECT AN OPTION</option>
-                    {% for motherboard in motherboards %}
-                    <option value={{motherboard.id}}>{{motherboard.name}}</option>
-                    {% endfor %}
+                    <option v-for = "(motherboard_e, index) in resources.motherboard_list" :key = "index" value = "motherboard_e.id">{{motherboard_e.name}}</option>
                 </select>
 
                 <p>COMPONENT</p>
-                <select>
+                <select v-model = "compatible.component">
                     <option value="" hidden selected>SELECT AN OPTION</option>
-                    {% for component in components %}
-                    <option value={{component.id}}>{{component.name}}</option>
-                    {% endfor %}
+                    <option v-for = "(component_e, index) in resources.component_list" :key = "index" value = "component_e.id">{{component_e.name}}</option>
                 </select>
-                <button>CREATE</button>
-                -->
+                <button @click.prevent = "compatible.clear(); checkFormCompatible()">CREATE</button>
             </form>
+            <ul class = "no-dots">
+                <li v-for = "(error, index) in compatible.error_list" :key = "index">{{error}}</li>
+            </ul>
+            <div v-if = "resources.error">
+                {{compatible.error_text}}
+            </div>
         </div>
     </div>
 
@@ -102,8 +103,75 @@ export default {
                     this.component.error_list = []
                     this.component.error = false
                 }
+            },
+            resources: {
+                motherboard_list: [],
+                component_list: [],
+                error: false,
+                error_text: '',
+            },
+            compatible: {
+                motherboard: '',
+                component: '',
+                error: false,
+                error_list: [],
+                clear: () => {
+                    this.compatible.error = false
+                    this.compatible.error_list = []
+                }
             }
         }
+    },
+    mounted () {
+        fetch('http://127.0.0.1:5000/motherboards', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(JsonResponse => {
+            if (JsonResponse['success'] === true){
+                this.resources.motherboard_list = JsonResponse['motherboards']
+            }
+            else {
+                this.resources.error_list = JsonResponse['message']
+                this.resources.error = true
+            }
+        })
+        .catch(() => {
+            this.resources.error_list = 'Something went wrong!'
+            this.resources.error = true
+        })
+        // TODO: get components (must be able to be compatible - generar un search ://)
+        fetch('http://127.0.0.1:5000/components', {
+            method: 'POST',
+            body: JSON.stringify({
+                'search': true,
+                'components': ['RAM', 'SSD', 'GPU', 'PC Cooling']
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(JsonResponse => {
+            console.log(JsonResponse)
+            if (JsonResponse['success'] === true){
+                this.resources.component_list = JsonResponse['components']
+            }
+            else {
+                console.log("error servidor")
+
+                this.resources.error_list = JsonResponse['message']
+                this.resources.error = true
+            }
+        })
+        .catch(() => {
+            console.log("error js")
+            this.resources.error_list = 'Something went wrong!'
+            this.resources.error = true
+        })
     },
     methods: {
         checkFormMotherboard () {
@@ -211,6 +279,24 @@ export default {
             }).catch(() => {
                     console.log('error')
             })
+        },
+        checkFormCompatible () {
+            if (this.compatible.motherboard === "") {
+                this.compatible.error_list.push('Motherboard for compatible cannot be empty')
+            }
+            if (this.compatible.component === "") {
+                this.compatible.error_list.push("Component for compatible cannot be empty")
+            }
+            if (this.compatible.error_list.length) {
+                this.compatible.error = true
+            }
+            if (this.compatible.error === false) {
+                this.createCompatible()
+            }
+        },
+        createCompatible () {
+            // TODO: crear la compatibilidad
+            console.log('something')
         }
     }
 }
