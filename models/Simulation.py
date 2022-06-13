@@ -1,5 +1,6 @@
 from config import db
 from sqlalchemy import func, ForeignKey
+from models.Component import Component
 
 
 class Simulation(db.Model):
@@ -17,7 +18,8 @@ class Simulation(db.Model):
         return {
             "id": self.id,
             "id_motherboard": self.id_motherboard,
-            "total_price": self.total_price
+            "total_price": self.total_price,
+            "components": {component.id_component:Component.query.get(component.id_component).format() for component in self.simulation_components}
         }
 
 

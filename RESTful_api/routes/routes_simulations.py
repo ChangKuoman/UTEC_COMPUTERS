@@ -1,5 +1,6 @@
 from flask import abort, jsonify, request
 from models.Simulation import Simulation
+from models.SimulationComponent import SimulationComponent
 from RESTful_api.routes.__init__ import api
 
 
@@ -10,16 +11,20 @@ def post_simulations():
     id_motherboard = body.get('id_motherboard', None)
     total_price = body.get('total_price', None)
     create_by = body.get('create_by', None)
-    print(id_motherboard, total_price, create_by)
+    components_id = body.get('components_id', None)
 
     if id_motherboard is None or total_price is None or create_by is None:
         abort(422)
 
     simulation = Simulation(id_motherboard=id_motherboard, total_price=total_price, create_by=create_by)
     new_simulation_id = simulation.insert()
-    print(new_simulation_id)
+
     if new_simulation_id is None:
         abort(422)
+
+    for id in components_id:
+        simulation_component = SimulationComponent(id_simulation=new_simulation_id, id_component=id)
+        simulation_component.insert()
 
     simulations_list = Simulation.query.order_by('id').all()
     simulations_dictionary = {simulation.id: simulation.format() for simulation in simulations_list}

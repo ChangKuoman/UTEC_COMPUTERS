@@ -342,6 +342,9 @@ export default {
                 body: JSON.stringify({
                     'id_motherboard': this.simulation.motherboard.id,
                     'total_price': this.total_price,
+                    'components_id': this.total_products.filter(product => product.component_type !== undefined).map((product) => {
+                        return product.id
+                    }),
                     'create_by': this.$root.user_info.id
                 }),
                 headers: {
@@ -352,10 +355,11 @@ export default {
             .then(JsonResponse => {
                 console.log(JsonResponse)
                 if (JsonResponse['success'] === true){
+                    console.log(JsonResponse['simulations'])
                     console.log('success')
                 }
                 else {
-                    console.log('cak error')
+                    console.log('back error')
                 }
             })
             .catch(() => {

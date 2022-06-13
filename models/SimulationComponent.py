@@ -30,7 +30,6 @@ class SimulationComponent(db.Model):
         try:
             db.session.add(self)
             db.session.commit()
-            return self.id
         except:
             db.session.rollback()
         finally:
