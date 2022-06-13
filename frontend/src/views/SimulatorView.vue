@@ -14,7 +14,7 @@
                             <label for = "motherboard">{{motherboard.name}}</label>
                             <div>
                                 <p>Description: {{motherboard.description}}</p>
-                                <p>Price: {{motherboard.price.toFixed(2)}}</p>
+                                <p>Price: S/. {{motherboard.price.toFixed(2)}}</p>
                             </div>
                         </li>
                     </ul>
@@ -37,7 +37,7 @@
                         <div>
                             <div>
                                 <h2>YOUR MOTHERBOARD: {{simulation.motherboard.name}}</h2>
-                                <p>MotherBoard Price: {{simulation.motherboard.price.toFixed(2)}}</p>
+                                <p>MotherBoard Price: S/. {{simulation.motherboard.price.toFixed(2)}}</p>
                             </div>
 
                             <button @click.prevent = "resetProducts">
@@ -57,7 +57,7 @@
                                         <input v-model = "simulation.ram" type = "radio" :value = "ram" />
                                         <label for = "ram">Name: {{ram.name}}</label>
                                         <div>
-                                            <p>Price: {{ram.price.toFixed(2)}}</p>
+                                            <p>Price: S/. {{ram.price.toFixed(2)}}</p>
                                             <p>Description: {{ram.description}}</p>
                                         </div>
                                     </li>
@@ -71,7 +71,7 @@
                                         <input v-model = "simulation.ssd" type = "radio" :value = "ssd" />
                                         <label for = "ssd">Name: {{ssd.name}}</label>
                                         <div>
-                                            <p>Price: {{ssd.price.toFixed(2)}}</p>
+                                            <p>Price: S/. {{ssd.price.toFixed(2)}}</p>
                                             <p>Description: {{ssd.description}}</p>
                                         </div>
                                     </li>
@@ -85,7 +85,7 @@
                                         <input v-model = "simulation.gpu" type = "radio" :value = "gpu" />
                                         <label for = "gpu">Name: {{gpu.name}}</label>
                                         <div>
-                                            <p>Price: {{gpu.price.toFixed(2)}}</p>
+                                            <p>Price: S/. {{gpu.price.toFixed(2)}}</p>
                                             <p>Description: {{gpu.description}}</p>
                                         </div>
                                     </li>
@@ -99,7 +99,7 @@
                                         <input v-model = "simulation.pc_cooling" type = "radio" :value = "pc_cooling" />
                                         <label for = "pc_cooling">Name: {{pc_cooling.name}}</label>
                                         <div>
-                                            <p>Price: {{pc_cooling.price.toFixed(2)}}</p>
+                                            <p>Price: S/. {{pc_cooling.price.toFixed(2)}}</p>
                                             <p>Description: {{pc_cooling.description}}</p>
                                         </div>
                                     </li>
@@ -114,7 +114,7 @@
                                         <input v-model = "simulation.hdd" type = "radio" :value = "hdd" />
                                         <label for = "hdd">Name: {{hdd.name}}</label>
                                         <div>
-                                            <p>Price: {{hdd.price.toFixed(2)}}</p>
+                                            <p>Price: S/. {{hdd.price.toFixed(2)}}</p>
                                             <p>Description: {{hdd.description}}</p>
                                         </div>
                                     </li>
@@ -128,7 +128,7 @@
                                         <input v-model = "simulation.cpu" type = "radio" :value = "cpu" />
                                         <label for = "cpu">Name: {{cpu.name}}</label>
                                         <div>
-                                            <p>Price: {{cpu.price.toFixed(2)}}</p>
+                                            <p>Price: S/. {{cpu.price.toFixed(2)}}</p>
                                             <p>Description: {{cpu.description}}</p>
                                         </div>
                                     </li>
@@ -142,7 +142,7 @@
                                         <input v-model = "simulation.psu" type = "radio" :value = "psu" />
                                         <label for = "psu">Name: {{psu.name}}</label>
                                         <div>
-                                            <p>Price: {{psu.price.toFixed(2)}}</p>
+                                            <p>Price: S/. {{psu.price.toFixed(2)}}</p>
                                             <p>Description: {{psu.description}}</p>
                                         </div>
                                     </li>
@@ -158,7 +158,7 @@
                                         <input v-model = "simulation.peripheral" type="checkbox" :value = "peripheral" />
                                         <label for = "peripheral">Name: {{peripheral.name}}</label>
                                         <div>
-                                            <p>Price: {{peripheral.price.toFixed(2)}}</p>
+                                            <p>Price: S/. {{peripheral.price.toFixed(2)}}</p>
                                             <p>Description: {{peripheral.description}}</p>
                                         </div>
                                     </li>
@@ -180,7 +180,7 @@
                             <li v-for = "(product, index) in total_products" :key = "index">{{product.name}} S/.{{product.price.toFixed(2)}}</li>
                         </ul>
                         <p><b>TOTAL PRICE: S/. {{total_price.toFixed(2)}}</b></p>
-                        <button>SIMULATE!</button>
+                        <button @click.prevent = "simulate">SIMULATE!</button>
 
                     </div>
                 </div>
@@ -332,6 +332,35 @@ export default {
             this.simulation.cpu = null,
             this.simulation.psu = null,
             this.simulation.peripheral = []
+        },
+        simulate () {
+            // TODO: crear la simulacion, redirigir a simulation
+            console.log("falta funcionalidad de la simulacion")
+
+            fetch('http://127.0.0.1:5000/simulations', {
+                method: 'POST',
+                body: JSON.stringify({
+                    'id_motherboard': this.simulation.motherboard.id,
+                    'total_price': this.total_price,
+                    'create_by': this.$root.user_info.id
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(JsonResponse => {
+                console.log(JsonResponse)
+                if (JsonResponse['success'] === true){
+                    console.log('success')
+                }
+                else {
+                    console.log('cak error')
+                }
+            })
+            .catch(() => {
+                console.log('js error')
+            })
         }
     }
 }

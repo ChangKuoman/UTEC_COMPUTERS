@@ -1,6 +1,34 @@
-from flask import abort, jsonify
+from flask import abort, jsonify, request
 from models.Simulation import Simulation
 from RESTful_api.routes.__init__ import api
+
+
+@api.route('/simulations', methods=['POST'])
+def post_simulations():
+    body = request.get_json()
+
+    id_motherboard = body.get('id_motherboard', None)
+    total_price = body.get('total_price', None)
+    create_by = body.get('create_by', None)
+    print(id_motherboard, total_price, create_by)
+
+    if id_motherboard is None or total_price is None or create_by is None:
+        abort(422)
+
+    simulation = Simulation(id_motherboard=id_motherboard, total_price=total_price, create_by=create_by)
+    new_simulation_id = simulation.insert()
+    print(new_simulation_id)
+    if new_simulation_id is None:
+        abort(422)
+
+    simulations_list = Simulation.query.order_by('id').all()
+    simulations_dictionary = {simulation.id: simulation.format() for simulation in simulations_list}
+    return jsonify({
+        'success': True,
+        'created': new_simulation_id,
+        'simulations': simulations_dictionary,
+        'total_simulations': len(simulations_list)
+    })
 
 
 @api.route('/simulations', methods=['GET'])
@@ -44,7 +72,7 @@ def delete_simulation(id):
         if simulation_to_delete is None:
             error_404 = True
             abort(404)
-        
+
         simulation_to_delete.delete()
 
         simulations_list = Simulation.query.order_by('id').all()
