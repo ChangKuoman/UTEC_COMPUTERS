@@ -5,7 +5,7 @@
         </h1>
         <div>
             <p>CHOOSE A MOTHERBOARD:</p>
-            <form>
+            <form @change = "error.clear">
 
                 <ul class="no-dots">
                     <li v-for = "(motherboard, index) in motherboards" :key="index">
@@ -21,8 +21,8 @@
                 <button @click.prevent = "choseMotherboard">CHOOSE ↪</button>
             </form>
         </div>
-        <div v-if = "error">
-            {{errorText}}
+        <div v-if = "error.text">
+            {{error.text}}
         </div>
     </div>
 </template>
@@ -31,8 +31,14 @@
 export default {
     data () {
         return {
-            error: false,
-            errorText: '',
+            error: {
+                show: false,
+                text: '',
+                clear: () => {
+                    this.error.show = false,
+                    this.error.text = ''
+                }
+            },
             motherboards: [],
             chosen_motherboard: null
         }
@@ -51,13 +57,13 @@ export default {
                     this.motherboards = JsonResponse['motherboards']
                 }
                 else {
-                    this.errorText = JsonResponse['message']
-                    this.error = true
+                    this.error.text = JsonResponse['message']
+                    this.error.show = true
                 }
             })
             .catch(() => {
-                this.errorText = 'Something went wrong!'
-                this.error = true
+                this.error.text = 'Something went wrong!'
+                this.error.show = true
             })
         }
         else {
