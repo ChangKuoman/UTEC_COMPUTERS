@@ -6,23 +6,23 @@
 
         <div>
             <h2>CREATE MOTHERBOARD</h2>
-            <form @change = "clear">
+            <form @change = "motherboard.clear">
                 <p>MOTHERBOARD NAME</p>
                 <input v-model = "motherboard.name" type="text"/>
                 <p>MOTHERBOARD DESCRIPTION</p>
                 <input v-model = "motherboard.description" type="text"/>
                 <p>MOTHERBOARD PRICE</p>
                 <input v-model = "motherboard.price" type="number" step="0.01"/>
-                <button @click.prevent = "checkFormMotherboard">CREATE</button>
+                <button @click.prevent = "motherboard.clear(); checkFormMotherboard()">CREATE</button>
             </form>
             <ul class = "no-dots" v-if = "motherboard.error">
-                <li v-for = "(error, index) in motherboard.errors_list" :key = "index">{{error}}</li>
+                <li v-for = "(error, index) in motherboard.error_list" :key = "index">{{error}}</li>
             </ul>
         </div>
 
         <div>
             <h2>CREATE COMPONENT</h2>
-            <form>
+            <form @change = "component.clear">
                 <p>COMPONENT NAME</p>
                 <input v-model = "component.name" type="text"/>
                 <p>COMPONENT DESCRIPTION</p>
@@ -41,8 +41,11 @@
                 </select>
                 <p>COMPONENT PRICE</p>
                 <input v-model = "component.price" type="number" step="0.01"/>
-                <button @click.prevent = "createComponent">CREATE</button>
+                <button @click.prevent = "component.clear(); checkFormComponent()">CREATE</button>
             </form>
+            <ul class = "no-dots" v-if = "component.error">
+                <li v-for = "(error, index) in component.error_list" :key = "index">{{error}}</li>
+            </ul>
         </div>
 
         <div>
@@ -81,43 +84,47 @@ export default {
                 name: '',
                 description: '',
                 price: 0,
-                errors_list: [],
-                error: false
+                error_list: [],
+                error: false,
+                clear: () => {
+                    this.motherboard.error_list = []
+                    this.motherboard.error = false
+                }
             },
             component: {
                 name: '',
                 description: '',
                 price: 0,
-                type: ''
+                type: '',
+                error_list: [],
+                error: false,
+                clear: () => {
+                    this.component.error_list = []
+                    this.component.error = false
+                }
             }
         }
     },
     methods: {
         checkFormMotherboard () {
-            this.clear()
             if (this.motherboard.name === ''){
-                this.motherboard.errors_list.push('Motherboard name is required.')
+                this.motherboard.error_list.push('Motherboard name is required.')
             }
             if (this.motherboard.description === ''){
-                this.motherboard.errors_list.push('Motherboard description is required')
+                this.motherboard.error_list.push('Motherboard description is required')
             }
             if (this.motherboard.price === 0){
-                this.motherboard.errors_list.push('Motherboard price cannot de 0')
+                this.motherboard.error_list.push('Motherboard price cannot de 0')
             }
             else if (this.motherboard.price < 0){
-                this.motherboard.errors_list.push('Motherboard price cannot be negative')
+                this.motherboard.error_list.push('Motherboard price cannot be negative')
             }
-            if (this.motherboard.errors_list.length) {
+            if (this.motherboard.error_list.length) {
                 this.motherboard.error = true
             }
-            console.log(this.motherboard.errors_list)
             if (this.motherboard.error === false) {
                 this.createMotherboard()
             }
-        },
-        clear () {
-            this.motherboard.errors_list = []
-            this.error = false
         },
         createMotherboard () {
             fetch('http://127.0.0.1:5000/motherboards', {
@@ -135,6 +142,7 @@ export default {
             .then(response => response.json())
             .then(JsonResponse => {
                 if (JsonResponse['success'] === true) {
+                    console.log('here')
                     // TODO: actualizar las motherboards en create compatible
                     this.motherboard.name = '',
                     this.motherboard.description = '',
@@ -148,6 +156,29 @@ export default {
             }).catch(() => {
                     console.log('error')
             })
+        },
+        checkFormComponent() {
+            if (this.component.name === ''){
+                this.component.error_list.push('Component name is required.')
+            }
+            if (this.component.description === ''){
+                this.component.error_list.push('Component description is required')
+            }
+            if (this.component.type === ''){
+                this.component.error_list.push('Component type is required')
+            }
+            if (this.component.price === 0){
+                this.component.error_list.push('Component price cannot de 0')
+            }
+            else if (this.component.price < 0){
+                this.component.error_list.push('Component price cannot be negative')
+            }
+            if (this.component.error_list.length) {
+                this.component.error = true
+            }
+            if (this.component.error === false) {
+                this.createComponent()
+            }
         },
         createComponent () {
             fetch('http://127.0.0.1:5000/components', {
