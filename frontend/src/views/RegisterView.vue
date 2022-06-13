@@ -58,26 +58,8 @@ export default {
         }
     },
     check_difficulty() {
-        console.log('here')
-        let mayusc = 0
-        let minusc = 0
-        let digit = 0
-        let length = this.password.length
-        for (let letter of this.password) {
-            if (! isNaN(letter)) {
-                digit += 1
-            }
-            else if (letter === letter.toUpperCase()) {
-                mayusc += 1
-            }
-            else {
-                minusc += 1
-            }
-        }
-        if ((mayusc > 0) && (minusc > 0) && (digit > 0) && (length >= 6)){
-                return true
-            }
-        return false
+        const re = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[.,-_+&$#@()*"':;!?])/
+        return re.test(this.password)
     },
     clear () {
         this.error_form = false
