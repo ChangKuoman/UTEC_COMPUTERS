@@ -17,11 +17,11 @@
 
       <!--CONTENEDOR_BOTONES-->
       <div class="CONTENEDOR_BOTONES">
-        <router-link v-if = "data_session.login" to="/login">Login</router-link>
-        <router-link v-if = "data_session.register" to="/register">Register</router-link>
+        <router-link v-if = "!data_session.logged" to="/login">Login</router-link>
+        <router-link v-if = "!data_session.logged" to="/register">Register</router-link>
         <router-link v-if = "data_session.admin" to="/admin">Admin</router-link>
-        <button @click.prevent = "logout_session" v-if = "data_session.logout">Logout</button>
-        <router-link v-if = "data_session.simulator" to="/simulator">Simulate!</router-link>
+        <button @click.prevent = "logout_session" v-if = "data_session.logged">Logout</button>
+        <router-link v-if = "data_session.logged" to="/simulator">Simulate!</router-link>
       </div>
 
     </nav>
@@ -36,40 +36,25 @@ export default {
   data () {
     return {
       data_session: {
-        login: true,
-        logout: false,
-        register: true,
-        admin: false,
-        simulator: false
+        logged: false,
+        admin: false
       },
       user_info: null
+    }
+  },
+  mounted () {
+    if (localStorage.getItem('token')){
+      localStorage.removeItem('token')
     }
   },
   methods: {
     logout_session () {
       localStorage.removeItem('token')
-      this.change_data_session({
-          'login': true,
-          'logout': false,
-          'admin': false,
-          'register': true,
-          'simulator': false
-      })
-      this.change_data_session(null)
+      this.data_session.logged = false
+      this.data_session.admin = false
+      this.user_info = null
       this.$router.push('/')
-    },
-    change_data_session (data = this.data_session) {
-      this.data_session.login = data.login
-      this.data_session.logout = data.logout
-      this.data_session.register = data.register
-      this.data_session.admin = data.admin
-      this.data_session.simulator = data.simulator
-    },
-    change_user_info (data) {
-      this.user_info = data
-      console.log(this.user_info)
     }
-
   }
 }
 </script>
@@ -97,7 +82,7 @@ export default {
     width: auto;
     margin: 0%;
     height: auto;
-    
+
     background-image: url(@/assets/img/fondo.jpg);
     background-size: cover;
     }
@@ -163,17 +148,17 @@ export default {
   }
 
   .contenedor_HOME{
-    
+
     width: 70%;
     height: 800px;
     margin-left: 15%;
     margin-right: 15%;
-    
+
     display: flex;
     justify-content: center;
     margin-top: 1%;
     margin-bottom: 1%;
-    padding: 3%;   
+    padding: 3%;
   }
   .Texto_presentacion{
     width: 50%;
@@ -183,7 +168,7 @@ export default {
 
     display: flex;
     flex-direction: column;
-    
+
     text-align: justify;
     font-style:italic;
     font-family: 'Lato', sans-serif;
