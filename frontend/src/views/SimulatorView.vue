@@ -335,7 +335,7 @@ export default {
         },
         simulate () {
             // TODO: crear la simulacion, redirigir a simulation
-            console.log("falta funcionalidad de la simulacion")
+            console.log("falta redirigir a simulation")
 
             fetch('http://127.0.0.1:5000/simulations', {
                 method: 'POST',
@@ -357,6 +357,7 @@ export default {
                 if (JsonResponse['success'] === true){
                     console.log(JsonResponse['simulations'])
                     console.log('success')
+                    this.$router.push("/simulation/" + JsonResponse['created_id'])
                 }
                 else {
                     console.log('back error')

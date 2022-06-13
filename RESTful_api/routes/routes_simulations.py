@@ -30,7 +30,7 @@ def post_simulations():
     simulations_dictionary = {simulation.id: simulation.format() for simulation in simulations_list}
     return jsonify({
         'success': True,
-        'created': new_simulation_id,
+        'created_id': new_simulation_id,
         'simulations': simulations_dictionary,
         'total_simulations': len(simulations_list)
     })
@@ -60,10 +60,10 @@ def get_simulation(id):
 
     simulations_list = Simulation.query.order_by('id').all()
 
-    simulation_dictionary = {simulation.id: simulation.format()}
+    simulation_dictionary = simulation.format()
     return jsonify({
         'success': True,
-        'simulations': simulation_dictionary,
+        'simulation': simulation_dictionary,
         'total_simulations': len(simulations_list)
     })
 
