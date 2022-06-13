@@ -67,6 +67,7 @@ export default {
     },
     change_user_info (data) {
       this.user_info = data
+      console.log(this.user_info)
     }
 
   }

@@ -22,7 +22,7 @@
             </form>
         </div>
         <div v-if = "error">
-            Something went wrong!
+            {{errorText}}
         </div>
     </div>
 </template>
@@ -32,6 +32,7 @@ export default {
     data () {
         return {
             error: false,
+            errorText: '',
             motherboards: [],
             chosen_motherboard: null
         }
@@ -45,29 +46,28 @@ export default {
                 }
             })
             .then(response => response.json())
-            .then(JsonReponse => {
-                console.log(JsonReponse)
-                if (JsonReponse['success'] === true){
-                    this.motherboards = JsonReponse['motherboards']
+            .then(JsonResponse => {
+                if (JsonResponse['success'] === true){
+                    this.motherboards = JsonResponse['motherboards']
                 }
                 else {
-                    // TODO: si sale error, que haga error
+                    this.errorText = JsonResponse['message']
                     this.error = true
                 }
-                console.log(this.motherboards)
             })
-            .catch(() =>
+            .catch(() => {
+                this.errorText = 'Something went wrong!'
                 this.error = true
-            )
+            })
         }
         else {
             this.$router.push('/login')
         }
-
     },
     methods: {
         chooseMotherboard() {
-
+            // TODO
+            console.log('missing functionality here xd')
         }
     }
 }

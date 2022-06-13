@@ -28,7 +28,7 @@
 <script>
 import FooterComponent from '../components/FooterComponent.vue'
 export default {
-  components: { FooterComponent },
+  components: { FooterComponent }
 }
 </script>
 
