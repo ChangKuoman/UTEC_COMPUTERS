@@ -11,7 +11,7 @@
       <!--BOX-EMPRESA_NAME-->
       <div class="box_EMPRESA_NAME">
         <router-link to="/">
-          <h1>UTEC COMPUTERS</h1>
+          <h1><a>UTEC COMPUTERS</a></h1>
         </router-link>
       </div>
 
@@ -146,9 +146,11 @@ export default {
     justify-content: center;
 
     text-decoration: none;
-    font-size: 22px;
-    filter: drop-shadow(5px 10px 5px #000000e8);
+    text-align:center;
+    font-size:50px;
+    margin:20px 0 20px 0;
   }
+
   .CONTENEDOR_BOTONES{
     min-width: 40%;
     width: auto;
@@ -159,7 +161,7 @@ export default {
     justify-content: end;
   }
 
-    .contenedor_HOME{
+  .contenedor_HOME{
     
     width: 70%;
     height: 800px;
@@ -171,8 +173,8 @@ export default {
     margin-top: 1%;
     margin-bottom: 1%;
     padding: 3%;   
-    }
-    .Texto_presentacion{
+  }
+  .Texto_presentacion{
     width: 50%;
     height: 400px;
     padding: 5%;
@@ -188,6 +190,6 @@ export default {
 
     background: #fffffffd;
     color: #333;
-    
-    }
+  }
+
 </style>
