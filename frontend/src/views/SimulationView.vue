@@ -35,10 +35,12 @@
                     S/. {{simulation.total_price.toFixed(2)}}
                 </div>
             </div>
-
+            <div v-if = "error.show">
+                {{error.text}}
+            </div>
         </div>
-        <button>
-            ↩ BACK
+        <button @click.prevent = "goBack">
+            ↩ GO HOME
         </button>
     </div>
 </template>
@@ -53,7 +55,11 @@ export default {
     },
     data () {
         return {
-            simulation: null
+            simulation: null,
+            error: {
+                show: false,
+                text: ''
+            }
         }
     },
     mounted () {
@@ -76,12 +82,13 @@ export default {
                     }
                 }
                 else {
-                    // TODO: mostar errores
-                    console.log("error backend")
+                    this.error.show = true
+                    this.error.text = JsonResponse['message']
                 }
             })
             .catch(() => {
-                console.log('error js')
+                this.error.show = true
+                this.error.text = 'Something went wrong!'
             })
         }
         else {
@@ -89,7 +96,9 @@ export default {
         }
     },
     methods: {
-
+        goBack() {
+            this.$router.push('/')
+        }
     }
 }
 </script>
