@@ -1,12 +1,18 @@
 <template>
     <div>
-        <form>
-            <p>USERNAME</p>
-            <input v-model = "username" type="text"/>
-            <p>PASSWORD</p>
-            <input v-model = "password" type="password"/>
-            <button @click.prevent = "login">LOGIN</button>
-        </form>
+        <div class="contenedor_HOME">
+            <div class="Texto_presentacion">
+                <form>
+                    <p>USERNAME</p>
+                    <input v-model = "username" type="text"/>
+                    <p>PASSWORD</p>
+                    <input v-model = "password" type="password"/>
+                    <button @click.prevent = "login">LOGIN</button>
+                </form>
+            </div>
+            
+        </div>
+
 
         <div v-if = "wentWrong">
             Username is not valid or password is wrong

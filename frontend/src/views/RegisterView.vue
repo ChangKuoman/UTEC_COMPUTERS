@@ -1,17 +1,21 @@
 <template>
     <div>
-        <form @change = "clear">
-            <p>USERNAME</p>
-            <input v-model = "username" type="text"/>
-            <p>PASSWORD</p>
-            <input v-model = "password" type="password"/>
-            <p>CONFIRM PASSWORD</p>
-            <input v-model = "password_confirm" type="password"/>
-            <button @click.prevent = "check_register_form">REGISTER</button>
-        </form>
-        <ul class = "no-dots" v-if = "error_form">
-            <li v-for = "(error, index) in error_list" :key = "index">{{error}}</li>
-        </ul>
+        <div class="contenedor_HOME">
+            <div class="Texto_presentacion">
+                <form @change = "clear">
+                    <p>USERNAME</p>
+                    <input v-model = "username" type="text"/>
+                    <p>PASSWORD</p>
+                    <input v-model = "password" type="password"/>
+                    <p>CONFIRM PASSWORD</p>
+                    <input v-model = "password_confirm" type="password"/>
+                    <button @click.prevent = "check_register_form">REGISTER</button>
+                </form>
+            </div>
+            <ul class = "no-dots" v-if = "error_form">
+                 <li v-for = "(error, index) in error_list" :key = "index">{{error}}</li>
+            </ul>
+        </div>
 
         <div v-if = "error">
             {{errorText}}
