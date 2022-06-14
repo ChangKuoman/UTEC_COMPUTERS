@@ -10,6 +10,7 @@
                     <button @click.prevent = "error.clear(); check_form_login()">LOGIN</button>
                 </form>
             </div>
+
         </div>
         <ul class = "no-dots" v-if = "error">
             <li v-for = "(error, index) in error.list" :key = "index">{{error}}</li>
@@ -90,3 +91,12 @@ export default {
   }
 }
 </script>
+
+
+<style scoped>
+    input{
+        border-style:groove;
+        border-radius: 2px 2px;
+    }
+
+</style>

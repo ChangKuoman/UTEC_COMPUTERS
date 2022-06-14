@@ -12,11 +12,18 @@
                     <input v-model = "password_confirm" type="password"/>
                     <button @click.prevent = "error.clear(); check_register_form()">REGISTER</button>
                 </form>
+                <ul class = "no-dots" v-if = "error_form">
+                    <li v-for = "(error, index) in error_list" :key = "index">{{error}}</li>
+                </ul>
+                <div v-if = "error">
+                    {{errorText}}
+                </div>
             </div>
             <ul class = "no-dots" v-if = "error.show">
                  <li v-for = "(error, index) in error.list" :key = "index">{{error}}</li>
             </ul>
         </div>
+
         <FooterComponent/>
     </div>
 </template>
