@@ -11,14 +11,22 @@
       <!--BOX-EMPRESA_NAME-->
       <div class="box_EMPRESA_NAME">
         <router-link to="/">
-          <h1><a>UTEC COMPUTERS</a></h1>
+          <h1 class="milky">UTEC COMPUTERS</h1>
         </router-link>
       </div>
 
       <!--CONTENEDOR_BOTONES-->
       <div class="CONTENEDOR_BOTONES">
-        <router-link v-if = "data_session.login" to="/login">Login</router-link>
-        <router-link v-if = "data_session.register" to="/register">Register</router-link>
+        <div class="box_boton">
+          <router-link class="h_1" v-if = "data_session.login" to="/login">LOGIN</router-link>
+        </div>
+        <div class="box_boton">
+          <router-link class="h_1" v-if = "data_session.register" to="/register">REGISTER</router-link>
+        </div>
+        <div>
+          
+        </div>
+  
         <router-link v-if = "data_session.admin" to="/admin">Admin</router-link>
         <button @click.prevent = "logout_session" v-if = "data_session.logout">Logout</button>
         <router-link v-if = "data_session.simulator" to="/simulator">Simulate!</router-link>
@@ -109,7 +117,7 @@ export default {
     flex-direction: row;
 
     align-items: center;
-    background-color: rgb(225, 248, 255);
+    background: linear-gradient(to bottom,  rgb(255, 255, 255) 0%,rgb(249, 254, 255) 100%);
   }
   .header:hover{
     box-shadow: 0 12px 16px 0 rgba(104, 169, 255, 0.24), 0 17px 50px 0 rgba(153, 135, 255, 0.19);
@@ -148,8 +156,46 @@ export default {
 
     text-decoration: none;
     text-align:center;
-    font-size:50px;
-    margin:20px 0 20px 0;
+  }
+  .milky {
+    font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;;
+    text-transform: uppercase;
+    display: block;
+    font-size: 50px;
+    color: #585756;
+    text-shadow: 0 8px 9px #c4b59d, 0px -2px 1px #fff;
+    font-weight: bold;
+    letter-spacing: -4px;
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 20px;
+  }
+
+  .box_boton{
+    width: 10%;
+    min-width: 100px;
+    display: inline-block;
+
+    border-radius: 5px 5px;
+    border: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 1%;
+    margin-right: 1%;
+    padding: 1%;
+
+    background: rgba(34, 132, 139, 0.932);
+
+    text-decoration: none;
+    text-align: center;
+  }
+  .box_boton:hover{
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  }
+  .h_1{
+    color: aliceblue;
+    font-size: 15px;
+    font-weight: 700;
   }
 
   .CONTENEDOR_BOTONES{
@@ -191,6 +237,24 @@ export default {
 
     background: #fffffffd;
     color: #333;
+  }
+
+  .box_boton2{
+    min-width: 100px;
+    display: inline-block;
+
+    border-radius: 5px 5px;
+    border: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 1%;
+    margin-right: 1%;
+    padding: 5px 2px 5px 2px;
+
+    background: rgba(43, 44, 44, 0.932);
+
+    text-decoration: none;
+    text-align: center;
   }
 
 </style>

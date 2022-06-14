@@ -9,13 +9,10 @@
                     <input v-model = "password" type="password"/>
                     <button @click.prevent = "login">LOGIN</button>
                 </form>
-            </div>
-            
-        </div>
-
-
-        <div v-if = "wentWrong">
-            Username is not valid or password is wrong
+                <div v-if = "wentWrong">
+                    Username is not valid or password is wrong
+                </div>
+            </div>       
         </div>
         <FooterComponent/>
     </div>
@@ -79,3 +76,12 @@ export default {
   }
 }
 </script>
+
+
+<style scoped>
+    input{
+        border-style:groove;
+        border-radius: 2px 2px;
+    }
+
+</style>
