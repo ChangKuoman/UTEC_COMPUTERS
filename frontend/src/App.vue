@@ -25,12 +25,13 @@
           <router-link class="h_1" v-if = "!data_session.logged" to="/register">REGISTER</router-link>
         </div>
         <div>
-          
+
         </div>
-  
+
         <router-link v-if = "data_session.admin" to="/admin">Admin</router-link>
         <button @click.prevent = "logout_session" v-if = "data_session.logged">Logout</button>
         <router-link v-if = "data_session.logged" to="/simulator">Simulate!</router-link>
+        <router-link v-if = "data_session.logged" to="/profile">Profile</router-link>
       </div>
 
     </nav>

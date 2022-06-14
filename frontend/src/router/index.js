@@ -6,6 +6,7 @@ import HomeView from '../views/HomeView.vue'
 import SimulatorView from '../views/SimulatorView.vue'
 import ErrorView from '../views/ErrorView.vue'
 import SimulationView from '../views/SimulationView.vue'
+import ProfileView from '../views/ProfileView.vue'
 
 const routes = [
   {
@@ -43,6 +44,11 @@ const routes = [
     name: 'simulation',
     component: SimulationView,
     props: route => ({ id: parseInt(route.params.id) })
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfileView
   },
 ]
 
