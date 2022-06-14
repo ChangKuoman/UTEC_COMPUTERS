@@ -2,13 +2,17 @@
     <div>
         <div>
             <h2>Change password</h2>
-            <div>
+            <form @change = "error.clear">
                 <p>Old password</p>
-                <input type = "password"/>
+                <input v-model = "old_password" type = "password"/>
                 <p>New password</p>
-                <input type = "password"/>
-                <p v-show = "password.length" :style = "password_color"><b>{{password_strength}}</b></p>
-            </div>
+                <input v-model = "new_password" type = "password"/>
+                <p v-show = "new_password.length" :style = "password_color"><b>{{password_strength}}</b></p>
+                <button @click.prevent = "error.clear(); check_change_form()">Change password</button>
+            </form>
+            <ul class = "no-dots" v-if = "error.show">
+                <li v-for = "(error, index) in error.list" :key = "index">{{error}}</li>
+            </ul>
         </div>
         <div>
             <h2>See previous simulations</h2>
@@ -18,37 +22,94 @@
 
 <script>
 export default {
-  computed: {
-    password_strength: function() {
-        const strong = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[.,\-_+&$#@()*"':;!?])(?=.{8,})/
-        const medium2 = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[.,\-_+&$#@()*"':;!?])(?=.{6,})/
-        const medium1 = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/
-        if (strong.test(this.password)) {
-            return 'Strong password'
+    data () {
+        return {
+            old_password: '',
+            new_password: '',
+            error: {
+                show: false,
+                list: [],
+                clear: () => {
+                    this.error.show = false
+                    this.error.list = []
+                }
+            }
         }
-        if (medium2.test(this.password)) {
-            return 'Medium password'
-        }
-        if (medium1.test(this.password)) {
-            return 'Weak password'
-        }
-        return 'Very weak password'
     },
-    password_color: function() {
-        if (this.password_strength === 'Strong password') {
-            return {color: "#FF0000"}
+    methods: {
+        check_change_form () {
+            if (this.old_password === '') {
+                this.error.list.push('Fill your old password')
+            }
+            if (this.new_password === '') {
+                this.error.list.push('Fill your new password')
+            }
+            else if (this.old_password === this.new_password) {
+                this.error.list.push('You cannot put the same password to change')
+            }
+            else if (this.password_strength !== 'Strong password') {
+                this.error.list.push('Password must be strong')
+            }
+            if (this.error.list.length) {
+                this.error.show = true
+            }
+            if (this.error.show === false) {
+                this.changePassword()
+            }
+        },
+        changePassword () {
+            if (this.password_strength === 'Strong password'){
+                fetch('http://127.0.0.1:5000/users/' + this.$root.user_info.id, {
+                    method: "PATCH",
+                    body: JSON.stringify({
+                        'old_password': this.old_password,
+                        'new_password': this.new_password
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(JsonResponse => {
+                    console.log(JsonResponse)
+                })
+                .catch(() => {
+                    console.log('error js')
+                })
+            }
         }
-        if (this.password_strength === 'Medium password') {
-            return {color: "#FFA500"}
+    },
+    computed: {
+        password_strength: function() {
+            const strong = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[.,\-_+&$#@()*"':;!?])(?=.{8,})/
+            const medium2 = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[.,\-_+&$#@()*"':;!?])(?=.{6,})/
+            const medium1 = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/
+            if (strong.test(this.new_password)) {
+                return 'Strong password'
+            }
+            if (medium2.test(this.new_password)) {
+                return 'Medium password'
+            }
+            if (medium1.test(this.new_password)) {
+                return 'Weak password'
+            }
+            return 'Very weak password'
+        },
+        password_color: function() {
+            if (this.password_strength === 'Strong password') {
+                return {color: "#FF0000"}
+            }
+            if (this.password_strength === 'Medium password') {
+                return {color: "#FFA500"}
+            }
+            if (this.password_strength === 'Weak password') {
+                return {color: "#FFCD01"}
+            }
+            if (this.password_strength === 'Very weak password') {
+                return {color: "#008000"}
+            }
+            return {color: "#000000"}
         }
-        if (this.password_strength === 'Weak password') {
-            return {color: "#FFCD01"}
-        }
-        if (this.password_strength === 'Very weak password') {
-            return {color: "#008000"}
-        }
-        return {color: "#000000"}
-    }
-  },
+    },
 }
 </script>

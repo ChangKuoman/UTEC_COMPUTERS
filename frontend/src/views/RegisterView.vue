@@ -12,16 +12,10 @@
                     <input v-model = "password_confirm" type="password"/>
                     <button @click.prevent = "error.clear(); check_register_form()">REGISTER</button>
                 </form>
-                <ul class = "no-dots" v-if = "error_form">
-                    <li v-for = "(error, index) in error_list" :key = "index">{{error}}</li>
+                <ul class = "no-dots" v-if = "error.show">
+                    <li v-for = "(error, index) in error.list" :key = "index">{{error}}</li>
                 </ul>
-                <div v-if = "error">
-                    {{errorText}}
-                </div>
             </div>
-            <ul class = "no-dots" v-if = "error.show">
-                 <li v-for = "(error, index) in error.list" :key = "index">{{error}}</li>
-            </ul>
         </div>
 
         <FooterComponent/>
@@ -90,8 +84,8 @@ export default {
         else if (this.password !== this.password_confirm) {
             this.error.list.push('Passwords do not match')
         }
-        else if (this.check_difficulty() === false) {
-            this.error.list.push('Password is too weak: it needs a digit, be mixed case and a length of 6 or more')
+        else if (this.password_strength !== 'Strong password') {
+            this.error.list.push('Password must be strong')
         }
         if (this.error.list.length) {
             this.error.show = true
@@ -99,10 +93,6 @@ export default {
         if (this.error.show === false) {
             this.register()
         }
-    },
-    check_difficulty() {
-        const re = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[.,-_+&$#@()*"':;!?])/
-        return re.test(this.password)
     },
     register () {
         fetch('http://127.0.0.1:5000/users', {

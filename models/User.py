@@ -40,7 +40,10 @@ class User(db.Model, UserMixin):
 
     def change_password(self, password, new_password):
         if self.check_password(password):
-            self.password = new_password
+            self.password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+            return True
+        else:
+            return False
 
 
     def delete(self):

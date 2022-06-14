@@ -66,6 +66,7 @@ def create_user():
 @api.route('/users/<id>', methods=['PATCH'])
 def update_User(id):
     error_404 = False
+    error_422 = False
     try:
         user = User.query.filter(User.id==id).one_or_none()
 
@@ -74,8 +75,16 @@ def update_User(id):
             abort(404)
 
         body = request.get_json()
-        if 'description' in body:
-            User.description = body.get('description')
+        old_password = body.get('old_password', None)
+        new_password = body.get('new_password', None)
+
+        if old_password is None or new_password is None:
+            abort(422)
+
+        value = user.change_password(old_password, new_password)
+        if value == False:
+            error_422 = True
+            abort(422)
 
         user.update()
 
@@ -83,10 +92,13 @@ def update_User(id):
             'success': True,
             'id': user.id
         })
+
     except Exception as e:
         print(e)
         if error_404:
             abort(404)
+        elif error_422:
+            abort(422)
         else:
             abort(500)
 

@@ -93,7 +93,7 @@ export default {
     margin: 0%;
     height: auto;
 
-    background-image: url(@/assets/img/fondo.jpg);
+    /*background-image: url(@/assets/img/fondo.jpg);*/
     background-size: cover;
     }
   .header{
