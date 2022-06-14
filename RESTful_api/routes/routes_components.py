@@ -29,6 +29,23 @@ def create_component():
     price = body.get('price', None)
     create_by = body.get('create_by', None)
 
+    search = body.get('search', None)
+    components = body.get('components', None)
+
+    if search:
+        selection = []
+        for value_searched in components:
+            selection += Component.query.order_by('id').filter(Component.component_type == value_searched).all()
+        list_components = {list.id: list.format() for list in selection}
+        if len(selection) == 0:
+            abort(404)
+
+        return jsonify({
+            'success': True,
+            'components': list_components,
+            'total_components': len(selection)
+        })
+
     if description is None or name is None or component_type is None or price is None or create_by is None:
         abort(422)
 

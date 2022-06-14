@@ -5,6 +5,7 @@ import AdminView from '../views/AdminView.vue'
 import HomeView from '../views/HomeView.vue'
 import SimulatorView from '../views/SimulatorView.vue'
 import ErrorView from '../views/ErrorView.vue'
+import SimulationView from '../views/SimulationView.vue'
 
 const routes = [
   {
@@ -36,7 +37,13 @@ const routes = [
     path: '/:pathMatch(.*)*',
     name: 'errorPage',
     component: ErrorView
-  }
+  },
+  {
+    path: '/simulation/:id',
+    name: 'simulation',
+    component: SimulationView,
+    props: route => ({ id: parseInt(route.params.id) })
+  },
 ]
 
 const router = createRouter({

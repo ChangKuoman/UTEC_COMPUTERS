@@ -1,6 +1,39 @@
-from flask import abort, jsonify
+from flask import abort, jsonify, request
 from models.Simulation import Simulation
+from models.SimulationComponent import SimulationComponent
 from RESTful_api.routes.__init__ import api
+
+
+@api.route('/simulations', methods=['POST'])
+def post_simulations():
+    body = request.get_json()
+
+    id_motherboard = body.get('id_motherboard', None)
+    total_price = body.get('total_price', None)
+    create_by = body.get('create_by', None)
+    components_id = body.get('components_id', None)
+
+    if id_motherboard is None or total_price is None or create_by is None:
+        abort(422)
+
+    simulation = Simulation(id_motherboard=id_motherboard, total_price=total_price, create_by=create_by)
+    new_simulation_id = simulation.insert()
+
+    if new_simulation_id is None:
+        abort(422)
+
+    for id in components_id:
+        simulation_component = SimulationComponent(id_simulation=new_simulation_id, id_component=id)
+        simulation_component.insert()
+
+    simulations_list = Simulation.query.order_by('id').all()
+    simulations_dictionary = {simulation.id: simulation.format() for simulation in simulations_list}
+    return jsonify({
+        'success': True,
+        'created_id': new_simulation_id,
+        'simulations': simulations_dictionary,
+        'total_simulations': len(simulations_list)
+    })
 
 
 @api.route('/simulations', methods=['GET'])
@@ -27,10 +60,10 @@ def get_simulation(id):
 
     simulations_list = Simulation.query.order_by('id').all()
 
-    simulation_dictionary = {simulation.id: simulation.format()}
+    simulation_dictionary = simulation.format()
     return jsonify({
         'success': True,
-        'simulations': simulation_dictionary,
+        'simulation': simulation_dictionary,
         'total_simulations': len(simulations_list)
     })
 
@@ -44,7 +77,7 @@ def delete_simulation(id):
         if simulation_to_delete is None:
             error_404 = True
             abort(404)
-        
+
         simulation_to_delete.delete()
 
         simulations_list = Simulation.query.order_by('id').all()
