@@ -60,6 +60,7 @@ class MotherBoard(db.Model):
             self.modify_by = modify_by
             self.date_modified = func.now()
             db.session.commit()
+            return self.id
         except:
             db.session.rollback()
         finally:

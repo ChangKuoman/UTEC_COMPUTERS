@@ -99,9 +99,6 @@ def post_motherboard():
             abort(500)
 
 
-
-
-
 @api.route('/motherboards/<id>', methods=['PATCH'])
 def patch_motherboard(id):
     error_404 = False
@@ -126,7 +123,10 @@ def patch_motherboard(id):
             motherboard_to_patch.description = body.get('name')
 
         modify_by = body.get('modify_by')
-        motherboard_to_patch.update(modify_by)
+        updated_id = motherboard_to_patch.update(modify_by)
+        if updated_id is None:
+            error_422 = True
+            abort(422)
 
         motherboards_list = MotherBoard.query.order_by('id').all()
         motherboards_dictionary = {motherboard.id: motherboard.format() for motherboard in motherboards_list}

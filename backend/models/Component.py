@@ -57,9 +57,12 @@ class Component(db.Model):
             db.session.close()
 
 
-    def update(self):
+    def update(self, modify_by):
         try:
+            self.modify_by = modify_by
+            self.date_modified = func.now()
             db.session.commit()
+            return self.id
         except:
             db.session.rollback()
         finally:

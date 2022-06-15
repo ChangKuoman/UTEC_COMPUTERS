@@ -57,7 +57,6 @@ def create_component():
         create_by=create_by
     )
     new_component_id = component.insert()
-    print(new_component_id)
     if new_component_id is None:
         abort(422)
 
@@ -66,7 +65,7 @@ def create_component():
 
     return jsonify({
         'success': True,
-        'created': new_component_id,
+        'created_id': new_component_id,
         'components': list_components,
         'total_components': len(selection)
     })
@@ -75,33 +74,56 @@ def create_component():
 @api.route('/components/<id>', methods=['PATCH'])
 def update_component(id):
     error_404 = False
+    error_422 = False
     try:
-        component = Component.query.filter(Component.id==id).one_or_none()
+        component_to_patch = Component.query.filter(Component.id==id).one_or_none()
 
-        if component is None:
+        if component_to_patch is None:
             error_404 = True
             abort(404)
 
         body = request.get_json()
+
+        if 'modify_by' not in body:
+            error_422 = True
+            abort(422)
+
+        body = request.get_json()
         if 'description' in body:
-            component.description = body.get('description')
+            component_to_patch.description = body.get('description')
+        if 'price' in body:
+            component_to_patch.price = body.get('price')
+        if 'type' in body:
+            component_to_patch.component_type = body.get('type')
+        if 'name' in body:
+            component_to_patch.name = body.get('name')
 
-        component.update()
+        modify_by = body.get('modify_by')
+        updated_id = component_to_patch.update(modify_by)
+        if updated_id is None:
+            error_422 = True
+            abort(422)
 
+        components_list = Component.query.order_by('id').all()
+        components_dictionary = {component.id: component.format() for component in components_list}
         return jsonify({
             'success': True,
-            'id': component.id
+            'updated_id': id,
+            'components': components_dictionary,
+            'total_components': len(components_list)
         })
     except Exception as e:
         print(e)
         if error_404:
             abort(404)
+        if error_422:
+            abort(422)
         else:
             abort(500)
 
 
 @api.route('/components/<id>', methods=['DELETE'])
-def delete_componet(id):
+def delete_component(id):
     error_404 = False
     try:
         components = Component.query.filter(Component.id==id).one_or_none()
@@ -117,9 +139,9 @@ def delete_componet(id):
 
         return jsonify({
             'success': True,
-            'deleted_ID': id,
+            'deleted_id': id,
             'components': lists_component,
-            'total_componets': len(selection)
+            'total_components': len(selection)
         })
 
     except Exception as e:
@@ -128,3 +150,19 @@ def delete_componet(id):
             abort(404)
         else:
             abort(500)
+
+
+@api.route('/components/<id>', methods=['GET'])
+def get_component(id):
+    component = Component.query.filter(Component.id==id).one_or_none()
+
+    if component is None:
+        abort(404)
+
+    component_dictionary = component.format()
+    components_list = Component.query.order_by('id').all()
+    return jsonify({
+        'success': True,
+        'component': component_dictionary,
+        'total_components': len(components_list)
+    })
