@@ -145,11 +145,7 @@ export default {
         })
         // TODO: get components (must be able to be compatible - generar un search ://)
         fetch('http://127.0.0.1:5000/components', {
-            method: 'POST',
-            body: JSON.stringify({
-                'search': true,
-                'components': ['RAM', 'SSD', 'GPU', 'PC Cooling']
-            }),
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -158,7 +154,14 @@ export default {
         .then(JsonResponse => {
             console.log(JsonResponse)
             if (JsonResponse['success'] === true){
-                this.resources.component_list = JsonResponse['components']
+                const components_array = Object.values(JsonResponse['components'])
+                this.resources.component_list = [
+                    ...components_array.filter(component => component.component_type === "RAM"),
+                    ...components_array.filter(component => component.component_type === "SSD"),
+                    ...components_array.filter(component => component.component_type === "GPU"),
+                    ...components_array.filter(component => component.component_type === "PC Cooling")
+                ]
+                console.log(this.resources.component_list)
             }
             else {
                 console.log("error servidor")

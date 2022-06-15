@@ -133,7 +133,7 @@ class TestCaseUsers(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data['success'])
-        self.assertTrue(data['id'])
+        self.assertTrue(data['updated_id'])
 
 
     def test_patch_user_fail(self):

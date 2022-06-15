@@ -2,8 +2,6 @@ from flask import abort, jsonify, request
 from models.User import User
 from server.routes.__init__ import api
 
-from sqlalchemy import inspect
-
 
 @api.route('/users', methods=['GET'])
 def get_users():
@@ -12,68 +10,66 @@ def get_users():
     if len(selection_users) == 0:
         abort(404)
 
-    lists_users = {list.id: list.format() for list in selection_users}
-
+    dictionary_users = {user.id: user.format() for user in selection_users}
     return jsonify({
         'success': True,
-        'users': lists_users,
+        'users': dictionary_users,
         'total_users': len(selection_users)
     })
 
 
-@api.route('/users', methods=['POST'])
-def create_user():
-    body = request.get_json()
+@api.route('/users/<id>', methods=['GET'])
+def get_user(id):
+    user = User.query.filter(User.id==id).one_or_none()
 
-    username = body.get('username', None)
-    password = body.get('password', None)
-    role = body.get('role', None)
-    login = body.get('login', None)
-    if login:
-        user = User.query.filter(User.username==username).one_or_none()
-        if user is None:
-            abort(404)
-        if not user.check_password(password):
-            abort(422)
+    if user is None:
+        abort(404)
 
-        key = user.generate_key()
-        return jsonify({
-            'success': True,
-            'user': user.format(),
-            'token': key
-        })
-
-    if username is None or password is None:
-        abort(422)
-
-    if role is None:
-        user = User(username=username, password=password)
-    else:
-        user = User(username=username, password=password, role=role)
-
-    new_user_id = user.insert()
-    if new_user_id is None:
-        abort(422)
-
-    selection = User.query.order_by('id').all()
-    list_Users = {list.id: list.format() for list in selection}
-
+    dictionary_user = user.format()
+    selection_users = User.query.order_by('id').all()
     return jsonify({
         'success': True,
-        'created_id': new_user_id,
-        'users': list_Users,
-        'total_users': len(selection)
+        'users': dictionary_user,
+        'total_users': len(selection_users)
     })
 
 
+@api.route('/users/<id>', methods=['DELETE'])
+def delete_user(id):
+    error_404 = False
+    try:
+        user_to_delete = User.query.filter(User.id==id).one_or_none()
+
+        if user_to_delete is None:
+            error_404 = True
+            abort(404)
+
+        user_to_delete.delete()
+
+        selection_users = User.query.order_by('id').all()
+        lists_users = {user.id: user.format() for user in selection_users}
+        return jsonify({
+            'success': True,
+            'deleted_id': id,
+            'users': lists_users,
+            'total_users': len(selection_users)
+        })
+    except Exception as e:
+        print(e)
+        if error_404:
+            abort(404)
+        else:
+            abort(500)
+
+
 @api.route('/users/<id>', methods=['PATCH'])
-def update_User(id):
+def patch_user(id):
     error_404 = False
     error_422 = False
     try:
-        user = User.query.filter(User.id==id).one_or_none()
+        user_to_patch = User.query.filter(User.id==id).one_or_none()
 
-        if user is None:
+        if user_to_patch is None:
             error_404 = True
             abort(404)
 
@@ -85,19 +81,21 @@ def update_User(id):
             error_422 = True
             abort(422)
 
-        if not user.check_password(old_password):
+        if not user_to_patch.check_password(old_password):
             error_422 = True
             abort(422)
 
-        user.change_password(new_password)
+        user_to_patch.change_password(new_password)
+        user_to_patch.update()
 
-        user_id = user.update()
-
+        selection_users = User.query.order_by('id').all()
+        dictionary_users = {user.id: user.format() for user in selection_users}
         return jsonify({
             'success': True,
-            'id': user_id
+            'updated_id': id,
+            'users': dictionary_users,
+            'total_users': len(selection_users)
         })
-
     except Exception as e:
         print(e)
         if error_404:
@@ -108,31 +106,60 @@ def update_User(id):
             abort(500)
 
 
-@api.route('/users/<id>', methods=['DELETE'])
-def delete_user(id):
+@api.route('/users', methods=['POST'])
+def post_user():
     error_404 = False
+    error_422 = False
     try:
-        user = User.query.filter(User.id==id).one_or_none()
+        body = request.get_json()
 
-        if user is None:
-            error_404 = True
-            abort(404)
+        username = body.get('username', None)
+        password = body.get('password', None)
+        role = body.get('role', None)
 
-        user.delete()
+        login = body.get('login', None)
+        if login:
+            user = User.query.filter(User.username==username).one_or_none()
+            if user is None:
+                error_404 = True
+                abort(404)
+            if not user.check_password(password):
+                error_422 = True
+                abort(422)
 
-        selection = User.query.order_by('id').all()
-        lists_Users = {list.id: list.format() for list in selection}
+            key = user.generate_key()
+            return jsonify({
+                'success': True,
+                'user': user.format(),
+                'token': key
+            })
 
+        if username is None or password is None:
+            error_422 = True
+            abort(422)
+
+        if role is None:
+            new_user = User(username=username, password=password)
+        else:
+            new_user = User(username=username, password=password, role=role)
+
+        new_user_id = new_user.insert()
+        if new_user_id is None:
+            error_422 = True
+            abort(422)
+
+        selection_users = User.query.order_by('id').all()
+        dictionary_users = {user.id: user.format() for user in selection_users}
         return jsonify({
             'success': True,
-            'deleted_id': id,
-            'users': lists_Users,
-            'total_users': len(selection)
+            'created_id': new_user_id,
+            'users': dictionary_users,
+            'total_users': len(selection_users)
         })
-
-    except Exception as e:
-        print(e)
+    except:
         if error_404:
             abort(404)
+        elif error_422:
+            abort(422)
         else:
             abort(500)

@@ -66,7 +66,6 @@ class User(db.Model, UserMixin):
     def update(self):
         try:
             db.session.commit()
-            return self.id
         except:
             db.session.rollback()
         finally:
