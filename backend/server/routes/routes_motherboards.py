@@ -1,6 +1,6 @@
 from flask import abort, jsonify, request
 from models.MotherBoard import MotherBoard
-from RESTful_api.routes.__init__ import api
+from server.routes.__init__ import api
 
 
 @api.route('/motherboards', methods=['GET'])
@@ -25,11 +25,11 @@ def get_motherboard(id):
     if motherboard is None:
         abort(404)
 
-    motherboard_dictionary = {motherboard.id: motherboard.format()}
+    motherboard_dictionary = motherboard.format()
     motherboards_list = MotherBoard.query.order_by('id').all()
     return jsonify({
         'success': True,
-        'motherboards': motherboard_dictionary,
+        'motherboard': motherboard_dictionary,
         'total_motherboards': len(motherboards_list)
     })
 
@@ -75,6 +75,7 @@ def post_motherboard():
         create_by = body.get('create_by', None)
 
         if price is None or name is None or description is None or create_by is None:
+            error_422 = True
             abort(422)
 
         new_motherboard = MotherBoard(price=price, name=name, description=description, create_by=create_by)

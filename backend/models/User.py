@@ -13,11 +13,11 @@ class User(db.Model, UserMixin):
     date_created = db.Column(db.DateTime, nullable=False, server_default=func.now())
 
 
-    def __init__(self, username, password):
+    def __init__(self, username, password, role='user'):
         hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         self.password = hashed
         self.username = username
-
+        self.role = role
 
     def format(self):
         return {
@@ -38,12 +38,8 @@ class User(db.Model, UserMixin):
         return uuid4()
 
 
-    def change_password(self, password, new_password):
-        if self.check_password(password):
-            self.password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-            return True
-        else:
-            return False
+    def change_password(self, new_password):
+        self.password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
 
     def delete(self):
@@ -70,6 +66,7 @@ class User(db.Model, UserMixin):
     def update(self):
         try:
             db.session.commit()
+            return self.id
         except:
             db.session.rollback()
         finally:

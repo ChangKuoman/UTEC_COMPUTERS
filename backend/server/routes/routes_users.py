@@ -1,6 +1,8 @@
 from flask import abort, jsonify, request
 from models.User import User
-from RESTful_api.routes.__init__ import api
+from server.routes.__init__ import api
+
+from sqlalchemy import inspect
 
 
 @api.route('/users', methods=['GET'])
@@ -25,7 +27,7 @@ def create_user():
 
     username = body.get('username', None)
     password = body.get('password', None)
-    password_confirm = body.get('password_confirm', None)
+    role = body.get('role', None)
     login = body.get('login', None)
     if login:
         user = User.query.filter(User.username==username).one_or_none()
@@ -41,13 +43,14 @@ def create_user():
             'token': key
         })
 
-    if username is None or password is None or password_confirm is None:
+    if username is None or password is None:
         abort(422)
 
-    if password != password_confirm:
-        abort(422)
+    if role is None:
+        user = User(username=username, password=password)
+    else:
+        user = User(username=username, password=password, role=role)
 
-    user = User(username=username, password=password)
     new_user_id = user.insert()
     if new_user_id is None:
         abort(422)
@@ -57,9 +60,9 @@ def create_user():
 
     return jsonify({
         'success': True,
-        'created': new_user_id,
-        'Users': list_Users,
-        'total_Users': len(selection)
+        'created_id': new_user_id,
+        'users': list_Users,
+        'total_users': len(selection)
     })
 
 
@@ -79,18 +82,20 @@ def update_User(id):
         new_password = body.get('new_password', None)
 
         if old_password is None or new_password is None:
-            abort(422)
-
-        value = user.change_password(old_password, new_password)
-        if value == False:
             error_422 = True
             abort(422)
 
-        user.update()
+        if not user.check_password(old_password):
+            error_422 = True
+            abort(422)
+
+        user.change_password(new_password)
+
+        user_id = user.update()
 
         return jsonify({
             'success': True,
-            'id': user.id
+            'id': user_id
         })
 
     except Exception as e:
@@ -120,8 +125,8 @@ def delete_user(id):
 
         return jsonify({
             'success': True,
-            'deleted_ID': id,
-            'Users': lists_Users,
+            'deleted_id': id,
+            'users': lists_Users,
             'total_users': len(selection)
         })
 

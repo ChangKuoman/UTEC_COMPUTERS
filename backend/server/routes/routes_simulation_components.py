@@ -1,6 +1,6 @@
 from flask import abort, jsonify, request
 from models.SimulationComponent import SimulationComponent
-from RESTful_api.routes.__init__ import api
+from server.routes.__init__ import api
 
 
 @api.route('/simulationComponents', methods=['GET'])

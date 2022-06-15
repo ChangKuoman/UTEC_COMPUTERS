@@ -99,8 +99,7 @@ export default {
             method: 'POST',
             body: JSON.stringify({
                 'username': this.username,
-                'password': this.password,
-                'password_confirm': this.password_confirm
+                'password': this.password
             }),
             headers: {
                 'Content-Type': 'application/json'
