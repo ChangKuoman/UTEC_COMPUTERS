@@ -12,6 +12,14 @@ class Compatible(db.Model):
     create_by = db.Column(db.Integer, ForeignKey('userinfo.id'), nullable=False)
 
 
+    def format(self):
+        return {
+            "id": self.id,
+            "id_motherboard": self.id_motherboard,
+            "id_component": self.id_component
+        }
+
+
     def delete(self):
         try:
             db.session.delete(self)

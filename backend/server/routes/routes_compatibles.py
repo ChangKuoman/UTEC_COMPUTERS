@@ -13,8 +13,8 @@ def get_compatibles():
     dictionary_compatibles = {compatible.id: compatible.format() for compatible in selection_compatibles}
     return jsonify({
         'success': True,
-        'components': dictionary_compatibles,
-        'total_components': len(selection_compatibles)
+        'compatibles': dictionary_compatibles,
+        'total_compatibles': len(selection_compatibles)
     })
 
 
@@ -29,8 +29,8 @@ def get_compatible(id):
     selection_compatibles = Compatible.query.order_by('id').all()
     return jsonify({
         'success': True,
-        'components': dictionary_compatible,
-        'total_components': len(selection_compatibles)
+        'compatible': dictionary_compatible,
+        'total_compatibles': len(selection_compatibles)
     })
 
 
@@ -78,7 +78,7 @@ def post_compatible():
 
         new_compatible = Compatible(create_by=create_by, id_component=id_component, id_motherboard=id_motherboard)
         new_compatible_id = new_compatible.insert()
-        if new_compatible is None:
+        if new_compatible_id is None:
             error_422 = True
             abort(422)
 
