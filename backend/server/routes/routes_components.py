@@ -47,11 +47,11 @@ def delete_component(id):
         component_to_delete.delete()
 
         selection_components = component_to_delete.query.order_by('id').all()
-        lists_components = {component.id: component.format() for component in selection_components}
+        dictionary_components = {component.id: component.format() for component in selection_components}
         return jsonify({
             'success': True,
             'deleted_id': id,
-            'components': lists_components,
+            'components': dictionary_components,
             'total_components': len(selection_components)
         })
     except Exception as e:

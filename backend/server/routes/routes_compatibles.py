@@ -5,74 +5,54 @@ from server.routes.__init__ import api
 
 @api.route('/compatibles', methods=['GET'])
 def get_compatibles():
-    selection_compatible = Compatible.query.order_by('id').all()
+    selection_compatibles = Compatible.query.order_by('id').all()
 
-    if len(selection_compatible) == 0:
+    if len(selection_compatibles) == 0:
         abort(404)
 
-    lists_compatible = {list.id: list.format() for list in selection_compatible}
-
+    dictionary_compatibles = {compatible.id: compatible.format() for compatible in selection_compatibles}
     return jsonify({
         'success': True,
-        'components': lists_compatible,
-        'total_components': len(selection_compatible)
+        'components': dictionary_compatibles,
+        'total_components': len(selection_compatibles)
     })
 
 
-@api.route('/compatibles', methods=['POST'])
-def create_Compatible():
-    body = request.get_json()
+@api.route('/compatibles/<id>', methods=['GET'])
+def get_compatible(id):
+    compatible = Compatible.query.filter(Compatible.id==id).one_or_none()
 
-    description = body.get('description', None)
-    completed = body.get('completed', None)
-    list_id = body.get('list_id', None)
-    search = body.get('search', None)
+    if compatible is None:
+        abort(404)
 
-    if search:
-        selection = Compatible.query.order_by('id').filter(Compatible.description.like(f'%{search}%')).all()
-        list_Compatible = {list.id: list.format() for list in selection}
-        return jsonify({
-            'success': True,
-            'Compatibles': list_Compatible,
-            'total_Compatibles': len(selection)
-        })
-
-    if description is None or list_id is None:
-        abort(422)
-
-    compatible = Compatible(description=description, completed=completed, list_id=list_id)
-    new_compatible_id = compatible.insert()
-
-    selection = Compatible.query.order_by('id').all()
-    list_Compatible = {list.id: list.format() for list in selection}
-
+    dictionary_compatible = compatible.format()
+    selection_compatibles = Compatible.query.order_by('id').all()
     return jsonify({
         'success': True,
-        'created': new_compatible_id,
-        'Compatibles': list_Compatible,
-        'total_Compatibles': len(selection)
+        'components': dictionary_compatible,
+        'total_components': len(selection_compatibles)
     })
 
 
-@api.route('/compatibles/<id>', methods=['PATCH'])
-def update_compatible(id):
+@api.route('/compatibles/<id>', methods=['DELETE'])
+def delete_compatible(id):
     error_404 = False
     try:
-        compatible = Compatible.query.filter(Compatible.id==id).one_or_none()
+        compatible_to_delete = Compatible.query.filter(Compatible.id==id).one_or_none()
 
-        if compatible is None:
+        if compatible_to_delete is None:
             error_404 = True
             abort(404)
 
-        body = request.get_json()
-        if 'description' in body:
-            Compatible.description = body.get('description')
+        compatible_to_delete.delete()
 
-        compatible.update()
-
+        selection_compatibles = Compatible.query.order_by('id').all()
+        dictionary_compatibles = {compatible.id: compatible.format() for compatible in selection_compatibles}
         return jsonify({
             'success': True,
-            'id': compatible.id
+            'deleted_id': id,
+            'compatibles': dictionary_compatibles,
+            'total_componets': len(selection_compatibles)
         })
     except Exception as e:
         print(e)
@@ -82,31 +62,36 @@ def update_compatible(id):
             abort(500)
 
 
-@api.route('/compatibles/<id>', methods=['DELETE'])
-def delete_compatoble(id):
-    error_404 = False
+@api.route('/compatibles', methods=['POST'])
+def post_compatible():
+    error_422 = False
     try:
-        compatible = Compatible.query.filter(Compatible.id==id).one_or_none()
+        body = request.get_json()
 
-        if compatible is None:
-            error_404 = True
-            abort(404)
+        id_motherboard = body.get('id_motherboard', None)
+        id_component = body.get('id_component', None)
+        create_by = body.get('create_by', None)
 
-        compatible.delete()
+        if create_by is None or id_component is None or id_motherboard is None:
+            error_422 = True
+            abort(422)
 
-        selection = Compatible.query.order_by('id').all()
-        lists_compatible = {list.id: list.format() for list in selection}
+        new_compatible = Compatible(create_by=create_by, id_component=id_component, id_motherboard=id_motherboard)
+        new_compatible_id = new_compatible.insert()
+        if new_compatible is None:
+            error_422 = True
+            abort(422)
 
+        selection_compatibles = Compatible.query.order_by('id').all()
+        dictionary_compatibles = {compatible.id: compatible.format() for compatible in selection_compatibles}
         return jsonify({
             'success': True,
-            'deleted_ID': id,
-            'compatibles': lists_compatible,
-            'total_componets': len(selection)
+            'created_id': new_compatible_id,
+            'compatibles': dictionary_compatibles,
+            'total_compatibles': len(selection_compatibles)
         })
-
-    except Exception as e:
-        print(e)
-        if error_404:
-            abort(404)
+    except:
+        if error_422:
+            abort(422)
         else:
             abort(500)

@@ -47,11 +47,11 @@ def delete_user(id):
         user_to_delete.delete()
 
         selection_users = User.query.order_by('id').all()
-        lists_users = {user.id: user.format() for user in selection_users}
+        dictionary_users = {user.id: user.format() for user in selection_users}
         return jsonify({
             'success': True,
             'deleted_id': id,
-            'users': lists_users,
+            'users': dictionary_users,
             'total_users': len(selection_users)
         })
     except Exception as e:

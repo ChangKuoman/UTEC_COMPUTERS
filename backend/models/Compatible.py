@@ -8,8 +8,9 @@ class Compatible(db.Model):
     id = db.Column(db.Integer, compatible_id_seq, server_default=compatible_id_seq.next_value(), nullable=False)
     id_motherboard = db.Column(db.Integer, ForeignKey('motherboard.id'), primary_key=True)
     id_component = db.Column(db.Integer, ForeignKey('component.id'), primary_key=True)
-    date_created = db.Column(db.DateTime, nullable=False, default=func.now())
-    create_by = db.Column(db.Integer, ForeignKey('userinfo.id'), nullable=False, default=0)
+    date_created = db.Column(db.DateTime, nullable=False, server_default=func.now())
+    create_by = db.Column(db.Integer, ForeignKey('userinfo.id'), nullable=False)
+
 
     def delete(self):
         try:
@@ -20,19 +21,12 @@ class Compatible(db.Model):
         finally:
             db.session.close()
 
+
     def insert(self):
         try:
             db.session.add(self)
             db.session.commit()
             return self.id
-        except:
-            db.session.rollback()
-        finally:
-            db.session.close()
-
-    def update(self):
-        try:
-            db.session.commit()
         except:
             db.session.rollback()
         finally:

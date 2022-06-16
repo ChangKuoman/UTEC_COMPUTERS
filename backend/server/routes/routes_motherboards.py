@@ -47,11 +47,11 @@ def delete_motherboard(id):
         motherboard_to_delete.delete()
 
         selection_motherboards = MotherBoard.query.order_by('id').all()
-        lists_motherboards = {motherboard.id: motherboard.format() for motherboard in selection_motherboards}
+        dictionary_motherboards = {motherboard.id: motherboard.format() for motherboard in selection_motherboards}
         return jsonify({
             'success': True,
             'deleted_id': id,
-            'motherboards': lists_motherboards,
+            'motherboards': dictionary_motherboards,
             'total_motherboards': len(selection_motherboards)
         })
     except Exception as e:

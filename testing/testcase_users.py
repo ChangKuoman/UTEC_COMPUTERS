@@ -24,11 +24,12 @@ class TestCaseUsers(unittest.TestCase):
 
     def test_post_user_success(self):
         new_user = {
-            'username': 'marcoAntonio',
+            'username': 'test-user',
             'password': 'aA.12345'
         }
         res = self.client().post('/users', json=new_user)
         data = json.loads(res.data)
+        self.id = data['created_id']
 
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data['created_id'])
@@ -38,12 +39,13 @@ class TestCaseUsers(unittest.TestCase):
 
     def test_post_admin_success(self):
         new_user = {
-            'username': 'marcoAntonio5',
+            'username': 'test-user',
             'password': 'aA.12345',
             'role': 'admin'
         }
         res = self.client().post('/users', json=new_user)
         data = json.loads(res.data)
+        self.id = data['created_id']
 
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data['created_id'])
@@ -53,10 +55,11 @@ class TestCaseUsers(unittest.TestCase):
 
     def test_post_user_fail(self):
         new_user = {
-            'username': 'Carlitos'
+            'username': 'test-user'
         }
         res = self.client().post('/users', json=new_user)
         data = json.loads(res.data)
+        self.id = None
 
         self.assertEqual(res.status_code, 422)
         self.assertFalse(data['success'])
@@ -66,13 +69,15 @@ class TestCaseUsers(unittest.TestCase):
 
     def test_post_login_success(self):
         new_user = {
-            'username': 'radio',
+            'username': 'test-user',
             'password': 'aA.12345'
         }
-        self.client().post('/users', json=new_user)
+        res_user = self.client().post('/users', json=new_user)
+        data_user = json.loads(res_user.data)
+        self.id = data_user['created_id']
         login_data = {
             'login': True,
-            'username': 'radio',
+            'username': 'test-user',
             'password': 'aA.12345'
         }
         res = self.client().post('/users', json=login_data)
@@ -86,13 +91,15 @@ class TestCaseUsers(unittest.TestCase):
 
     def test_post_login_fail(self):
         new_user = {
-            'username': 'comida',
+            'username': 'test-user',
             'password': 'aA.12345'
         }
-        self.client().post('/users', json=new_user)
+        res_user = self.client().post('/users', json=new_user)
+        data_user = json.loads(res_user.data)
+        self.id = data_user['created_id']
         login_data = {
             'login': True,
-            'username': 'comida',
+            'username': 'test-user',
             'password': 'clave-incorrecta'
         }
         res = self.client().post('/users', json=login_data)
@@ -105,6 +112,14 @@ class TestCaseUsers(unittest.TestCase):
 
 
     def test_get_users_success(self):
+        new_user = {
+            'username': 'test-user',
+            'password': 'aA.12345'
+        }
+        res_user = self.client().post('/users', json=new_user)
+        data_user = json.loads(res_user.data)
+        self.id = data_user['created_id']
+
         res = self.client().get('/users')
         data = json.loads(res.data)
 
@@ -116,11 +131,12 @@ class TestCaseUsers(unittest.TestCase):
 
     def test_patch_user_success(self):
         user = {
-            'username': 'Joaco',
+            'username': 'test-user',
             'password': 'aA.12345'
         }
         user_res = self.client().post('/users', json=user)
         user_data = json.loads(user_res.data)
+        self.id = user_data['created_id']
         new_data = {
             'old_password': 'aA.12345',
             'new_password': 'aA.123456'
@@ -143,6 +159,7 @@ class TestCaseUsers(unittest.TestCase):
         }
         user_res = self.client().post('/users', json=user)
         user_data = json.loads(user_res.data)
+        self.id = user_data['created_id']
         new_data = {
             'old_password': 'somepassword',
             'new_password': 'aA.123456'
@@ -166,7 +183,7 @@ class TestCaseUsers(unittest.TestCase):
         }
         user_res = self.client().post('/users', json=user)
         user_data = json.loads(user_res.data)
-
+        self.id = user_data['created_id']
         res = self.client().delete(
             '/users/' + str(user_data['created_id'])
         )
@@ -175,13 +192,11 @@ class TestCaseUsers(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['deleted_id'], str(user_data['created_id']))
         self.assertTrue(data['success'])
-        self.assertTrue(data['total_users'])
-        self.assertTrue(len(data['users']))
 
 
     def test_delete_user_fail(self):
         res = self.client().delete('/users/0')
-
+        self.id = None
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -191,4 +206,5 @@ class TestCaseUsers(unittest.TestCase):
 
 
     def tearDown(self):
-        pass
+        if self.id is not None:
+            self.client().delete('/users/' + str(self.id))

@@ -20,24 +20,25 @@ class TestCaseMotherboards(unittest.TestCase):
         database_name = parser.get("config", "database_name")
         self.database_path = f'postgresql://{username}:{password}@{host}/{database_name}'
         setup_db(self.app, self.database_path)
+        res = self.client().post('/users', json = {
+            'username': 'test-motherboard',
+            'password': 'aA.12345'
+        })
+        data = json.loads(res.data)
+        self.user_id = data['created_id']
+        self.id = None
 
 
     def test_post_motherboard_success(self):
-        user = {
-            'username': 'tpms',
-            'password': 'aA.12345'
-        }
-        user_res = self.client().post('/users', json=user)
-        user_data = json.loads(user_res.data)
-
         new_motherboard = {
-            'name': 'm0',
-            'price': 15.82,
+            'name': 'test-motherboard',
+            'price': 20.00,
             'description': 'interesting',
-            'create_by': user_data['created_id']
+            'create_by': self.user_id
         }
         res = self.client().post('/motherboards', json=new_motherboard)
         data = json.loads(res.data)
+        self.id = data['created_id']
 
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data['success'])
@@ -47,8 +48,8 @@ class TestCaseMotherboards(unittest.TestCase):
 
     def test_post_motherboard_fail(self):
         new_motherboard = {
-            'name': 'm0',
-            'price': 15.82,
+            'name': 'test-motherboard',
+            'price': 20.00,
             'description': 'interesting'
         }
         res = self.client().post('/motherboards', json=new_motherboard)
@@ -61,20 +62,15 @@ class TestCaseMotherboards(unittest.TestCase):
 
 
     def test_get_motherboards_success(self):
-        user = {
-            'username': 'tgms',
-            'password': 'aA.12345'
-        }
-        user_res = self.client().post('/users', json=user)
-        user_data = json.loads(user_res.data)
-
         motherboard = {
-            'name': 'm1',
-            'price': 15.82,
+            'name': 'test-motherboard',
+            'price': 20.00,
             'description': 'interesting',
-            'create_by': user_data['created_id']
+            'create_by': self.user_id
         }
-        self.client().post('/motherboards', json=motherboard)
+        res_motherboard = self.client().post('/motherboards', json=motherboard)
+        data_motherboard = json.loads(res_motherboard.data)
+        self.id = data_motherboard['created_id']
 
         res = self.client().get('/motherboards')
         data = json.loads(res.data)
@@ -86,21 +82,15 @@ class TestCaseMotherboards(unittest.TestCase):
 
 
     def test_get_motherboard_success(self):
-        user = {
-            'username': 'tgoms',
-            'password': 'aA.12345'
-        }
-        user_res = self.client().post('/users', json=user)
-        user_data = json.loads(user_res.data)
-
         motherboard = {
-            'name': 'm1',
-            'price': 15.82,
+            'name': 'test-motherboard',
+            'price': 20.00,
             'description': 'interesting',
-            'create_by': user_data['created_id']
+            'create_by': self.user_id
         }
         motherboard_res = self.client().post('/motherboards', json=motherboard)
         motherboard_data = json.loads(motherboard_res.data)
+        self.id = motherboard_data['created_id']
 
         res = self.client().get('/motherboards/' + str(motherboard_data['created_id']))
         data = json.loads(res.data)
@@ -109,10 +99,10 @@ class TestCaseMotherboards(unittest.TestCase):
         self.assertTrue(data['success'])
         self.assertTrue(data['total_motherboards'])
         self.assertTrue(data['motherboard'])
-        self.assertEqual(data['motherboard']['name'], 'm1')
+        self.assertEqual(data['motherboard']['name'], 'test-motherboard')
 
 
-    def test_get_motherboard_false(self):
+    def test_get_motherboard_fail(self):
         res = self.client().get('/motherboards/0')
         data = json.loads(res.data)
 
@@ -122,18 +112,11 @@ class TestCaseMotherboards(unittest.TestCase):
 
 
     def test_delete_motherboard_success(self):
-        user = {
-            'username': 'tdms',
-            'password': 'aA.12345'
-        }
-        user_res = self.client().post('/users', json=user)
-        user_data = json.loads(user_res.data)
-
         motherboard = {
-            'name': 'm3',
-            'price': 15.82,
+            'name': 'test-motherboard',
+            'price': 20.00,
             'description': 'interesting',
-            'create_by': user_data['created_id']
+            'create_by': self.user_id
         }
         motherboard_res = self.client().post('/motherboards', json=motherboard)
         motherboard_data = json.loads(motherboard_res.data)
@@ -146,6 +129,7 @@ class TestCaseMotherboards(unittest.TestCase):
         self.assertEqual(data['deleted_id'], str(motherboard_data['created_id']))
 
 
+    # este da 404
     def test_delete_motherboard_fail(self):
         res = self.client().delete('/motherboards/0')
         data = json.loads(res.data)
@@ -157,24 +141,17 @@ class TestCaseMotherboards(unittest.TestCase):
 
 
     def test_patch_motherboard_success(self):
-        user = {
-            'username': 'tpostms',
-            'password': 'aA.12345'
-        }
-        user_res = self.client().post('/users', json=user)
-        user_data = json.loads(user_res.data)
-
         motherboard = {
-            'name': 'm4',
-            'price': 15.82,
+            'name': 'test-motherboard',
+            'price': 20.00,
             'description': 'interesting',
-            'create_by': user_data['created_id']
+            'create_by': self.user_id
         }
         motherboard_res = self.client().post('/motherboards', json=motherboard)
         motherboard_data = json.loads(motherboard_res.data)
-
+        self.id = motherboard_data['created_id']
         new_data = {
-            'modify_by': user_data['created_id'],
+            'modify_by': self.user_id,
             'description': 'something'
         }
         res = self.client().patch(
@@ -189,23 +166,17 @@ class TestCaseMotherboards(unittest.TestCase):
         self.assertTrue(data['total_motherboards'])
 
 
+    # este da 422
     def test_patch_motherboard_fail(self):
-        user = {
-            'username': 'tpostmf',
-            'password': 'aA.12345'
-        }
-        user_res = self.client().post('/users', json=user)
-        user_data = json.loads(user_res.data)
-
         motherboard = {
-            'name': 'm5',
-            'price': 15.82,
+            'name': 'test-motherboard',
+            'price': 20.00,
             'description': 'interesting',
-            'create_by': user_data['created_id']
+            'create_by': self.user_id
         }
         motherboard_res = self.client().post('/motherboards', json=motherboard)
         motherboard_data = json.loads(motherboard_res.data)
-
+        self.id = motherboard_data['created_id']
         new_data = {
             'description': 'something'
         }
@@ -222,4 +193,7 @@ class TestCaseMotherboards(unittest.TestCase):
 
 
     def tearDown(self):
-        pass
+        if self.id is not None:
+            self.client().delete('/motherboards/' + str(self.id))
+        self.client().delete('/users/' + str(self.user_id))
+
