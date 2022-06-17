@@ -56,13 +56,13 @@
                 <p>MOTHERBOARD</p>
                 <select v-model = "compatible.motherboard">
                     <option value="" hidden selected>SELECT AN OPTION</option>
-                    <option v-for = "(motherboard_e, index) in resources.motherboard_list" :key = "index" value = "motherboard_e.id">{{motherboard_e.name}}</option>
+                    <option v-for = "(motherboard_e, index) in resources.motherboard_list" :key = "index" :value = "motherboard_e.id">{{motherboard_e.name}}</option>
                 </select>
 
                 <p>COMPONENT</p>
                 <select v-model = "compatible.component">
                     <option value="" hidden selected>SELECT AN OPTION</option>
-                    <option v-for = "(component_e, index) in resources.component_list" :key = "index" value = "component_e.id">{{component_e.name}}</option>
+                    <option v-for = "(component_e, index) in resources.component_list" :key = "index" :value = "component_e.id">{{component_e.name}}</option>
                 </select>
                 <button @click.prevent = "compatible.clear(); checkFormCompatible()">CREATE</button>
             </form>
@@ -143,7 +143,6 @@ export default {
             this.resources.error_list = 'Something went wrong!'
             this.resources.error = true
         })
-        // TODO: get components (must be able to be compatible - generar un search ://)
         fetch('http://127.0.0.1:5000/components', {
             method: 'GET',
             headers: {
@@ -164,8 +163,6 @@ export default {
                 console.log(this.resources.component_list)
             }
             else {
-                console.log("error servidor")
-
                 this.resources.error_list = JsonResponse['message']
                 this.resources.error = true
             }
@@ -214,9 +211,10 @@ export default {
             .then(JsonResponse => {
                 if (JsonResponse['success'] === true) {
                     console.log('here')
-                    // TODO: actualizar las motherboards en create compatible
-                    this.motherboard.name = '',
-                    this.motherboard.description = '',
+                    this.resources.motherboard_list = JsonResponse['motherboards']
+
+                    this.motherboard.name = ''
+                    this.motherboard.description = ''
                     this.motherboard.price = 0
                     alert("MOTHERBOARD ADDED SUCCESSFULLY")
                 }
@@ -268,11 +266,18 @@ export default {
             .then(response => response.json())
             .then(JsonResponse => {
                 if (JsonResponse['success'] === true) {
-                    // TODO: actualizar las motherboards en create compatible
-                    this.component.name = '',
-                    this.component.description = '',
+                    const components_array = Object.values(JsonResponse['components'])
+                    this.resources.component_list = [
+                        ...components_array.filter(component => component.component_type === "RAM"),
+                        ...components_array.filter(component => component.component_type === "SSD"),
+                        ...components_array.filter(component => component.component_type === "GPU"),
+                        ...components_array.filter(component => component.component_type === "PC Cooling")
+                    ]
+
+                    this.component.name = ''
+                    this.component.description = ''
                     this.component.price = 0
-                    this.component.type = '',
+                    this.component.type = ''
                     alert("COMPONENT ADDED SUCCESSFULLY")
                 }
                 else {
@@ -298,8 +303,31 @@ export default {
             }
         },
         createCompatible () {
-            // TODO: crear la compatibilidad
-            console.log('something')
+            fetch('http://127.0.0.1:5000/compatibles', {
+                method: 'POST',
+                body: JSON.stringify({
+                    'id_motherboard': this.compatible.motherboard,
+                    'id_component': this.compatible.component,
+                    'create_by': this.$root.user_info.id
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(JsonResponse => {
+                if (JsonResponse['success'] === true) {
+                    this.compatible.motherboard = ''
+                    this.compatible.component = ''
+                    alert("COMPATIBLE ADDED SUCCESSFULLY")
+                }
+                else {
+                    console.log('error')
+                    console.log(JsonResponse)
+                }
+            }).catch(() => {
+                    console.log('error')
+            })
         }
     }
 }

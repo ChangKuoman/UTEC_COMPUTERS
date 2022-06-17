@@ -1,7 +1,7 @@
 <template>
     <div>
         <p>
-            YOUR SIMULATION HAS ENDED. YOUR BUILT PC WOULD BE:
+            YOUR BUILT PC WOULD BE:
         </p>
 
         <div v-if = "simulation">

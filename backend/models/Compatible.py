@@ -1,3 +1,4 @@
+from shutil import ExecError
 from config import db
 from sqlalchemy import func, ForeignKey
 
@@ -35,7 +36,8 @@ class Compatible(db.Model):
             db.session.add(self)
             db.session.commit()
             return self.id
-        except:
+        except Exception as e:
+            print(e)
             db.session.rollback()
         finally:
             db.session.close()
