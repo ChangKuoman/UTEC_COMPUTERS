@@ -30,7 +30,8 @@ class MotherBoard(db.Model):
             "id": self.id,
             "price": self.price,
             "name": self.name,
-            "description": self.description
+            "description": self.description,
+            "compatibles": {compatible.id:compatible.format() for compatible in self.compatibles}
         }
 
 

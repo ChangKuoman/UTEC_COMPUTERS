@@ -58,25 +58,32 @@ export default {
             }
         },
         changePassword () {
-            if (this.password_strength === 'Strong password'){
-                fetch('http://127.0.0.1:5000/users/' + this.$root.user_info.id, {
-                    method: "PATCH",
-                    body: JSON.stringify({
-                        'old_password': this.old_password,
-                        'new_password': this.new_password
-                    }),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(JsonResponse => {
-                    console.log(JsonResponse)
-                })
-                .catch(() => {
-                    console.log('error js')
-                })
-            }
+            fetch('http://127.0.0.1:5000/users/' + this.$root.user_info.id, {
+                method: "PATCH",
+                body: JSON.stringify({
+                    'old_password': this.old_password,
+                    'new_password': this.new_password
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(JsonResponse => {
+                if (JsonResponse['success'] === true) {
+                    alert('Password change successfully!')
+                    this.old_password = ''
+                    this.new_password = ''
+                }
+                else {
+                    this.error.show = true
+                    this.error.list.push('Your password does not match')
+                }
+            })
+            .catch(() => {
+                this.error.show = true
+                this.error.list.push('Something does not works!')
+            })
         }
     },
     computed: {

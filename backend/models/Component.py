@@ -32,7 +32,8 @@ class Component(db.Model):
             'name': self.name,
             'component_type': self.component_type,
             'description': self.description,
-            'price': self.price
+            'price': self.price,
+            'compatibles': {compatible.id:compatible.format() for compatible in self.compatibles}
         }
 
 
