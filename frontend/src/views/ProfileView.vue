@@ -16,12 +16,47 @@
         </div>
         <div>
             <h2>See previous simulations</h2>
+            <ul v-if = "simulations" class="no-dots">
+                <li v-for = "(simulation, index) in simulations" :key = "index">
+                    <p>Simulation id: {{simulation.id}}</p>
+                    <p>Total price: {{simulation.total_price.toFixed(2)}}</p>
+                    <button @click.prevent = "see_simulation(simulation.id)">click</button>
+                </li>
+            </ul>
         </div>
+        <router-view/>
     </div>
 </template>
 
 <script>
 export default {
+    mounted () {
+        if (localStorage.getItem('token')) {
+            fetch('http://127.0.0.1:5000/simulations', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(JsonResponse => {
+                if (JsonResponse['success'] === true) {
+                    this.simulations = Object.values(JsonResponse['simulations']).filter(simulation => {
+                        return simulation.create_by === this.$root.user_info.id
+                    })
+                }
+                else {
+                    this.no_simulations = 'You do not have any simulations'
+                }
+            })
+            .catch(() => {
+                console.log("js error")
+            })
+        }
+        else {
+            this.$router.push('/login')
+        }
+    },
     data () {
         return {
             old_password: '',
@@ -33,10 +68,15 @@ export default {
                     this.error.show = false
                     this.error.list = []
                 }
-            }
+            },
+            no_simulations: '',
+            simulations: []
         }
     },
     methods: {
+        see_simulation (id) {
+            this.$router.push("/simulation/" + id)
+        },
         check_change_form () {
             if (this.old_password === '') {
                 this.error.list.push('Fill your old password')

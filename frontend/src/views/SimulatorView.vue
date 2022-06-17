@@ -299,7 +299,6 @@ export default {
                 }
             })
             .catch(() => {
-                console.log('error js')
                 this.error.text = 'Something went wrong!'
                 this.error.show = true
             })
