@@ -24,8 +24,10 @@
         <div class="box_boton">
           <router-link class="h_1" v-if = "!data_session.logged" to="/register">REGISTER</router-link>
         </div>
-        <div>
-
+        <div class="box_boton">
+          <button>
+            <!---<img src="@/assets/img/logo_user.png"/>-->
+          </button>
         </div>
 
         <router-link v-if = "data_session.admin" to="/admin">Admin</router-link>
@@ -64,6 +66,7 @@ export default {
       this.data_session.admin = false
       this.user_info = null
       this.$router.push('/')
+      
     }
   }
 }
@@ -197,16 +200,28 @@ export default {
 
   .contenedor_HOME{
 
-    width: 70%;
-    height: 800px;
-    margin-left: 15%;
-    margin-right: 15%;
+    width: 100%;
+    height: 950px;
+
 
     display: flex;
     justify-content: center;
+    /*
     margin-top: 1%;
     margin-bottom: 1%;
     padding: 3%;
+*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .contenedor_app{
+    width: 80%;
+    height: 100%;
+
+    padding: 15px 15px 15px 15px;
+
+    background: #fffffffd;
   }
   .Texto_presentacion{
     width: 50%;

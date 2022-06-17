@@ -18,10 +18,10 @@
                 <div v-if = "error">
                     {{errorText}}
                 </div>
+                <ul class = "no-dots" v-if = "error.show">
+                    <li v-for = "(error, index) in error.list" :key = "index">{{error}}</li>
+                </ul>
             </div>
-            <ul class = "no-dots" v-if = "error.show">
-                 <li v-for = "(error, index) in error.list" :key = "index">{{error}}</li>
-            </ul>
         </div>
 
         <FooterComponent/>
