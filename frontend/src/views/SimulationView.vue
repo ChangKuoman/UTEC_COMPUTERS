@@ -1,42 +1,24 @@
 <template>
     <div>
-        <p>
-            YOUR BUILT PC WOULD BE:
-        </p>
-
-        <div v-if = "simulation">
+        <div v-if="simulation">
+            <h2>YOUR BUILT PC WOULD BE:</h2>
             <img src="@/assets/img/cat_pc.jpg">
-
             <div>
-                <div>
-                    <p>
-                        {{simulation.motherboard.name}}
-                    </p>
-                    <p>
-                        S/. {{simulation.motherboard.price.toFixed(2)}}
-                    </p>
-                </div>
-
-                <div v-for = "(component, index) in simulation.components" :key = "index">
-                    <p>
-                        {{component.name}}
-                    </p>
-                    <p>
-                        S/. {{component.price.toFixed(2)}}
-                    </p>
-                </div>
-
+                <ProductSimulation
+                    :product="simulation.motherboard"
+                />
+                <ProductSimulation
+                    v-for="(component, index) in simulation.components" :key="index"
+                    :product="component"
+                />
             </div>
             <div>
-                <div>
+                <p>
                     TOTAL PRICE:
-                </div>
-                <div>
+                </p>
+                <p>
                     S/. {{simulation.total_price.toFixed(2)}}
-                </div>
-            </div>
-            <div v-if = "error.show">
-                {{error.text}}
+                </p>
             </div>
         </div>
         <button @click.prevent = "goBack">
@@ -46,7 +28,10 @@
 </template>
 
 <script>
+import ProductSimulation from '@/components/ProductSimulation.vue'
+
 export default {
+    components: { ProductSimulation },
     props: {
         id: {
             type: Number,
@@ -55,21 +40,12 @@ export default {
     },
     data () {
         return {
-            simulation: null,
-            error: {
-                show: false,
-                text: ''
-            }
+            simulation: null
         }
     },
     mounted () {
         if (localStorage.getItem('token')) {
-            fetch('http://127.0.0.1:5000/simulations/' + this.id, {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+            fetch('http://127.0.0.1:5000/simulations/' + this.id, { method: "GET" })
             .then(response => response.json())
             .then(JsonResponse => {
                 if (JsonResponse['success'] === true){
@@ -78,17 +54,16 @@ export default {
                     }
                     else {
                         this.simulation = JsonResponse['simulation']
-                        console.log(this.simulation)
                     }
                 }
                 else {
-                    this.error.show = true
-                    this.error.text = JsonResponse['message']
+                    alert(JsonResponse['message'])
+                    this.$router.push('/')
                 }
             })
             .catch(() => {
-                this.error.show = true
-                this.error.text = 'Something went wrong!'
+                alert('Something went wrong!')
+                this.$router.push('/')
             })
         }
         else {
