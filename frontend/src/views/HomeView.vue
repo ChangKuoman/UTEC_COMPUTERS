@@ -18,8 +18,6 @@
                     <a href="https://github.com/ChangKuoman/UTEC_COMPUTERS" target="_target">⇨ LINK TO GITHUB </a>
                 </div>
             </div>
-            
-            
         </div>
         <FooterComponent/>
     </div>
