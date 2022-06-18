@@ -3,33 +3,67 @@
         <div>
             <h2>Change password</h2>
             <form @change = "error.clear">
-                <p>Old password</p>
-                <input v-model = "old_password" type = "password"/>
-                <p>New password</p>
-                <input v-model = "new_password" type = "password"/>
-                <p v-show = "new_password.length" :style = "password_color"><b>{{password_strength}}</b></p>
+                <InputText
+                    v-model="old_password"
+                    title="OLD PASSWORD"
+                    type="password"
+                />
+                <InputText
+                    v-model="new_password"
+                    title="NEW PASSWORD"
+                    type="password"
+                />
+                <PasswordStrength
+                    v-model="password_strength"
+                    :password="new_password"
+                    v-show="new_password.length"
+                />
                 <button @click.prevent = "error.clear(); check_change_form()">Change password</button>
             </form>
-            <ul class = "no-dots" v-if = "error.show">
-                <li v-for = "(error, index) in error.list" :key = "index">{{error}}</li>
-            </ul>
+            <ErrorList
+                class="no-dots"
+                v-if="error.show"
+                :error_list="error.list"
+            />
         </div>
         <div>
-            <h2>See previous simulations</h2>
-            <ul v-if = "simulations" class="no-dots">
+            <h2>SEE PREVIOUS SIMULATIONS</h2>
+            <ul v-if="!error_simulations.length" class="no-dots">
                 <li v-for = "(simulation, index) in simulations" :key = "index">
                     <p>Simulation id: {{simulation.id}}</p>
                     <p>Total price: {{simulation.total_price.toFixed(2)}}</p>
-                    <button @click.prevent = "see_simulation(simulation.id)">click</button>
+                    <button @click.prevent = "see_simulation(simulation.id)">See simulation</button>
                 </li>
             </ul>
+            <p v-if="error_simulations.length">{{error_simulations}}</p>
         </div>
-        <router-view/>
     </div>
 </template>
 
 <script>
+import InputText from '@/components/InputText.vue'
+import PasswordStrength from '@/components/PasswordStrength.vue'
+import ErrorList from '@/components/ErrorList.vue'
+
 export default {
+    components: { InputText, PasswordStrength, ErrorList },
+    data () {
+        return {
+            old_password: '',
+            new_password: '',
+            error: {
+                show: false,
+                list: [],
+                clear: () => {
+                    this.error.show = false
+                    this.error.list = []
+                }
+            },
+            error_simulations: '',
+            simulations: [],
+            password_strength: ''
+        }
+    },
     mounted () {
         if (localStorage.getItem('token')) {
             fetch('http://127.0.0.1:5000/simulations', {
@@ -45,32 +79,19 @@ export default {
                         return simulation.create_by === this.$root.user_info.id
                     })
                 }
+                else if (JsonResponse['code'] === 404) {
+                    this.error_simulations = 'You do not have any simulations'
+                }
                 else {
-                    this.no_simulations = 'You do not have any simulations'
+                    this.error_simulations = JsonResponse['message']
                 }
             })
             .catch(() => {
-                console.log("js error")
+                this.error_simulations = "Something went wrong!"
             })
         }
         else {
             this.$router.push('/login')
-        }
-    },
-    data () {
-        return {
-            old_password: '',
-            new_password: '',
-            error: {
-                show: false,
-                list: [],
-                clear: () => {
-                    this.error.show = false
-                    this.error.list = []
-                }
-            },
-            no_simulations: '',
-            simulations: []
         }
     },
     methods: {
@@ -117,7 +138,7 @@ export default {
                 }
                 else {
                     this.error.show = true
-                    this.error.list.push('Your password does not match')
+                    this.error.list.push('Your old password does not match')
                 }
             })
             .catch(() => {
@@ -125,38 +146,6 @@ export default {
                 this.error.list.push('Something does not works!')
             })
         }
-    },
-    computed: {
-        password_strength: function() {
-            const strong = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[.,\-_+&$#@()*"':;!?])(?=.{8,})/
-            const medium2 = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[.,\-_+&$#@()*"':;!?])(?=.{6,})/
-            const medium1 = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/
-            if (strong.test(this.new_password)) {
-                return 'Strong password'
-            }
-            if (medium2.test(this.new_password)) {
-                return 'Medium password'
-            }
-            if (medium1.test(this.new_password)) {
-                return 'Weak password'
-            }
-            return 'Very weak password'
-        },
-        password_color: function() {
-            if (this.password_strength === 'Strong password') {
-                return {color: "#FF0000"}
-            }
-            if (this.password_strength === 'Medium password') {
-                return {color: "#FFA500"}
-            }
-            if (this.password_strength === 'Weak password') {
-                return {color: "#FFCD01"}
-            }
-            if (this.password_strength === 'Very weak password') {
-                return {color: "#008000"}
-            }
-            return {color: "#000000"}
-        }
-    },
+    }
 }
 </script>
