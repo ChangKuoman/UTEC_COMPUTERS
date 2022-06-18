@@ -3,26 +3,36 @@
         <div class="contenedor_HOME">
             <div class="Texto_presentacion">
                 <form @change = "error.clear">
-                    <p>USERNAME</p>
-                    <input v-model = "username" type="text"/>
-                    <p>PASSWORD</p>
-                    <input v-model = "password" type="password"/>
+                    <InputText
+                        v-model="username"
+                        title="USERNAME"
+                        type="text"
+                    />
+                    <InputText
+                        v-model="password"
+                        title="PASSWORD"
+                        type="password"
+                    />
                     <button @click.prevent = "error.clear(); check_form_login()">LOGIN</button>
                 </form>
+                    <ErrorList
+                    class="no-dots"
+                    v-if="error"
+                    :error_list="error.list"
+                />
             </div>
-
         </div>
-        <ul class = "no-dots" v-if = "error">
-            <li v-for = "(error, index) in error.list" :key = "index">{{error}}</li>
-        </ul>
         <FooterComponent/>
     </div>
 </template>
 
 <script>
-import FooterComponent from '../components/FooterComponent.vue'
+import FooterComponent from '@/components/FooterComponent.vue'
+import InputText from '@/components/InputText.vue'
+import ErrorList from '@/components/ErrorList.vue'
+
 export default {
-  components: { FooterComponent },
+  components: { FooterComponent, InputText, ErrorList },
   props: [],
   data () {
     return {
@@ -98,5 +108,4 @@ export default {
         border-style:groove;
         border-radius: 2px 2px;
     }
-
 </style>
