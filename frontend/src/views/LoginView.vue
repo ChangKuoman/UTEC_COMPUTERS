@@ -15,7 +15,7 @@
                     />
                     <button @click.prevent = "error.clear(); check_form_login()">LOGIN</button>
                 </form>
-                    <ErrorList
+                <ErrorList
                     class="no-dots"
                     v-if="error"
                     :error_list="error.list"

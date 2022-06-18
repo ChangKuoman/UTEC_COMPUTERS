@@ -1,9 +1,7 @@
 <template>
-
-        <ul>
-            <li v-bind="$attrs" v-for = "(error, index) in error_list" :key = "index">{{error}}</li>
-        </ul>
-
+    <ul>
+        <li v-bind="$attrs" v-for = "(error, index) in error_list" :key = "index">{{error}}</li>
+    </ul>
 </template>
 
 <script>
