@@ -1,6 +1,7 @@
-from shutil import ExecError
 from config import db
 from sqlalchemy import func, ForeignKey
+from models.Component import Component
+from models.MotherBoard import MotherBoard
 
 
 class Compatible(db.Model):
@@ -17,7 +18,9 @@ class Compatible(db.Model):
         return {
             "id": self.id,
             "id_motherboard": self.id_motherboard,
-            "id_component": self.id_component
+            "id_component": self.id_component,
+            "motherboard": MotherBoard.query.get(self.id_motherboard).name,
+            "component": Component.query.get(self.id_component).name
         }
 
 

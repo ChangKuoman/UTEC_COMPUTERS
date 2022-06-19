@@ -44,46 +44,51 @@ export default {
         }
     },
     mounted () {
-        if (localStorage.getItem('token') && this.$root.user_info.role === 'admin') {
-            fetch('http://127.0.0.1:5000/motherboards', { method: 'GET' })
-            .then(response => response.json())
-            .then(JsonResponse => {
-                if (JsonResponse['success'] === true){
-                    this.resources.motherboard_list = JsonResponse['motherboards']
-                }
-                else {
-                    this.error_list.push(JsonResponse['message'])
+        if (localStorage.getItem('token')) {
+            if (this.$root.user_info.role === 'admin') {
+                fetch('http://127.0.0.1:5000/motherboards', { method: 'GET' })
+                .then(response => response.json())
+                .then(JsonResponse => {
+                    if (JsonResponse['success'] === true){
+                        this.resources.motherboard_list = JsonResponse['motherboards']
+                    }
+                    else {
+                        this.error_list.push(JsonResponse['message'])
+                        this.error = true
+                    }
+                })
+                .catch(() => {
+                    this.error_list.push('Something went wrong!')
                     this.error = true
-                }
-            })
-            .catch(() => {
-                this.error_list.push('Something went wrong!')
-                this.error = true
-            })
-            fetch('http://127.0.0.1:5000/components', { method: 'GET' })
-            .then(response => response.json())
-            .then(JsonResponse => {
-                console.log(JsonResponse)
-                if (JsonResponse['success'] === true){
-                    const components_array = Object.values(JsonResponse['components'])
-                    this.resources.component_list = [
-                        ...components_array.filter(component => component.component_type === "RAM"),
-                        ...components_array.filter(component => component.component_type === "SSD"),
-                        ...components_array.filter(component => component.component_type === "GPU"),
-                        ...components_array.filter(component => component.component_type === "PC Cooling")
-                    ]
-                    console.log(this.resources.component_list)
-                }
-                else {
-                    this.error_list.push(JsonResponse['message'])
+                })
+                fetch('http://127.0.0.1:5000/components', { method: 'GET' })
+                .then(response => response.json())
+                .then(JsonResponse => {
+                    console.log(JsonResponse)
+                    if (JsonResponse['success'] === true){
+                        const components_array = Object.values(JsonResponse['components'])
+                        this.resources.component_list = [
+                            ...components_array.filter(component => component.component_type === "RAM"),
+                            ...components_array.filter(component => component.component_type === "SSD"),
+                            ...components_array.filter(component => component.component_type === "GPU"),
+                            ...components_array.filter(component => component.component_type === "PC Cooling")
+                        ]
+                        console.log(this.resources.component_list)
+                    }
+                    else {
+                        this.error_list.push(JsonResponse['message'])
+                        this.error = true
+                    }
+                })
+                .catch(() => {
+                    console.log("error js")
+                    this.error_list.push('Something went wrong!')
                     this.error = true
-                }
-            })
-            .catch(() => {
-                console.log("error js")
-                this.error_list.push('Something went wrong!')
-                this.error = true
-            })
+                })
+            }
+            else {
+                this.$router.push('/simulator')
+            }
         }
         else {
             this.$router.push('/login')

@@ -3,6 +3,7 @@ import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import AdminHomeView from '@/views/AdminHomeView.vue'
 import AdminCreateView from '@/views/AdminCreateView.vue'
+import AdminDeleteView from '@/views/AdminDeleteView.vue'
 import HomeView from '@/views/HomeView.vue'
 import SimulatorView from '@/views/SimulatorView.vue'
 import ErrorView from '@/views/ErrorView.vue'
@@ -55,6 +56,11 @@ const routes = [
     path: '/admin/create',
     name: 'adminCreate',
     component: AdminCreateView
+  },
+  {
+    path: '/admin/delete',
+    name: 'adminDelete',
+    component: AdminDeleteView
   },
 ]
 

@@ -84,7 +84,6 @@ export default {
             })
             .then(response => response.json())
             .then(JsonResponse => {
-                console.log(JsonResponse)
                 if (JsonResponse['success'] === true) {
                     this.$emit('update:modelValue', JsonResponse['motherboards'])
                     this.name = ''
