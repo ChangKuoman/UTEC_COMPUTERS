@@ -102,7 +102,6 @@ export default {
 }
 </script>
 
-
 <style scoped>
     input{
         border-style:groove;

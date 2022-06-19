@@ -35,7 +35,7 @@
       </div>
 
     </nav>
-    <router-view/>
+    <router-view :user_info="user_info"/>
   </div>
 </template>
 
