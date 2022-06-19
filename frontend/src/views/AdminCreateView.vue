@@ -64,7 +64,6 @@ export default {
                 fetch('http://127.0.0.1:5000/components', { method: 'GET' })
                 .then(response => response.json())
                 .then(JsonResponse => {
-                    console.log(JsonResponse)
                     if (JsonResponse['success'] === true){
                         const components_array = Object.values(JsonResponse['components'])
                         this.resources.component_list = [
@@ -73,7 +72,6 @@ export default {
                             ...components_array.filter(component => component.component_type === "GPU"),
                             ...components_array.filter(component => component.component_type === "PC Cooling")
                         ]
-                        console.log(this.resources.component_list)
                     }
                     else {
                         this.error_list.push(JsonResponse['message'])
@@ -81,7 +79,6 @@ export default {
                     }
                 })
                 .catch(() => {
-                    console.log("error js")
                     this.error_list.push('Something went wrong!')
                     this.error = true
                 })

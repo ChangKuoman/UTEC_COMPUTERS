@@ -23,7 +23,7 @@ export default {
     mounted () {
         if (localStorage.getItem('token')){
             if (this.$root.user_info.role === 'admin') {
-                console.log('admin update view get data')
+                // here nothing happens
             }
             else {
                 this.$router.push('/simulator')
