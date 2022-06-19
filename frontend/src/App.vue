@@ -16,7 +16,7 @@
       </div>
 
       <!--CONTENEDOR_BOTONES-->
-      <div class="CONTENEDOR_BOTONES">
+      <div class="CONTENEDOR_BOTONES" v-if = "!data_session.logged">
 
         <div class="box_boton">
           <router-link class="h_1" v-if = "!data_session.logged" to="/login">LOGIN</router-link>
@@ -24,18 +24,26 @@
         <div class="box_boton">
           <router-link class="h_1" v-if = "!data_session.logged" to="/register">REGISTER</router-link>
         </div>
-        <div class="box_boton">
-          <button>
-            <!---<img src="@/assets/img/logo_user.png"/>-->
-          </button>
+
+      </div>
+      <div class="CONTENEDOR_BOTONES" v-if = "data_session.logged">
+        <button @click="show_despliegue" class="despliegue">
+          <i class='bx bxs-user-circle'></i>
+        </button>
+        <div class="CONTENEDOR_BOTONES_LOGIN" v-if = "despliegue">
+          
+          <router-link class="" v-if = "data_session.admin" to="/admin">Admin</router-link>
+          <button @click.prevent = "logout_session" v-if = "data_session.logged">Logout</button>
+
+          <router-link v-if = "data_session.logged" to="/simulator">Simulate!</router-link>
+          <router-link v-if = "data_session.logged" to="/profile">Profile</router-link>
+
+
         </div>
 
-        <router-link v-if = "data_session.admin" to="/admin">Admin</router-link>
-        <button @click.prevent = "logout_session" v-if = "data_session.logged">Logout</button>
-        <router-link v-if = "data_session.logged" to="/simulator">Simulate!</router-link>
-        <router-link v-if = "data_session.logged" to="/profile">Profile</router-link>
       </div>
 
+    
     </nav>
     <router-view/>
   </div>
@@ -49,9 +57,11 @@ export default {
     return {
       data_session: {
         logged: false,
-        admin: false
+        admin: false,
+
       },
-      user_info: null
+      user_info: null,
+      despliegue: false
     }
   },
   mounted () {
@@ -66,7 +76,11 @@ export default {
       this.data_session.admin = false
       this.user_info = null
       this.$router.push('/')
-      
+
+    },
+    show_despliegue() {
+      this.despliegue = !this.despliegue
+
     }
   }
 }
@@ -165,6 +179,7 @@ export default {
     width: 10%;
     min-width: 100px;
     display: inline-block;
+    
 
     border-radius: 5px 5px;
     border: none;
@@ -183,6 +198,9 @@ export default {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
   }
   .h_1{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
     color: aliceblue;
     font-size: 15px;
     font-weight: 700;
@@ -258,5 +276,19 @@ export default {
     text-decoration: none;
     text-align: center;
   }
+  .CONTENEDOR_BOTONES_LOGIN{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    margin-top: 90px;
 
+    padding: 10px,10px,10px,10px;
+
+    background: #333;
+    color: white;
+  }
+
+  .text_white{
+    color:white;
+  }
 </style>
