@@ -9,12 +9,13 @@
                     <input v-model = "password" type="password"/>
                     <button @click.prevent = "error.clear(); check_form_login()">LOGIN</button>
                 </form>
+
+                 <ul class = "no-dots" v-if = "error">
+                    <li v-for = "(error, index) in error.list" :key = "index">{{error}}</li>
+                </ul>
             </div>
 
         </div>
-        <ul class = "no-dots" v-if = "error">
-            <li v-for = "(error, index) in error.list" :key = "index">{{error}}</li>
-        </ul>
         <FooterComponent/>
     </div>
 </template>
