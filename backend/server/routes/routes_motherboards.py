@@ -84,7 +84,7 @@ def patch_motherboard(id):
         if 'price' in body:
             motherboard_to_patch.price = body.get('price')
         if 'name' in body:
-            motherboard_to_patch.description = body.get('name')
+            motherboard_to_patch.name = body.get('name')
 
         updated_id = motherboard_to_patch.update()
         if updated_id is None:

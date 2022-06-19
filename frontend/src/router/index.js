@@ -4,6 +4,7 @@ import RegisterView from '@/views/RegisterView.vue'
 import AdminHomeView from '@/views/AdminHomeView.vue'
 import AdminCreateView from '@/views/AdminCreateView.vue'
 import AdminDeleteView from '@/views/AdminDeleteView.vue'
+import AdminUpdateView from '@/views/AdminUpdateView.vue'
 import HomeView from '@/views/HomeView.vue'
 import SimulatorView from '@/views/SimulatorView.vue'
 import ErrorView from '@/views/ErrorView.vue'
@@ -62,6 +63,11 @@ const routes = [
     name: 'adminDelete',
     component: AdminDeleteView
   },
+  {
+    path: '/admin/update',
+    name: 'adminUpdate',
+    component: AdminUpdateView
+  }
 ]
 
 const router = createRouter({
