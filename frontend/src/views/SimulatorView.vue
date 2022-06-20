@@ -1,5 +1,7 @@
 <template>
     <div>
+  <div class="contenedor_HOME">
+      <div class="contenedor_app">
         <div v-if="first_part">
             <div v-if="!errors.motherboard.show">
                 <h1>
@@ -118,6 +120,8 @@
                     :total_products="total_products"
                     @onSimulate="simulate"
                 />
+</div>
+</div>
         </div>
     </div>
 </template>
@@ -163,7 +167,7 @@ export default {
                 cpu: null,
                 psu: null,
                 peripheral: []
-            }
+            },
         }
     },
     mounted () {
