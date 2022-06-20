@@ -45,7 +45,7 @@
 
     
     </nav>
-    <router-view/>
+    <router-view :user_info="user_info"/>
   </div>
 </template>
 
@@ -110,7 +110,7 @@ export default {
     margin: 0%;
     height: auto;
 
-    background-image: url(@/assets/img/fondo.jpg);
+    /*background-image: url(@/assets/img/fondo.jpg);*/
     background-size: cover;
     }
   .header{

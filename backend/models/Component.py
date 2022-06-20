@@ -32,7 +32,8 @@ class Component(db.Model):
             'name': self.name,
             'component_type': self.component_type,
             'description': self.description,
-            'price': self.price
+            'price': self.price,
+            'compatibles': {compatible.id:compatible.format() for compatible in self.compatibles}
         }
 
 
@@ -59,7 +60,9 @@ class Component(db.Model):
 
     def update(self):
         try:
+            self.date_modified = func.now()
             db.session.commit()
+            return self.id
         except:
             db.session.rollback()
         finally:

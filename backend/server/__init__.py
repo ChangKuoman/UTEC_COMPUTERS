@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from config import setup_db
 
-from RESTful_api.routes.__init__ import api
+from server.routes.__init__ import api
 
 def create_app(test_config=None):
     app = Flask(__name__)

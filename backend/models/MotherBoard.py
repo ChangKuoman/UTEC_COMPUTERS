@@ -30,7 +30,8 @@ class MotherBoard(db.Model):
             "id": self.id,
             "price": self.price,
             "name": self.name,
-            "description": self.description
+            "description": self.description,
+            "compatibles": {compatible.id:compatible.format() for compatible in self.compatibles}
         }
 
 
@@ -55,11 +56,11 @@ class MotherBoard(db.Model):
             db.session.close()
 
 
-    def update(self, modify_by):
+    def update(self):
         try:
-            self.modify_by = modify_by
             self.date_modified = func.now()
             db.session.commit()
+            return self.id
         except:
             db.session.rollback()
         finally:

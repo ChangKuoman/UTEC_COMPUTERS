@@ -1,12 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import LoginView from '../views/LoginView.vue'
-import RegisterView from '../views/RegisterView.vue'
-import AdminView from '../views/AdminView.vue'
-import HomeView from '../views/HomeView.vue'
-import SimulatorView from '../views/SimulatorView.vue'
-import ErrorView from '../views/ErrorView.vue'
-import SimulationView from '../views/SimulationView.vue'
-import ProfileView from '../views/ProfileView.vue'
+import LoginView from '@/views/LoginView.vue'
+import RegisterView from '@/views/RegisterView.vue'
+import AdminHomeView from '@/views/AdminHomeView.vue'
+import AdminCreateView from '@/views/AdminCreateView.vue'
+import AdminDeleteView from '@/views/AdminDeleteView.vue'
+import AdminUpdateView from '@/views/AdminUpdateView.vue'
+import HomeView from '@/views/HomeView.vue'
+import SimulatorView from '@/views/SimulatorView.vue'
+import ErrorView from '@/views/ErrorView.vue'
+import SimulationView from '@/views/SimulationView.vue'
+import ProfileView from '@/views/ProfileView.vue'
 
 const routes = [
   {
@@ -22,7 +25,7 @@ const routes = [
   {
     path: '/admin',
     name: 'admin',
-    component: AdminView
+    component: AdminHomeView
   },
   {
     path: '/',
@@ -50,6 +53,21 @@ const routes = [
     name: 'profile',
     component: ProfileView
   },
+  {
+    path: '/admin/create',
+    name: 'adminCreate',
+    component: AdminCreateView
+  },
+  {
+    path: '/admin/delete',
+    name: 'adminDelete',
+    component: AdminDeleteView
+  },
+  {
+    path: '/admin/update',
+    name: 'adminUpdate',
+    component: AdminUpdateView
+  }
 ]
 
 const router = createRouter({
