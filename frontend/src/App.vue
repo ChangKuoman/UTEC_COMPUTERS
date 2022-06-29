@@ -1,7 +1,6 @@
 <template>
   <div class="wallpaper">
     <nav class="header">
-
       <!--BOX-LOGO-->
       <div class="box_LOGO">
         <router-link to="/">
@@ -16,6 +15,8 @@
       </div>
 
       <!--CONTENEDOR_BOTONES-->
+
+      <!--CUANDO NO ESTA LOGEADO-->
       <div class="CONTENEDOR_BOTONES" v-if = "!data_session.logged">
 
         <div class="box_boton">
@@ -26,19 +27,44 @@
         </div>
 
       </div>
+
+      <!--CUANDO ESTA LOGEADO-->
       <div class="CONTENEDOR_BOTONES" v-if = "data_session.logged">
-        <button @click="show_despliegue" class="despliegue">
-          <i class='bx bxs-user-circle'></i>
+
+        <button @click="show_despliegue" class="box_boton">
+            <i id="boton_despliegue" class='bx bxs-user-circle'></i>
         </button>
-        <div class="CONTENEDOR_BOTONES_LOGIN" v-if = "despliegue">
-          
-          <router-link class="" v-if = "data_session.admin" to="/admin">Admin</router-link>
-          <button @click.prevent = "logout_session" v-if = "data_session.logged">Logout</button>
+        
+        <div v-if = "despliegue">
+          <!--CUANDO ESTA LOGEADO Y NO ES ADMIN-->
+          <div class="CONTENEDOR_BOTONES_LOGIN" v-if = "!data_session.admin">
+            <div class="boton_3">
+              <router-link class="text_white" v-if = "data_session.logged" to="/simulator">SIMULATE!</router-link>
+            </div>
+            <div class="boton_3">
+              <router-link class="text_white" v-if = "data_session.logged" to="/profile">PROFILE</router-link>
+            </div>
+            <div class="boton_3">
+              <button class="text_white" id="cursor_pointer" @click.prevent = "logout_session" v-if = "data_session.logged">LOGOUT</button>
+            </div>
+          </div>
+          <!--CUANDO ESTA LOGEADO Y ES ADMIN-->
+          <div class="CONTENEDOR_BOTONES_LOGIN" v-if = "data_session.admin">
+            <div class="boton_3">
+              <router-link class="text_white" v-if = "data_session.admin" to="/admin">ADMIN</router-link>
+            </div>
+        
+            <div class="boton_3">
+              <router-link class="text_white" v-if = "data_session.logged" to="/simulator">SIMULATE!</router-link>
+            </div>
+            <div class="boton_3">
+              <router-link class="text_white" v-if = "data_session.logged" to="/profile">PROFILE</router-link>
+            </div>
+            <div class="boton_3">
+              <button class="text_white" id="cursor_pointer" @click.prevent = "logout_session" v-if = "data_session.logged">LOGOUT</button>
+            </div>
 
-          <router-link v-if = "data_session.logged" to="/simulator">Simulate!</router-link>
-          <router-link v-if = "data_session.logged" to="/profile">Profile</router-link>
-
-
+          </div>
         </div>
 
       </div>
@@ -121,15 +147,10 @@ export default {
     flex-direction: row;
 
     align-items: center;
+    
     background: linear-gradient(to bottom,  rgb(255, 255, 255) 0%,rgb(249, 254, 255) 100%);
   }
-  .header:hover{
-    box-shadow: 0 12px 16px 0 rgba(104, 169, 255, 0.24), 0 17px 50px 0 rgba(153, 135, 255, 0.19);
-    border-bottom-style: solid;
-    border-bottom-color: rgb(81, 161, 231);
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-  }
+
   body{
     margin-left: 0px;
     margin-right: 0px;
@@ -193,6 +214,8 @@ export default {
 
     text-decoration: none;
     text-align: center;
+
+    cursor: pointer;
   }
   .box_boton:hover{
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
@@ -235,9 +258,11 @@ export default {
   }
   .contenedor_app{
     width: 80%;
-    height: 100%;
-
-    padding: 15px 15px 15px 15px;
+    height: 95%;
+    
+    margin-top: 2%;
+    margin-bottom: 2%;
+    padding: 1%;
 
     background: #fffffffd;
   }
@@ -250,6 +275,8 @@ export default {
     display: flex;
     flex-direction: column;
 
+    justify-content: center;
+    align-items: center;
     text-align: justify;
     font-style:italic;
     font-family: 'Lato', sans-serif;
@@ -280,15 +307,52 @@ export default {
     display: flex;
     flex-direction: column;
     position: absolute;
-    margin-top: 90px;
+    transform: translate(-100%,30px);
 
-    padding: 10px,10px,10px,10px;
+    width: 70px;
+    height: 120px;
+    padding-left: 15px;
+    padding-right: 15px;
+    
+    align-items: center;
+    justify-content: center;
 
+    border-radius: 5%;
     background: #333;
     color: white;
   }
 
   .text_white{
     color:white;
+    background: none;
+    border: none;
+  }
+  .boton_3 {
+    background: none;
+    border: none;
+
+    width: 100%;
+    cursor: pointer;
+
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: whitesmoke;
+
+    padding-top: 2px;
+    padding-bottom: 2px;
+
+  }
+
+  #boton_despliegue {
+    widows: 100%;
+    height: 100%;
+
+    color: white;
+    background:none;
+    border: none;
+    font-size: 25px;
+  }
+  #cursor_pointer{
+    cursor:pointer;
   }
 </style>

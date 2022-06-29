@@ -3,9 +3,13 @@
         <div class="contenedor_HOME">
             <div class="contenedor_app">
                 <div v-if = "first_part">
-                    <h1>
-                        WELCOME TO THE SIMULATOR, FIRST SELECT A MOTHERBOARD
-                    </h1>
+                    <div>
+                         <h1>
+                            WELCOME TO THE SIMULATOR, FIRST SELECT A MOTHERBOARD
+                        </h1>
+                    </div>
+
+                   
                     <div>
                         <p>CHOOSE A MOTHERBOARD:</p>
                         <form @change = "error.clear">
