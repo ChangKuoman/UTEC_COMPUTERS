@@ -7,6 +7,8 @@
 
 ### Descripción del proyecto
 
+Nuestro proyecto es una aplicación web que permite el simulado de compra de una computadora teniendo en cuenta como pieza base la tarjeta madre y la compatibilidad de esta con los diferentes componentes. La información de la base de datos está basada en direntes páginas web de compra de tecnología especializada en computadoras como LoginStore, y marcas propias como MSI, AMD, Intel, entre otros. Está realizada con el micro Framework Flask para el backend y el Framework Vue para el frontend.
+
 ### Objetivos principales
 * **Misión**
 
@@ -66,11 +68,23 @@
 
 ### Script a ejecutar la base de datos
 
+Para ejecutar la base de datos con datos, lo primero que se tiene que realizar es crear en postgresql una base de datos. Ejemplo:
+
+```sql
+CREATE DATABASE ejemplo;
+```
+
+Crear el ambiente virtualizado e instalar las dependencias para el backend.
+```bash
+python3 -m venv venv
+pip install -r requirements.txt
+```
+
 ### Información de endpoints
 
 * **Endpoints en el backend**
 
-| Endpoint          | POS  | GET  | PATCH | DELETE |
+| Endpoint          | POST | GET  | PATCH | DELETE |
 | :--               | :--: | :--: | :--:  | :--:   |
 | /compatibles      | ✅   | ✅  |       |        |
 | /compatibles/:id  |      | ✅   | ✅   | ✅    |
