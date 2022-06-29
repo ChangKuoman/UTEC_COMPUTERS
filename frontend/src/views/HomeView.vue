@@ -12,21 +12,17 @@
                         such as LoginStore, and proprietary brands such as MSI, AMD, Intel,
                         among others.
                     </p>
-
                     <img class="img-150" src="@/assets/img/cat.gif" />
-
                     <a href="https://github.com/ChangKuoman/UTEC_COMPUTERS" target="_target">⇨ LINK TO GITHUB </a>
                 </div>
             </div>
-            
-            
         </div>
         <FooterComponent/>
     </div>
 </template>
 
 <script>
-import FooterComponent from '../components/FooterComponent.vue'
+import FooterComponent from '@/components/FooterComponent.vue'
 export default {
   components: { FooterComponent }
 }
