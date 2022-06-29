@@ -1,12 +1,15 @@
 <template>
     <div>
+
   <div class="contenedor_HOME">
       <div class="contenedor_app">
         <div v-if="first_part">
             <div v-if="!errors.motherboard.show">
-                <h1>
-                    WELCOME TO THE SIMULATOR, FIRST SELECT A MOTHERBOARD
-                </h1>
+                <div>
+                   <h1>
+                      WELCOME TO THE SIMULATOR, FIRST SELECT A MOTHERBOARD
+                   </h1>
+                </div>
                 <form>
                     <InputRadio
                         class="no-dots"
