@@ -5,31 +5,37 @@
                 <AdminNavigator />
             </div>
             <div class="AD_2">
-                <h1>
-                    WHEN A MOTHERBOARD OR COMPONENT IS DELETED, COMPATIBILITIES AND SIMULATIONS RELATED ARE ALSO REMOVED
-                </h1>
+                <div class="AD_2_1">
+                    <h1>
+                        WHEN A MOTHERBOARD OR COMPONENT IS DELETED, COMPATIBILITIES AND SIMULATIONS RELATED ARE ALSO REMOVED
+                    </h1>
+                </div>
+                <div class="AD_2_2">
+                    <div class="AD_2_2_1">
+                        <DeleteMotherboard
+                            v-if="!errors.motherboard.text"
+                            :motherboard_list="resources.motherboard_list"
+                            @onUpdateMotherboards="getMotherboards()"
+                            @onUpdateCompatibles="getCompatibles()"
+                        />
+                        <div v-if="errors.motherboard.text">There are no motherboards to show</div>
 
-                <DeleteMotherboard
-                    v-if="!errors.motherboard.text"
-                    :motherboard_list="resources.motherboard_list"
-                    @onUpdateMotherboards="getMotherboards()"
-                    @onUpdateCompatibles="getCompatibles()"
-                />
-                <div v-if="errors.motherboard.text">There are no motherboards to show</div>
+                        <DeleteComponent
+                            v-if="!errors.component.text"
+                            :component_list="resources.component_list"
+                            @onUpdateComponents="getComponents()"
+                            @onUpdateCompatibles="getCompatibles()"
+                        />
+                        <div v-if="errors.component.text">There are no components to show</div>
 
-                <DeleteComponent
-                    v-if="!errors.component.text"
-                    :component_list="resources.component_list"
-                    @onUpdateComponents="getComponents()"
-                    @onUpdateCompatibles="getCompatibles()"
-                />
-                <div v-if="errors.component.text">There are no components to show</div>
+                        <DeleteCompatible
+                            v-if="!errors.compatible.text"
+                            :compatible_list="resources.compatible_list"
+                            @onUpdateCompatibles="getCompatibles()"
+                        />
+                    </div>
+                </div>
 
-                <DeleteCompatible
-                    v-if="!errors.compatible.text"
-                    :compatible_list="resources.compatible_list"
-                    @onUpdateCompatibles="getCompatibles()"
-                />
                 <div v-if="errors.compatible.text">There are no compatibles to show</div>
 
                 </div>
@@ -155,9 +161,45 @@ export default {
         min-height: 750px;
         width:100%;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
 
         padding: 10px;
+    }
+    .AD_2_1 {
+        width: 100%;
+        height: 10%;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .AD_2_2 {
+        width: 100%;
+        height: 80%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+    .AD_2_2_1 {
+        width: 500px;
+        height: 500px;
+        padding: 10px;
+        overflow: scroll;
+
+        display: flex;
+        flex-direction: column;
+        
+        box-shadow: 0 8px 15px rgba(0, 0, 0, .2);
+    }
+    .AD_2_2_1::-webkit-scrollbar {
+        width: 7px;
+    }
+
+    .AD_2_2_1::-webkit-scrollbar-thumb {
+        background: rgb(47, 137, 172);
+        border-radius: 5px 5px;
     }
 </style>
