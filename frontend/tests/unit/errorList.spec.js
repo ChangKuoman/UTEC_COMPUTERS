@@ -8,8 +8,5 @@ test('error-list', async () => {
     }
   })
 
-  //await wrapper.get('[data-test="new-todo"]').setValue('New todo')
-  //await wrapper.get('[data-test="form"]').trigger('submit')
-
   expect(wrapper.text()).toContain('error1')
 })
