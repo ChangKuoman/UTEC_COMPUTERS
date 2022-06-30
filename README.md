@@ -54,16 +54,21 @@ Nuestro proyecto es una aplicación web que permite el simulado de compra de una
 
 * **Frontend Dependencias de Desarrollador**
 
-| Librería               | Versión  |
-| :--                    | :--      |
-| @babel/core            | ^7.12.16 |
-| @babel/eslint-parser   | ^7.12.16 |
-| @vue/cli-plugin-babel  | ~5.0.0   |
-| @vue/cli-plugin-eslint | ~5.0.0   |
-| @vue/cli-plugin-router | ~5.0.0   |
-| @vue/cli-service       | ~5.0.0   |
-| eslint                 | ^7.32.0  |
-| eslint-plugin-vue      | ^8.0.3   |
+| Librería                  | Versión         |
+| :--                       | :--             |
+| @babel/core               | ^7.12.16        |
+| @babel/eslint-parser      | ^7.12.16        |
+| @vue/cli-plugin-babel     | ~5.0.0          |
+| @vue/cli-plugin-eslint    | ~5.0.0          |
+| @vue/cli-plugin-router    | ~5.0.0          |
+| @vue/cli-service          | ~5.0.0          |
+| eslint                    | ^7.32.0         |
+| eslint-plugin-vue         | ^8.0.3          |
+| @vue/cli-plugin-unit-jest | ~5.0.0          |
+| @vue/test-utils           | ^2.0.0-rc.18    |
+| @vue/vue3-jest            | ^27.0.0-alpha.1 |
+| babel-jest                | ^27.0.6         |
+| jest                      | ^27.0.5         |
 
 ### Script a ejecutar la base de datos
 
