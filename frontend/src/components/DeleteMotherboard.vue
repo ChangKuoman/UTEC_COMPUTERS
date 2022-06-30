@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>DELETE MOTHERBOARD</h2>
+        <h3>DELETE MOTHERBOARD</h3>
         <form @change="clearError()">
             <select v-model="motherboard">
                 <option value="" hidden selected>SELECT AN OPTION</option>

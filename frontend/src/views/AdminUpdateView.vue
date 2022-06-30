@@ -6,9 +6,9 @@
             </div>
             <div class="AD_2">
                 <div class="AD_2_1">
-                    <h1>
+                    <h2>
                         UPDATE CANNOT BE MADE TO ID, IF YOU DONT PUT ANYTHING, IT WILL NOT BE UPDATED
-                    </h1>
+                    </h2>
                 </div>
                 <div class="AD_2_2">
                     <div class="AD_2_2_1">

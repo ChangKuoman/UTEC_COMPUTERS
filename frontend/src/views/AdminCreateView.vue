@@ -6,7 +6,7 @@
             </div>
             <div class="AD_2">
                 <div class="AD_2_1">
-                    <h1>WHEN CREATING A PRODUCT, ALL FIELDS MUST BE FILLED</h1>
+                    <h2>WHEN CREATING A PRODUCT, ALL FIELDS MUST BE FILLED</h2>
                 </div>
                 <div class="AD_2_2">
                     <div class="AD_2_2_1">
