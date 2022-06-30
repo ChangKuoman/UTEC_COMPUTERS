@@ -6,9 +6,9 @@
             </div>
             <div class="AD_2">
                 <div class="AD_2_1">
-                    <h1>
+                    <h2>
                         WHEN A MOTHERBOARD OR COMPONENT IS DELETED, COMPATIBILITIES AND SIMULATIONS RELATED ARE ALSO REMOVED
-                    </h1>
+                    </h2>
                 </div>
                 <div class="AD_2_2">
                     <div class="AD_2_2_1">
@@ -186,7 +186,8 @@ export default {
         align-items: center;
     }
     .AD_2_2_1 {
-        width: 500px;
+        min-width: 500px;
+        width: auto;
         height: 500px;
         padding: 20px;
         overflow: scroll;

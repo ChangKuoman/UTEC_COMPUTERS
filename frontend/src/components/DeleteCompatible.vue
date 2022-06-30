@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>DELETE COMPATIBLE</h2>
+        <h3>DELETE COMPATIBLE</h3>
         <form @change="clearError()">
             <select v-model="compatible">
                 <option value="" hidden selected>SELECT AN OPTION</option>

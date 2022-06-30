@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>DELETE COMPONENT</h2>
+        <h3>DELETE COMPONENT</h3>
         <form @change="clearError()">
             <select v-model="component">
                 <option value="" hidden selected>SELECT AN OPTION</option>
