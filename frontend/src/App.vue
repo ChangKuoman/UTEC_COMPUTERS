@@ -135,9 +135,9 @@ export default {
     width: auto;
     margin: 0%;
     height: auto;
-
-    /*background-image: url(@/assets/img/fondo.jpg);*/
     background-size: cover;
+  
+    background: linear-gradient(to left top, rgba(0, 255, 255, 1) 0%/*bottom-right color*/, rgba(255, 0, 255, 0.5) 50% /*middle color*/, rgba(255, 255, 0, 1) 100% /*top-left color*/),linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1))/*"faked" black background make sure to add last or it will appear before the transparent/colored layer*/;
     }
   .header{
     height: 70px;
@@ -260,11 +260,14 @@ export default {
     width: 80%;
     height: 95%;
     
-    margin-top: 2%;
-    margin-bottom: 2%;
     padding: 1%;
 
     background: #fffffffd;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   .Texto_presentacion{
     width: 50%;

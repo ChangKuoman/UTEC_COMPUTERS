@@ -1,33 +1,39 @@
 <template>
-    <div>
-        <AdminNavigator />
-        <h1>
-            WHEN A MOTHERBOARD OR COMPONENT IS DELETED, COMPATIBILITIES AND SIMULATIONS RELATED ARE ALSO REMOVED
-        </h1>
+    <div class="contenedor_HOME">
+        <div class="contenedor_app">
+            <div class="AD_1">
+                <AdminNavigator />
+            </div>
+            <div class="AD_2">
+                <h1>
+                    WHEN A MOTHERBOARD OR COMPONENT IS DELETED, COMPATIBILITIES AND SIMULATIONS RELATED ARE ALSO REMOVED
+                </h1>
 
-        <DeleteMotherboard
-            v-if="!errors.motherboard.text"
-            :motherboard_list="resources.motherboard_list"
-            @onUpdateMotherboards="getMotherboards()"
-            @onUpdateCompatibles="getCompatibles()"
-        />
-        <div v-if="errors.motherboard.text">There are no motherboards to show</div>
+                <DeleteMotherboard
+                    v-if="!errors.motherboard.text"
+                    :motherboard_list="resources.motherboard_list"
+                    @onUpdateMotherboards="getMotherboards()"
+                    @onUpdateCompatibles="getCompatibles()"
+                />
+                <div v-if="errors.motherboard.text">There are no motherboards to show</div>
 
-        <DeleteComponent
-            v-if="!errors.component.text"
-            :component_list="resources.component_list"
-            @onUpdateComponents="getComponents()"
-            @onUpdateCompatibles="getCompatibles()"
-        />
-        <div v-if="errors.component.text">There are no components to show</div>
+                <DeleteComponent
+                    v-if="!errors.component.text"
+                    :component_list="resources.component_list"
+                    @onUpdateComponents="getComponents()"
+                    @onUpdateCompatibles="getCompatibles()"
+                />
+                <div v-if="errors.component.text">There are no components to show</div>
 
-        <DeleteCompatible
-            v-if="!errors.compatible.text"
-            :compatible_list="resources.compatible_list"
-            @onUpdateCompatibles="getCompatibles()"
-        />
-        <div v-if="errors.compatible.text">There are no compatibles to show</div>
+                <DeleteCompatible
+                    v-if="!errors.compatible.text"
+                    :compatible_list="resources.compatible_list"
+                    @onUpdateCompatibles="getCompatibles()"
+                />
+                <div v-if="errors.compatible.text">There are no compatibles to show</div>
 
+                </div>
+        </div>
     </div>
 </template>
 
@@ -137,3 +143,21 @@ export default {
     }
 }
 </script>
+<style scoped>
+    .AD_1{
+        min-height: 120px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .AD_2{
+        min-height: 750px;
+        width:100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 10px;
+    }
+</style>
