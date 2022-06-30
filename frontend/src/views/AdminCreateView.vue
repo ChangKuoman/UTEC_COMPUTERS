@@ -1,26 +1,33 @@
 <template>
-    <div>
-        <AdminNavigator />
-        <h1>WHEN CREATING A PRODUCT, ALL FIELDS MUST BE FILLED</h1>
+    <div class="contenedor_HOME">
+        <div class="contenedor_app">
+            <div class="AD_1">
+                <AdminNavigator />
+            </div>
+            <div class="AD_2">
+                <h1>WHEN CREATING A PRODUCT, ALL FIELDS MUST BE FILLED</h1>
 
-        <CreateMotherboard
-            v-model="resources.motherboard_list"
-        />
+                <CreateMotherboard
+                    v-model="resources.motherboard_list"
+                />
 
-        <CreateComponent
-            v-model="resources.component_list"
-        />
+                <CreateComponent
+                    v-model="resources.component_list"
+                />
 
-        <CreateCompatible
-            :motherboard_list="resources.motherboard_list"
-            :component_list="resources.component_list"
-        />
+                <CreateCompatible
+                    :motherboard_list="resources.motherboard_list"
+                    :component_list="resources.component_list"
+                />
 
-        <ErrorList
-            class="no-dots"
-            v-if="error"
-            :error_list="error_list"
-        />
+                <ErrorList
+                    class="no-dots"
+                    v-if="error"
+                    :error_list="error_list"
+                />
+            </div>
+        </div>
+        
     </div>
 </template>
 
@@ -94,3 +101,21 @@ export default {
 }
 
 </script>
+<style scoped>
+    .AD_1{
+        min-height: 120px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .AD_2{
+        min-height: 750px;
+        width:100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 10px;
+    }
+</style>

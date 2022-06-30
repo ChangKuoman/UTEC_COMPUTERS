@@ -1,6 +1,13 @@
 <template>
-    <div>
-        <AdminNavigator />
+    <div class="contenedor_HOME">
+        <div class="contenedor_app">
+            <div class="AD_1">
+                <AdminNavigator />
+            </div>
+            <div class="AD_2">
+
+            </div>
+        </div>
     </div>
 </template>
 
@@ -24,3 +31,22 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    .AD_1{
+        min-height: 120px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .AD_2{
+        min-height: 750px;
+        width:100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 10px;
+    }
+</style>
