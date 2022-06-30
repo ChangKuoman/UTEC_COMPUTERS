@@ -2,7 +2,7 @@
     <div>
         <div class="contenedor_HOME">
             <div class="Texto_presentacion">
-                <form @change = "error.clear">
+                <form class="padding20" @change = "error.clear">
                     <InputText
                         v-model="username"
                         title="USERNAME"
@@ -23,8 +23,8 @@
                         title="CONFIRM PASSWORD"
                         type="password"
                     />
-                    <button @click.prevent = "error.clear(); check_register_form()">REGISTER</button>
                 </form>
+                <button class="buttom1" @click.prevent = "error.clear(); check_register_form()">REGISTER</button>
                 <ErrorList
                     class="no-dots"
                     v-if="error.show"
@@ -111,3 +111,20 @@ export default {
   }
 }
 </script>
+<style scoped>
+    .buttom1{
+        padding: 5px;
+        font-size: 15px;
+        margin-left: 10px;
+        margin-right:10px;
+
+        border-radius: 5px;
+        cursor: pointer;
+        border: none;
+        color: white;
+        background: #333;
+    }
+    .padding20{
+        padding: 20px;
+    }
+</style>

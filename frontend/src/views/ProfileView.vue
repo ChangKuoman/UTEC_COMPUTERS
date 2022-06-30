@@ -1,41 +1,59 @@
 <template>
-    <div>
-        <div>
-            <h2>Change password</h2>
-            <form @change = "error.clear">
-                <InputText
-                    v-model="old_password"
-                    title="OLD PASSWORD"
-                    type="password"
-                />
-                <InputText
-                    v-model="new_password"
-                    title="NEW PASSWORD"
-                    type="password"
-                />
-                <PasswordStrength
-                    v-model="password_strength"
-                    :password="new_password"
-                    v-show="new_password.length"
-                />
-                <button @click.prevent = "error.clear(); check_change_form()">Change password</button>
-            </form>
-            <ErrorList
-                class="no-dots"
-                v-if="error.show"
-                :error_list="error.list"
-            />
-        </div>
-        <div>
-            <h2>SEE PREVIOUS SIMULATIONS</h2>
-            <ul v-if="!error_simulations.length" class="no-dots">
-                <li v-for = "(simulation, index) in simulations" :key = "index">
-                    <p>Simulation id: {{simulation.id}}</p>
-                    <p>Total price: {{simulation.total_price.toFixed(2)}}</p>
-                    <button @click.prevent = "see_simulation(simulation.id)">See simulation</button>
-                </li>
-            </ul>
-            <p v-if="error_simulations.length">{{error_simulations}}</p>
+    <div class="contenedor_HOME">
+        <div class="contenedor_app">
+            <div class="PROF_1">
+                <button class="buttom1" @click.prevent="change_prof(true)">
+                    CHANGE PASSWORD
+                </button>
+                <button class="buttom1" @click.prevent="change_prof(false)">
+                    PREVIUS SIMULATIONS
+                </button>
+            </div>
+            <div class="PROF_2">
+                <div class="PROFCont" v-if="show_CPassword">
+                    <h3>CHANGE PASSWORD</h3>
+                    <div class="menu_pass">
+                        <form class="pass_cont" @change = "error.clear">
+                            <InputText
+                                v-model="old_password"
+                                title="OLD PASSWORD"
+                                type="password"
+                            />
+                            <InputText
+                                v-model="new_password"
+                                title="NEW PASSWORD"
+                                type="password"
+                            />
+                            <PasswordStrength
+                                v-model="password_strength"
+                                :password="new_password"
+                                v-show="new_password.length"
+                            />
+                        </form>
+                        <button class="buttom2" @click.prevent = "error.clear(); check_change_form()">Change password</button>
+                    </div>
+                    <ErrorList
+                        class="no-dots"
+                        v-if="error.show"
+                        :error_list="error.list"
+                    />
+                </div>
+                <div class="PROFCont" v-if="!show_CPassword">
+                    <h3>YOUR PREVIOUS SIMULATIONS</h3>
+                        <ul v-if="!error_simulations.length" class="no-dots list_sim">
+                            <li v-for = "(simulation, index) in simulations" :key = "index">
+                                <div class="simElem">
+                                    <div>
+                                        <p>Simulation id: {{simulation.id}}</p>
+                                        <p>Total price: {{simulation.total_price.toFixed(2)}}</p>
+                                    </div>
+                                    <button class="buttom2" @click.prevent = "see_simulation(simulation.id)">See simulation</button>
+                                </div>
+                            </li>
+                        </ul>
+                    <p v-if="error_simulations.length">{{error_simulations}}</p>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -61,7 +79,8 @@ export default {
             },
             error_simulations: '',
             simulations: [],
-            password_strength: ''
+            password_strength: '',
+            show_CPassword: false,
         }
     },
     mounted () {
@@ -145,7 +164,100 @@ export default {
                 this.error.show = true
                 this.error.list.push('Something does not works!')
             })
+        },
+        change_prof (value) {
+            this.show_CPassword = value
         }
     }
 }
 </script>
+<style scoped>
+    .PROF_1{
+        min-height: 120px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .PROF_2{
+        min-height: 750px;
+        width:100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 10px;
+    }
+    .buttom1{
+        padding: 6px;
+        font-size: 18px;
+        margin-left: 10px;
+        margin-right:10px;
+
+        border-radius: 6px;
+        cursor: pointer;
+        border: none;
+        color: white;
+        background: #333;
+    }
+    .buttom2{
+        padding: 6px;
+        font-size: 13px;
+        margin-left: 10px;
+        margin-right:10px;
+
+        border-radius: 6px;
+        cursor: pointer;
+        border: none;
+        color: white;
+        background: #333;
+    }
+    .PROFCont{
+        min-width: 700px;
+        height: 600px;
+        padding: 15px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .list_sim{
+        width: 100%;
+        height: 600px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-start;
+        overflow: scroll;
+    }
+    .list_sim::-webkit-scrollbar{
+        width: 5px;
+    }
+    .list_sim::-webkit-scrollbar-thumb {
+        background: rgb(47, 137, 172);
+        border-radius: 5px 5px;
+    }
+    .simElem{
+        width: 280px;
+        height: 120px;
+        padding: 10px;
+        margin: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, .2);
+    }
+    .menu_pass{
+        width: 350px;
+        height: 300px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, .2);
+    }
+    .pass_cont{
+        padding: 10px;
+    }
+</style>

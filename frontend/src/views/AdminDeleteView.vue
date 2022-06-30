@@ -12,27 +12,29 @@
                 </div>
                 <div class="AD_2_2">
                     <div class="AD_2_2_1">
-                        <DeleteMotherboard
-                            v-if="!errors.motherboard.text"
-                            :motherboard_list="resources.motherboard_list"
-                            @onUpdateMotherboards="getMotherboards()"
-                            @onUpdateCompatibles="getCompatibles()"
-                        />
-                        <div v-if="errors.motherboard.text">There are no motherboards to show</div>
+                        <div>
+                            <DeleteMotherboard
+                                v-if="!errors.motherboard.text"
+                                :motherboard_list="resources.motherboard_list"
+                                @onUpdateMotherboards="getMotherboards()"
+                                @onUpdateCompatibles="getCompatibles()"
+                            />
+                            <div v-if="errors.motherboard.text">There are no motherboards to show</div>
 
-                        <DeleteComponent
-                            v-if="!errors.component.text"
-                            :component_list="resources.component_list"
-                            @onUpdateComponents="getComponents()"
-                            @onUpdateCompatibles="getCompatibles()"
-                        />
-                        <div v-if="errors.component.text">There are no components to show</div>
+                            <DeleteComponent
+                                v-if="!errors.component.text"
+                                :component_list="resources.component_list"
+                                @onUpdateComponents="getComponents()"
+                                @onUpdateCompatibles="getCompatibles()"
+                            />
+                            <div v-if="errors.component.text">There are no components to show</div>
 
-                        <DeleteCompatible
-                            v-if="!errors.compatible.text"
-                            :compatible_list="resources.compatible_list"
-                            @onUpdateCompatibles="getCompatibles()"
-                        />
+                            <DeleteCompatible
+                                v-if="!errors.compatible.text"
+                                :compatible_list="resources.compatible_list"
+                                @onUpdateCompatibles="getCompatibles()"
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -186,11 +188,12 @@ export default {
     .AD_2_2_1 {
         width: 500px;
         height: 500px;
-        padding: 10px;
+        padding: 20px;
         overflow: scroll;
-
+        
         display: flex;
-        flex-direction: column;
+        justify-content: center;
+
         
         box-shadow: 0 8px 15px rgba(0, 0, 0, .2);
     }
