@@ -13,7 +13,7 @@ Nuestro proyecto es una aplicación web que permite el simulado de compra de una
 * **Misión**
 
     Simular el armado de una PC para ayudar a nuestros usuarios que no tengan un conocimiento base de como comprar una computadora por piezas.
-    
+
 * **Visión**
 
     Cumplir con la demanda de nuestros usuarios, siendo útil y de fácil manejo.
@@ -31,7 +31,6 @@ Nuestro proyecto es una aplicación web que permite el simulado de compra de una
 | configparser       | 5.2.0   |
 | Flask              | 2.1.2   |
 | Flask-Cors         | 3.0.10  |
-| Flask-Login        | 0.6.1   |
 | Flask-SQLAlchemy   | 2.5.1   |
 | greenlet           | 1.1.2   |
 | importlib-metadata | 4.11.4  |
@@ -74,10 +73,23 @@ Para ejecutar la base de datos con datos, lo primero que se tiene que realizar e
 CREATE DATABASE ejemplo;
 ```
 
-Crear el ambiente virtualizado e instalar las dependencias para el backend.
+Crear un archivo config.txt dentro de la carpeta /backend para la configuración de la base de datos. Ejemplo:
+
+```
+[config]
+username=postgres
+password=admin
+host=localhost:5432
+database_name=ejemplo
+secret_key=clavesecreta
+```
+
+Crear el ambiente virtualizado, instalar las dependencias para el backend, entrar a la carpeta del backend y ejecutar el script dump_data.py que contiene datos para probar la página web.
 ```bash
 python3 -m venv venv
 pip install -r requirements.txt
+cd backend
+python3 dump_data.py
 ```
 
 ### Información de endpoints
@@ -132,16 +144,44 @@ Una vez autenticado, hay un endpoint en el frontend /profile en el que se puede 
 ### Manejo de errores HTTP
 **500: Errores en el servidor**
 
+* **500: Internal Server Error**<br>
+Si se genera un error en el backend, este mandará una respuesta 500 y el frontend mostrará el la página que ha ocurrido un error.
+
 **400: Errores en el cliente**
+
+* **404: Resource Not Found**<br>
+Si un recurso no es encontrado en el backend, este mandará una respuesta 404 y el frontend dependiendo de si el recurso pedido es importante o no para la navegación en la página, o no lo pintará y seguirá o informará que no se encuentra el recurso.
+
+* **422: Unprocessable**<br>
+Si el body de la petición no cumple con los datos necesarios y/o correctos para procesar la petición, el backend mandará una respuesta 422 y el frontend mostrará que la petición fue incorrecta.
 
 **300: Redirección**
 
+* En el desarrollo de la aplicación web, no se visto necesario implementar visualmente las respuestas de redirección.
+
 **200: Exitoso**
+
+* En el desarrollo de la aplicación web, no se visto necesario implementar visualmente las respuestas exitosas.
 
 **100: Informacional**
 
+* En el desarrollo de la aplicación web, no se visto necesario implementar visualmente las respuestas informacionales.
+
 ### Deployment scripts
 
-Para la ejecución del backend ...
+Para la ejecución del backend (antes se debe crear e ingresar el ambiente virtualizado e instalar las dependencias):
 
-Para la ejecución del frontend ...
+```bash
+cd backend
+$env:FLASK_APP = 'server'
+$env:FLASK_ENV = 'development'
+flask run
+```
+
+Para la ejecución del frontend:
+
+```bash
+cd frontend
+npm install
+npm run serve
+```

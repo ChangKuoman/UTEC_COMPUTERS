@@ -1,10 +1,9 @@
 from config import db
-from flask_login import UserMixin
 from sqlalchemy import func
 import bcrypt
 from uuid import uuid4
 
-class User(db.Model, UserMixin):
+class User(db.Model):
     __tablename__ = 'userinfo'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)

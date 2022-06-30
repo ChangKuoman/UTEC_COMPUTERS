@@ -1,0 +1,75 @@
++------------------------------------------------------------------------+
+|                                userinfo                                |
++----------------+--------------+----------+----+----+--------+----------+
+| Atributo       | Tipo de dato | Nullable | PK | FK | Unique | Default  |
++----------------+--------------+----------+----+----+--------+----------+
+| id             | Integer      | False    | X  |    |        | nextval()|
+| username       | String       | False    |    |    |   X    |          |
+| password       | String       | False    |    |    |        |          |
+| role           | String       | False    |    |    |        | 'user'   |
+| date_created   | DateTime     | False    |    |    |        | NOW()    |
++----------------+--------------+----------+----+----+--------+----------+
+
++------------------------------------------------------------------------+
+|                              motherboard                               |
++----------------+--------------+----------+----+----+--------+----------+
+| Atributo       | Tipo de dato | Nullable | PK | FK | Unique | Default  |
++----------------+--------------+----------+----+----+--------+----------+
+| id             | Integer      | False    | X  |    |        | nextval()|
+| name           | String       | False    |    |    |   X    |          |
+| price          | Float        | False    |    |    |        |          |
+| description    | Text         | False    |    |    |        |          |
+| date_created   | DateTime     | False    |    |    |        | NOW()    |
+| date_modified  | DateTime     | False    |    |    |        | NOW()    |
+| create_by      | Integer      | False    |    |  X |        |          |
+| modify_by      | Integer      | False    |    |  X |        |          |
++----------------+--------------+----------+----+----+--------+----------+
+
++------------------------------------------------------------------------+
+|                                 component                              |
++----------------+--------------+----------+----+----+--------+----------+
+| Atributo       | Tipo de dato | Nullable | PK | FK | Unique | Default  |
++----------------+--------------+----------+----+----+--------+----------+
+| id             | Integer      | False    | X  |    |        | nextval()|
+| name           | String       | False    |    |    |   X    |          |
+| price          | Float        | False    |    |    |        |          |
+| description    | Text         | False    |    |    |        |          |
+| component_type | String       | False    |    |    |        |          |
+| date_created   | DateTime     | False    |    |    |        | NOW()    |
+| date_modified  | DateTime     | False    |    |    |        | NOW()    |
+| create_by      | Integer      | False    |    |  X |        |          |
+| modify_by      | Integer      | False    |    |  X |        |          |
++----------------+--------------+----------+----+----+--------+----------+
+
++------------------------------------------------------------------------+
+|                               compatible                               |
++----------------+--------------+----------+----+----+--------+----------+
+| Atributo       | Tipo de dato | Nullable | PK | FK | Unique | Default  |
++----------------+--------------+----------+----+----+--------+----------+
+| id             | Integer      | False    |    |    |    X   | nextval()|
+| id_motherboard | Integer      | False    | X  | X  |        |          |
+| id_component   | Integer      | False    | X  | X  |        |          |
+| date_created   | DateTime     | False    |    |    |        | NOW()    |
+| create_by      | Integer      | False    |    |  X |        |          |
++----------------+--------------+----------+----+----+--------+----------+
+
++------------------------------------------------------------------------+
+|                               simulation                               |
++----------------+--------------+----------+----+----+--------+----------+
+| Atributo       | Tipo de dato | Nullable | PK | FK | Unique | Default  |
++----------------+--------------+----------+----+----+--------+----------+
+| id             | Integer      | False    | X  |    |        | nextval()|
+| id_motherboard | Integer      | False    |    | X  |        |          |
+| date_created   | DateTime     | False    |    |    |        | NOW()    |
+| create_by      | Integer      | False    |    | X  |        |          |
+| total_price    | Flaot        | False    |    |    |        | '0.0'    |
++----------------+--------------+----------+----+----+--------+----------+
+
++------------------------------------------------------------------------+
+|                         simulation_component                           |
++----------------+--------------+----------+----+----+--------+----------+
+| Atributo       | Tipo de dato | Nullable | PK | FK | Unique | Default  |
++----------------+--------------+----------+----+----+--------+----------+
+| id_simulation  | Integer      | False    | X  | X  |        |          |
+| id_component   | Integer      | False    | X  | X  |        |          |
++----------------+--------------+----------+----+----+--------+----------+

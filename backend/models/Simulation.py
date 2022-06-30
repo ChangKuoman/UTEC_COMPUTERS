@@ -8,7 +8,7 @@ class Simulation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_motherboard = db.Column(db.Integer, ForeignKey('motherboard.id'), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, server_default=func.now())
-    create_by = db.Column(db.Integer, ForeignKey('userinfo.id'), nullable=False, default=0)
+    create_by = db.Column(db.Integer, ForeignKey('userinfo.id'), nullable=False)
     total_price = db.Column(db.Float, nullable=False, server_default='0.0')
 
     simulation_components = db.relationship('SimulationComponent', backref='simulation', lazy=True, cascade="all, delete-orphan")
