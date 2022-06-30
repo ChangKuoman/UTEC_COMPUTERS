@@ -1,10 +1,7 @@
 <template>
     <div>
         <p>
-            {{product.name}}
-        </p>
-        <p>
-            S/. {{product.price.toFixed(2)}}
+            {{product.name}}: S/. {{product.price.toFixed(2)}}
         </p>
     </div>
 </template>
