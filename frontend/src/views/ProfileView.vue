@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { host } from '@/host.js';
 import InputText from '@/components/InputText.vue'
 import PasswordStrength from '@/components/PasswordStrength.vue'
 import ErrorList from '@/components/ErrorList.vue'
@@ -85,18 +86,38 @@ export default {
     },
     mounted () {
         if (localStorage.getItem('token')) {
-            fetch('http://127.0.0.1:5000/simulations', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+            fetch(host + '/simulations', { method: 'GET' })
             .then(response => response.json())
             .then(JsonResponse => {
                 if (JsonResponse['success'] === true) {
-                    this.simulations = Object.values(JsonResponse['simulations']).filter(simulation => {
-                        return simulation.create_by === this.$root.user_info.id
+
+                    fetch(host + '/users', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            'token': localStorage.getItem('token')
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
                     })
+                    .then(response2 => response2.json())
+                    .then(JsonResponse2 => {
+                        if (JsonResponse2['success'] === true) {
+                            this.simulations = Object.values(JsonResponse['simulations']).filter(simulation => {
+                                return simulation.create_by === JsonResponse2['user']['id']
+                            })
+                            if (!this.simulations.length) {
+                                this.error_simulations = 'You do not have any simulations'
+                            }
+                        }
+                        else {
+                            this.$router.push("/")
+                        }
+                    })
+                    .catch(() => {
+                        this.$router.push("/")
+                    })
+
                 }
                 else if (JsonResponse['code'] === 404) {
                     this.error_simulations = 'You do not have any simulations'
@@ -138,32 +159,55 @@ export default {
             }
         },
         changePassword () {
-            fetch('http://127.0.0.1:5000/users/' + this.$root.user_info.id, {
-                method: "PATCH",
+            fetch(host + '/users', {
+                method: 'POST',
                 body: JSON.stringify({
-                    'old_password': this.old_password,
-                    'new_password': this.new_password
+                    'token': localStorage.getItem('token')
                 }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-            .then(response => response.json())
-            .then(JsonResponse => {
-                if (JsonResponse['success'] === true) {
-                    alert('Password change successfully!')
-                    this.old_password = ''
-                    this.new_password = ''
+            .then(response2 => response2.json())
+            .then(JsonResponse2 => {
+                if (JsonResponse2['success'] === true) {
+
+                    fetch(host + '/users/' + JsonResponse2['user']['id'], {
+                        method: "PATCH",
+                        body: JSON.stringify({
+                            'old_password': this.old_password,
+                            'new_password': this.new_password
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(JsonResponse => {
+                        if (JsonResponse['success'] === true) {
+                            alert('Password change successfully!')
+                            this.old_password = ''
+                            this.new_password = ''
+                        }
+                        else {
+                            this.error.show = true
+                            this.error.list.push('Your old password does not match')
+                        }
+                    })
+                    .catch(() => {
+                        this.error.show = true
+                        this.error.list.push('Something does not works!')
+                    })
+
                 }
                 else {
-                    this.error.show = true
-                    this.error.list.push('Your old password does not match')
+                    this.$router.push("/")
                 }
             })
             .catch(() => {
-                this.error.show = true
-                this.error.list.push('Something does not works!')
+                this.$router.push("/")
             })
+
         },
         change_prof (value) {
             this.show_CPassword = value
