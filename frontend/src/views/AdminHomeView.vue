@@ -4,7 +4,9 @@
       <div class="AD_1">
         <AdminNavigator />
       </div>
-      <div class="AD_2"></div>
+      <div class="AD_2">
+        <img class="img_shiba" src="@/assets/img/shibaHipster.jpg" />
+      </div>
     </div>
   </div>
 </template>
@@ -61,5 +63,8 @@ export default {
   justify-content: center;
 
   padding: 10px;
+}
+.img_shiba {
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 </style>
