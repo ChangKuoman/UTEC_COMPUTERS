@@ -148,7 +148,8 @@ def post_user():
                 error_403 = True
                 abort(403)
             return jsonify({
-                'success': True
+                'success': True,
+                'user': user.format()
             })
 
         if username is None or password is None:

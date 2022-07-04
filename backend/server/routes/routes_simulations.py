@@ -108,5 +108,7 @@ def post_simulation():
     except:
         if error_422:
             abort(422)
+        if error_403:
+            abort(403)
         else:
             abort(500)
