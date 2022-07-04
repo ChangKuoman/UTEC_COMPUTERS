@@ -157,6 +157,12 @@ Si se genera un error en el backend, este mandará una respuesta 500 y el fronte
 
 **400: Errores en el cliente**
 
+* **401: Unauthorized**<br>
+Si se intenta a acceder a un recurso, pero no se encuentra en sesión, el backend mandará una respuesta 401 y el frontend redigirá a la página adecuaada.
+
+* **403: Forbidden**<br>
+Si se intenta a acceder a un recurso, y sí se encuentra en sesión, pero no se tiene acceso por no ser administrador, el backend mandará una respuesta 403 y el frontend redigirá a la página adecuaada.
+
 * **404: Resource Not Found**<br>
 Si un recurso no es encontrado en el backend, este mandará una respuesta 404 y el frontend dependiendo de si el recurso pedido es importante o no para la navegación en la página, o no lo pintará y seguirá o informará que no se encuentra el recurso.
 
