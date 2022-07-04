@@ -84,10 +84,10 @@ c6 = Component(
 c6_id = c6.insert()
 
 c7 = Component(
-    price=1511.49,
-    name="AMD Ryzen 9 5900X",
+    price=864.00,
+    name="Intel Core I5-10400f Lga1200",
     component_type="CPU",
-    description="4.8 GHz, 70 MB cache, Socket AM4",
+    description="DDR4, LGA 1200, 4.3 GHz",
     create_by=u_id
 )
 c7_id = c7.insert()
