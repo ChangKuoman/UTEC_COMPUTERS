@@ -1,12 +1,12 @@
-import { mount } from '@vue/test-utils'
-import InputText from '@/components/InputText.vue'
+import { mount } from "@vue/test-utils";
+import InputText from "@/components/InputText.vue";
 
-test('input-text', async () => {
+test("input-text", async () => {
   const wrapper = mount(InputText, {
     props: {
-        title: 'Titulo'
-    }
-  })
+      title: "Titulo",
+    },
+  });
 
-  expect(wrapper.find('p').text()).toBe('Titulo')
-})
+  expect(wrapper.find("p").text()).toBe("Titulo");
+});

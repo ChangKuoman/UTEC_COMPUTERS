@@ -1,8 +1,8 @@
-import { mount } from '@vue/test-utils'
-import AdminNavigator from '@/components/AdminNavigator.vue'
+import { mount } from "@vue/test-utils";
+import AdminNavigator from "@/components/AdminNavigator.vue";
 
-test('error-list', async () => {
-  const wrapper = mount(AdminNavigator)
+test("error-list", async () => {
+  const wrapper = mount(AdminNavigator);
 
-  expect(wrapper.findAll('li')).toHaveLength(4)
-})
+  expect(wrapper.findAll("li")).toHaveLength(4);
+});
