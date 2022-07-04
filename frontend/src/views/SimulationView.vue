@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { host } from '@/host.js';
 import ProductSimulation from '@/components/ProductSimulation.vue'
 
 export default {
@@ -51,16 +52,36 @@ export default {
     },
     mounted () {
         if (localStorage.getItem('token')) {
-            fetch('http://127.0.0.1:5000/simulations/' + this.id, { method: "GET" })
+            fetch(host + '/simulations/' + this.id, { method: "GET" })
             .then(response => response.json())
             .then(JsonResponse => {
                 if (JsonResponse['success'] === true){
-                    if (JsonResponse['simulation']['create_by'] !== this.$root.user_info.id) {
+                    fetch(host + '/users', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            'token': localStorage.getItem('token')
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response2 => response2.json())
+                    .then(JsonResponse2 => {
+                        if (JsonResponse2['success'] === true) {
+                            if (JsonResponse2['user']['id'] !== JsonResponse['simulation']['create_by']) {
+                                this.$router.push("/")
+                            }
+                            else {
+                                this.simulation = JsonResponse['simulation']
+                            }
+                        }
+                        else {
+                            this.$router.push("/")
+                        }
+                    })
+                    .catch(() => {
                         this.$router.push("/")
-                    }
-                    else {
-                        this.simulation = JsonResponse['simulation']
-                    }
+                    })
                 }
                 else {
                     alert(JsonResponse['message'])
@@ -111,7 +132,7 @@ export default {
     .list_shop{
         width: auto;
         min-height: 120px;
-        
+
         margin:0;
         padding:0;
         overflow: scroll;

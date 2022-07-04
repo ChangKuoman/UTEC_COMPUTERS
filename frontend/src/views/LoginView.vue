@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { host } from '@/host.js';
 import FooterComponent from '@/components/FooterComponent.vue'
 import InputText from '@/components/InputText.vue'
 import ErrorList from '@/components/ErrorList.vue'
@@ -67,7 +68,7 @@ export default {
         }
     },
     login () {
-        fetch('http://127.0.0.1:5000/users', {
+        fetch(host + '/users', {
             method: 'POST',
             body: JSON.stringify({
                 'username': this.username,
@@ -81,13 +82,11 @@ export default {
         .then(response => response.json())
         .then(JsonResponse => {
             if (JsonResponse['success'] === true) {
-                localStorage.setItem('token', JsonResponse['token'])
-
+                localStorage.setItem('token', JsonResponse['user']['token'])
                 if (JsonResponse['user']['role'] === 'admin') {
                     this.$root.data_session.admin = true
                 }
                 this.$root.data_session.logged = true
-                this.$root.user_info = JsonResponse['user']
 
                 this.$router.push('/simulator')
             }

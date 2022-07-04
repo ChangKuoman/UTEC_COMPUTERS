@@ -34,7 +34,7 @@
         <button @click="show_despliegue" class="box_boton">
             <i id="boton_despliegue" class='bx bxs-user-circle'></i>
         </button>
-        
+
         <div v-if = "despliegue">
           <!--CUANDO ESTA LOGEADO Y NO ES ADMIN-->
           <div class="CONTENEDOR_BOTONES_LOGIN" v-if = "!data_session.admin">
@@ -53,7 +53,7 @@
             <div class="boton_3">
               <router-link class="text_white" v-if = "data_session.admin" to="/admin">ADMIN</router-link>
             </div>
-        
+
             <div class="boton_3">
               <router-link class="text_white" v-if = "data_session.logged" to="/simulator">SIMULATE!</router-link>
             </div>
@@ -69,13 +69,14 @@
 
       </div>
 
-    
+
     </nav>
-    <router-view :user_info="user_info"/>
+    <router-view/>
   </div>
 </template>
 
 <script>
+import { host } from '@/host.js';
 
 export default {
   name: 'navComponent',
@@ -84,15 +85,39 @@ export default {
       data_session: {
         logged: false,
         admin: false,
-
       },
-      user_info: null,
       despliegue: false
     }
   },
   mounted () {
     if (localStorage.getItem('token')){
-      localStorage.removeItem('token')
+        fetch(host + '/users', {
+            method: 'POST',
+            body: JSON.stringify({
+                'token': localStorage.getItem('token')
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(JsonResponse => {
+            if (JsonResponse['success'] === true) {
+              this.data_session.logged = true
+              if (JsonResponse['user']['role'] === 'admin') {
+                this.data_session.admin = true
+              }
+            }
+            else {
+                this.$router.push('/login')
+            }
+        })
+        .catch(() => {
+            this.$router.push('/login')
+        })
+    }
+    else {
+        this.$router.push('/login')
     }
   },
   methods: {
@@ -100,13 +125,10 @@ export default {
       localStorage.removeItem('token')
       this.data_session.logged = false
       this.data_session.admin = false
-      this.user_info = null
       this.$router.push('/')
-
     },
     show_despliegue() {
       this.despliegue = !this.despliegue
-
     }
   }
 }
@@ -114,7 +136,7 @@ export default {
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
-  
+
   html{
     font-family: 'Lato', sans-serif;
   }
@@ -137,7 +159,7 @@ export default {
     margin: 0%;
     height: auto;
     background-size: cover;
-  
+
     background: linear-gradient(to left top, rgba(0, 255, 255, 1) 0%/*bottom-right color*/, rgba(255, 0, 255, 0.5) 50% /*middle color*/, rgba(255, 255, 0, 1) 100% /*top-left color*/),linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1))/*"faked" black background make sure to add last or it will appear before the transparent/colored layer*/;
     }
   .header{
@@ -148,7 +170,7 @@ export default {
     flex-direction: row;
 
     align-items: center;
-    
+
     background: linear-gradient(to bottom,  rgb(255, 255, 255) 0%,rgb(249, 254, 255) 100%);
   }
 
@@ -201,7 +223,7 @@ export default {
     width: 10%;
     min-width: 100px;
     display: inline-block;
-    
+
 
     border-radius: 5px 5px;
     border: none;
@@ -260,7 +282,7 @@ export default {
   .contenedor_app{
     width: 80%;
     height: 95%;
-    
+
     padding: 1%;
 
     background: #fffffffd;
@@ -317,7 +339,7 @@ export default {
     height: 120px;
     padding-left: 15px;
     padding-right: 15px;
-    
+
     align-items: center;
     justify-content: center;
 

@@ -1,6 +1,7 @@
 from flask import abort, jsonify, request
 from models.User import User
 from server.routes.__init__ import api
+from sqlalchemy import func
 
 
 @api.route('/users', methods=['GET'])
@@ -86,7 +87,9 @@ def patch_user(id):
             abort(422)
 
         user_to_patch.change_password(new_password)
-        user_to_patch.update()
+        user_id = user_to_patch.update()
+        if user_id is None:
+            abort(500)
 
         selection_users = User.query.order_by('id').all()
         dictionary_users = {user.id: user.format() for user in selection_users}
@@ -110,6 +113,8 @@ def patch_user(id):
 def post_user():
     error_404 = False
     error_422 = False
+    error_401 = False
+    error_403 = False
     try:
         body = request.get_json()
 
@@ -118,6 +123,8 @@ def post_user():
         role = body.get('role', None)
 
         login = body.get('login', None)
+        token = body.get('token', None)
+        admin = body.get('admin', None)
         if login:
             user = User.query.filter(User.username==username).one_or_none()
             if user is None:
@@ -127,11 +134,27 @@ def post_user():
                 error_422 = True
                 abort(422)
 
-            key = user.generate_key()
+            user.generate_token()
+            user_id = user.update()
+            if user_id is None:
+                abort(500)
+
             return jsonify({
                 'success': True,
-                'user': user.format(),
-                'token': key
+                'user': user.format()
+            })
+
+        if token:
+            user = User.check_token(token)
+            if user is None:
+                error_401 = True
+                abort(401)
+            if admin and user.role != 'admin':
+                error_403 = True
+                abort(403)
+            return jsonify({
+                'success': True,
+                'user': user.format()
             })
 
         if username is None or password is None:
@@ -153,6 +176,7 @@ def post_user():
         return jsonify({
             'success': True,
             'created_id': new_user_id,
+            'user': new_user.format(),
             'users': dictionary_users,
             'total_users': len(selection_users)
         })
@@ -161,5 +185,9 @@ def post_user():
             abort(404)
         elif error_422:
             abort(422)
+        elif error_401:
+            abort(401)
+        elif error_403:
+            abort(403)
         else:
             abort(500)
