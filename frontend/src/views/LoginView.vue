@@ -119,7 +119,6 @@ export default {
         border-radius: 5px;
         cursor: pointer;
         border: none;
-        color: white;
         background: #333;
     }
     .buttom2 {
