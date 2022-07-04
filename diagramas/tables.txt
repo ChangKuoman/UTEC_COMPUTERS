@@ -1,14 +1,17 @@
-+------------------------------------------------------------------------+
-|                                userinfo                                |
-+----------------+--------------+----------+----+----+--------+----------+
-| Atributo       | Tipo de dato | Nullable | PK | FK | Unique | Default  |
-+----------------+--------------+----------+----+----+--------+----------+
-| id             | Integer      | False    | X  |    |        | nextval()|
-| username       | String       | False    |    |    |   X    |          |
-| password       | String       | False    |    |    |        |          |
-| role           | String       | False    |    |    |        | 'user'   |
-| date_created   | DateTime     | False    |    |    |        | NOW()    |
-+----------------+--------------+----------+----+----+--------+----------+
++---------------------------------------------------------------------------+
+|                                  userinfo                                 |
++-------------------+--------------+----------+----+----+--------+----------+
+| Atributo          | Tipo de dato | Nullable | PK | FK | Unique | Default  |
++-------------------+--------------+----------+----+----+--------+----------+
+| id                | Integer      | False    | X  |    |        | nextval()|
+| username          | String       | False    |    |    |   X    |          |
+| password          | String       | False    |    |    |        |          |
+| role              | String       | False    |    |    |        | 'user'   |
+| date_created      | DateTime     | False    |    |    |        | NOW()    |
+| date_modified     | DateTime     | False    |    |    |        | NOW()    |
+| token             | String       | False    |    |    |   X    |          |
+| token_expire_date | DateTime     | False    |    |    |        |          |
++-------------------+--------------+----------+----+----+--------+----------+
 
 +------------------------------------------------------------------------+
 |                              motherboard                               |

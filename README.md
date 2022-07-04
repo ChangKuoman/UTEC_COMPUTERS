@@ -69,6 +69,9 @@ Nuestro proyecto es una aplicación web que permite el simulado de compra de una
 | @vue/vue3-jest            | ^27.0.0-alpha.1 |
 | babel-jest                | ^27.0.6         |
 | jest                      | ^27.0.5         |
+| eslint-config-prettier    | ^8.3.0          |
+| eslint-plugin-prettier"   | ^4.0.0          |
+| prettier                  | ^2.4.1          |
 
 ### Script a ejecutar la base de datos
 
@@ -153,6 +156,12 @@ Una vez autenticado, hay un endpoint en el frontend /profile en el que se puede 
 Si se genera un error en el backend, este mandará una respuesta 500 y el frontend mostrará el la página que ha ocurrido un error.
 
 **400: Errores en el cliente**
+
+* **401: Unauthorized**<br>
+Si se intenta a acceder a un recurso, pero no se encuentra en sesión, el backend mandará una respuesta 401 y el frontend redigirá a la página adecuaada.
+
+* **403: Forbidden**<br>
+Si se intenta a acceder a un recurso, y sí se encuentra en sesión, pero no se tiene acceso por no ser administrador, el backend mandará una respuesta 403 y el frontend redigirá a la página adecuaada.
 
 * **404: Resource Not Found**<br>
 Si un recurso no es encontrado en el backend, este mandará una respuesta 404 y el frontend dependiendo de si el recurso pedido es importante o no para la navegación en la página, o no lo pintará y seguirá o informará que no se encuentra el recurso.
