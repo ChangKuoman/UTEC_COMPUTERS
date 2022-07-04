@@ -1,9 +1,9 @@
 import unittest
 import sys
 sys.path.append("..")
-sys.path.append("../backend")
-from backend.server import create_app
-from backend.config import setup_db
+sys.path.append("../server")
+from server import create_app
+from config import setup_db
 import json
 import configparser
 
