@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { host } from '@/host.js';
 import InputText from '@/components/InputText.vue'
 import ErrorList from '@/components/ErrorList.vue'
 
@@ -86,14 +87,14 @@ export default {
             }
         },
         createComponent () {
-            fetch('http://127.0.0.1:5000/components', {
+            fetch(host + '/components', {
                 method: 'POST',
                 body: JSON.stringify({
                     'name': this.name,
                     'description': this.description,
                     'price': this.price,
                     'type': this.type,
-                    'create_by': this.$root.user_info.id
+                    'token': localStorage.getItem('token')
                 }),
                 headers: {
                     'Content-Type': 'application/json'

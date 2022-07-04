@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import { host } from '@/host.js';
+
 export default {
     name: 'DeleteMotherboard',
     props: [ 'motherboard_list' ],
@@ -36,7 +38,7 @@ export default {
                 this.error_text = 'You must select a motherboard to delete'
             }
             else {
-                fetch('http://127.0.0.1:5000/motherboards/' + this.motherboard, { method: 'DELETE' })
+                fetch(host + '/motherboards/' + this.motherboard, { method: 'DELETE' })
                 .then(response => response.json())
                 .then(JsonResponse => {
                     if (JsonResponse['success'] === true) {

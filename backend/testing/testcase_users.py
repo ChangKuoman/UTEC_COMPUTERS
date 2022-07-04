@@ -86,7 +86,6 @@ class TestCaseUsers(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data['success'])
         self.assertTrue(data['user'])
-        self.assertTrue(data['token'])
 
 
     def test_post_login_fail(self):

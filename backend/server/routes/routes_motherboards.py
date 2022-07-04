@@ -67,6 +67,8 @@ def delete_motherboard(id):
 def patch_motherboard(id):
     error_404 = False
     error_422 = False
+    error_401 = False
+    error_403 = False
     try:
         motherboard_to_patch = MotherBoard.query.filter(MotherBoard.id==id).one_or_none()
 
@@ -75,11 +77,18 @@ def patch_motherboard(id):
             abort(404)
 
         body = request.get_json()
-        if 'modify_by' not in body:
+        if 'token' not in body:
             error_422 = True
             abort(422)
+        user = User.check_token(body.get('token'))
+        if user is None:
+            error_401 = True
+            abort(401)
+        if user.role != 'admin':
+            error_403 = True
+            abort(403)
 
-        motherboard_to_patch.modify_by = body.get('modify_by')
+        motherboard_to_patch.modify_by = user.id
         if 'description' in body:
             motherboard_to_patch.description = body.get('description')
         if 'price' in body:
@@ -106,6 +115,10 @@ def patch_motherboard(id):
             abort(404)
         elif error_422:
             abort(422)
+        elif error_401:
+            abort(401)
+        elif error_403:
+            abort(403)
         else:
             abort(500)
 
@@ -114,6 +127,7 @@ def patch_motherboard(id):
 def post_motherboard():
     error_422 = False
     error_401 = False
+    error_403 = False
     try:
         body = request.get_json()
 
@@ -129,6 +143,9 @@ def post_motherboard():
         if user is None:
             error_401 = True
             abort(401)
+        if user.role != 'admin':
+            error_403 = True
+            abort(403)
         create_by = user.id
 
         new_motherboard = MotherBoard(price=price, name=name, description=description, create_by=create_by)
@@ -148,7 +165,9 @@ def post_motherboard():
     except:
         if error_422:
             abort(422)
-        if error_401:
+        elif error_401:
             abort(401)
+        elif error_403:
+            abort(403)
         else:
             abort(500)

@@ -1,6 +1,7 @@
 from flask import abort, jsonify, request
 from models.Compatible import Compatible
 from server.routes.__init__ import api
+from models.User import User
 
 
 @api.route('/compatibles', methods=['GET'])
@@ -65,16 +66,26 @@ def delete_compatible(id):
 @api.route('/compatibles', methods=['POST'])
 def post_compatible():
     error_422 = False
+    error_401 = False
+    error_403 = False
     try:
         body = request.get_json()
 
         id_motherboard = body.get('id_motherboard', None)
         id_component = body.get('id_component', None)
-        create_by = body.get('create_by', None)
+        token = body.get('token', None)
 
-        if create_by is None or id_component is None or id_motherboard is None:
+        if token is None or id_component is None or id_motherboard is None:
             error_422 = True
             abort(422)
+        user = User.check_token(token)
+        if user is None:
+            error_401 = True
+            abort(401)
+        if user.role != 'admin':
+            error_403 = True
+            abort(403)
+        create_by = user.id
 
         new_compatible = Compatible(create_by=create_by, id_component=id_component, id_motherboard=id_motherboard)
         new_compatible_id = new_compatible.insert()
@@ -93,5 +104,9 @@ def post_compatible():
     except:
         if error_422:
             abort(422)
+        elif error_401:
+            abort(401)
+        elif error_403:
+            abort(403)
         else:
             abort(500)

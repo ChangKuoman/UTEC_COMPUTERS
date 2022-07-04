@@ -63,7 +63,7 @@ export default {
                 body: JSON.stringify({
                     'id_motherboard': this.motherboard,
                     'id_component': this.component,
-                    'create_by': this.$root.user_info.id
+                    'token': localStorage.getItem('token')
                 }),
                 headers: {
                     'Content-Type': 'application/json'

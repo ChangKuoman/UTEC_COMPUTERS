@@ -23,16 +23,18 @@ class TestCaseMotherboards(unittest.TestCase):
 
         user_res = self.client().post('/users', json = {
             'username': 'test-compatible',
-            'password': 'aA.12345'
+            'password': 'aA.12345',
+            'role': 'admin'
         })
         user_data = json.loads(user_res.data)
-        self.user_id = user_data['created_id']
+        self.user_token = user_data['user']['token']
+        self.user_id = user_data['user']['id']
 
         motherboard_res = self.client().post('/motherboards', json = {
             'name': 'test-compatible-m',
             'price': 20.00,
             'description': 'interesting',
-            'create_by': self.user_id
+            'token': self.user_token
         })
         motherboard_data = json.loads(motherboard_res.data)
         self.motherboard_id = motherboard_data['created_id']
@@ -41,7 +43,7 @@ class TestCaseMotherboards(unittest.TestCase):
             'name': 'test-compatible-c',
             'price': 20.00,
             'description': 'interesting',
-            'create_by': self.user_id,
+            'token': self.user_token,
             'type': 'RAM'
         })
         component_data = json.loads(component_res.data)
@@ -54,7 +56,7 @@ class TestCaseMotherboards(unittest.TestCase):
         compatible = {
             'id_motherboard': self.motherboard_id,
             'id_component': self.component_id,
-            'create_by': self.user_id
+            'token': self.user_token
         }
         res = self.client().post('/compatibles', json = compatible)
         data = json.loads(res.data)
@@ -85,7 +87,7 @@ class TestCaseMotherboards(unittest.TestCase):
         compatible = {
             'id_motherboard': self.motherboard_id,
             'id_component': self.component_id,
-            'create_by': self.user_id
+            'token': self.user_token
         }
         compatible_res = self.client().post('/compatibles', json = compatible)
         compatible_data = json.loads(compatible_res.data)
@@ -104,7 +106,7 @@ class TestCaseMotherboards(unittest.TestCase):
         compatible = {
             'id_motherboard': self.motherboard_id,
             'id_component': self.component_id,
-            'create_by': self.user_id
+            'token': self.user_token
         }
         compatible_res = self.client().post('/compatibles', json = compatible)
         compatible_data = json.loads(compatible_res.data)
@@ -133,7 +135,7 @@ class TestCaseMotherboards(unittest.TestCase):
         compatible = {
             'id_motherboard': self.motherboard_id,
             'id_component': self.component_id,
-            'create_by': self.user_id
+            'token': self.user_token
         }
         compatible_res = self.client().post('/compatibles', json = compatible)
         compatible_data = json.loads(compatible_res.data)

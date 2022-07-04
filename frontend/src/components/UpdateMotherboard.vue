@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { host } from '@/host.js';
 import InputText from '@/components/InputText.vue'
 import ErrorList from '@/components/ErrorList.vue'
 
@@ -52,7 +53,7 @@ export default {
         }
     },
     mounted () {
-        fetch('http://127.0.0.1:5000/motherboards', { method: 'GET' })
+        fetch(host + '/motherboards', { method: 'GET' })
         .then(response => response.json())
         .then(JsonResponse => {
             if (JsonResponse['success'] === true){
@@ -102,10 +103,10 @@ export default {
             const name = this.name!='' ? {'name': this.name} : {}
             const description = this.description!='' ? {'description': this.description} : {}
             const price = this.price!=0 ? {'price': this.price} : {}
-            const modify_by = {'modify_by': this.$root.user_info.id}
-            const result = Object.assign(name, description, price, modify_by)
+            const token = {'token': localStorage.getItem('token')}
+            const result = Object.assign(name, description, price, token)
 
-            fetch('http://127.0.0.1:5000/motherboards/' + this.motherboard.id, {
+            fetch(host + '/motherboards/' + this.motherboard.id, {
                 method: 'PATCH',
                 body: JSON.stringify(
                     result

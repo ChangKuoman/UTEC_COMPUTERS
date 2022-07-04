@@ -22,10 +22,12 @@ class TestCaseComponents(unittest.TestCase):
         setup_db(self.app, self.database_path)
         res = self.client().post('/users', json = {
             'username': 'test-component',
-            'password': 'aA.12345'
+            'password': 'aA.12345',
+            'role': 'admin'
         })
         data = json.loads(res.data)
-        self.user_id = data['created_id']
+        self.user_token = data['user']['token']
+        self.user_id = data['user']['id']
         self.id = None
 
 
@@ -34,7 +36,7 @@ class TestCaseComponents(unittest.TestCase):
             'name': 'test-component',
             'price': 20.00,
             'description': 'interesting',
-            'create_by': self.user_id,
+            'token': self.user_token,
             'type': 'RAM'
         }
         res = self.client().post('/components', json=component)
@@ -45,7 +47,6 @@ class TestCaseComponents(unittest.TestCase):
         self.assertTrue(data['success'])
         self.assertTrue(data['total_components'])
         self.assertTrue(len(data['components']))
-        self.assertEqual(data['created_id'], data['created_id'])
 
 
     def test_post_component_fail(self):
@@ -69,7 +70,7 @@ class TestCaseComponents(unittest.TestCase):
             'name': 'test-component',
             'price': 20.00,
             'description': 'interesting',
-            'create_by': self.user_id,
+            'token': self.user_token,
             'type': 'RAM'
         }
         res_component = self.client().post('/components', json=component)
@@ -90,7 +91,7 @@ class TestCaseComponents(unittest.TestCase):
             'name': 'test-component',
             'price': 20.00,
             'description': 'interesting',
-            'create_by': self.user_id,
+            'token': self.user_token,
             'type': 'RAM'
         }
         component_res = self.client().post('/components', json=component)
@@ -121,14 +122,14 @@ class TestCaseComponents(unittest.TestCase):
             'name': 'test-component',
             'price': 20.00,
             'description': 'interesting',
-            'create_by': self.user_id,
+            'token': self.user_token,
             'type': 'RAM'
         }
         component_res = self.client().post('/components', json=component)
         component_data = json.loads(component_res.data)
         self.id = component_data['created_id']
         new_data = {
-            'modify_by': self.user_id,
+            'token': self.user_token,
             'price': 20.25
         }
         res = self.client().patch(
@@ -148,7 +149,7 @@ class TestCaseComponents(unittest.TestCase):
             'name': 'test-component',
             'price': 20.00,
             'description': 'interesting',
-            'create_by': self.user_id,
+            'token': self.user_token,
             'type': 'RAM'
         }
         component_res = self.client().post('/components', json=component)
@@ -174,7 +175,7 @@ class TestCaseComponents(unittest.TestCase):
             'name': 'test-component',
             'price': 20.00,
             'description': 'interesting',
-            'create_by': self.user_id,
+            'token': self.user_token,
             'type': 'RAM'
         }
         component_res = self.client().post('/components', json=component)
