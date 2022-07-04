@@ -110,6 +110,7 @@ class TestCaseMotherboards(unittest.TestCase):
 
         self.assertEqual(res.status_code, 404)
         self.assertFalse(data['success'])
+        self.assertEqual(data['code'], 404)
         self.assertEqual(data['message'], 'Resource Not Found')
 
 
