@@ -151,7 +151,7 @@ export default {
           this.$router.push("/login");
         });
     } else {
-      this.$router.push("/login");
+      this.$router.push("/");
     }
   },
   methods: {
