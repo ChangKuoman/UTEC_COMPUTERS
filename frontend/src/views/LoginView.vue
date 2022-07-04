@@ -2,6 +2,7 @@
     <div>
         <div class="contenedor_HOME">
             <div class="Texto_presentacion">
+                <h2>Sign In</h2>
                 <form class="padding20" @change = "error.clear">
                     <InputText
                         v-model="username"
@@ -15,11 +16,13 @@
                     />
                 </form>
                 <button class="buttom1" @click.prevent = "error.clear(); check_form_login()">LOGIN</button>
+                <p>Don't have an account? <router-link class="buttom2" to="/register">CREATE</router-link></p>
                 <ErrorList
                     class="no-dots"
                     v-if="error"
                     :error_list="error.list"
                 />
+
             </div>
         </div>
         <FooterComponent/>
@@ -118,6 +121,13 @@ export default {
         border: none;
         color: white;
         background: #333;
+    }
+    .buttom2 {
+        cursor: pointer;
+        font-size: 15px;
+        border: 0;
+        text-decoration: none;
+        color: lightseagreen;
     }
     .padding20{
         padding: 20px;
