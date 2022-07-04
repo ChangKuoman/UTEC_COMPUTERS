@@ -86,7 +86,9 @@ def patch_user(id):
             abort(422)
 
         user_to_patch.change_password(new_password)
-        user_to_patch.update()
+        user_id = user_to_patch.update()
+        if user_id is None:
+            abort(500)
 
         selection_users = User.query.order_by('id').all()
         dictionary_users = {user.id: user.format() for user in selection_users}
@@ -127,11 +129,14 @@ def post_user():
                 error_422 = True
                 abort(422)
 
-            key = user.generate_key()
+            user.generate_token()
+            user_id = user.update()
+            if user_id is None:
+                abort(500)
+
             return jsonify({
                 'success': True,
-                'user': user.format(),
-                'token': key
+                'user': user.format()
             })
 
         if username is None or password is None:
