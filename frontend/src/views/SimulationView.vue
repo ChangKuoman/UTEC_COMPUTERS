@@ -127,11 +127,11 @@ export default {
 }
 .list_shop {
   width: auto;
-  min-height: 120px;
+  max-height: 220px;
 
   margin: 0;
   padding: 0;
-  overflow: scroll;
+  overflow: auto;
 }
 .list_shop::-webkit-scrollbar {
   width: 4px;
