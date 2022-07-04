@@ -144,7 +144,7 @@
 </template>
 
 <script>
-import {host} from '@/host.js';
+import { host } from '@/host.js';
 import InputRadio from '@/components/InputRadio.vue'
 import ShoppingCart from '@/components/ShoppingCart.vue'
 
@@ -207,8 +207,7 @@ export default {
             fetch(host + '/users', {
                 method: 'POST',
                 body: JSON.stringify({
-                    'token': localStorage.getItem('token'),
-                    'check_token': true
+                    'token': localStorage.getItem('token')
                 }),
                 headers: {
                     'Content-Type': 'application/json'
@@ -216,7 +215,7 @@ export default {
             })
             .then(response => response.json())
             .then(JsonResponse => {
-                if (JsonResponse['success'] === true && JsonResponse['is_valid'] === true) {
+                if (JsonResponse['success'] === true) {
                     this.getMotherboards()
                 }
                 else {
@@ -268,7 +267,7 @@ export default {
                     'components_id': this.total_products.filter(product => product.component_type !== undefined).map((product) => {
                         return product.id
                     }),
-                    'create_by': this.$root.user_info.id
+                    'token': localStorage.getItem('token')
                 }),
                 headers: {
                     'Content-Type': 'application/json'

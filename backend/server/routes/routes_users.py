@@ -113,6 +113,7 @@ def patch_user(id):
 def post_user():
     error_404 = False
     error_422 = False
+    error_403 = False
     try:
         body = request.get_json()
 
@@ -121,7 +122,6 @@ def post_user():
         role = body.get('role', None)
 
         login = body.get('login', None)
-        check_token = body.get('check_token', None)
         token = body.get('token', None)
         if login:
             user = User.query.filter(User.username==username).one_or_none()
@@ -142,18 +142,14 @@ def post_user():
                 'user': user.format()
             })
 
-        if check_token:
-            user = User.query.filter(User.token==token).filter(User.token_expire_date > func.now()).one_or_none()
+        if token:
+            user = User.check_token(token)
             if user is None:
-                return jsonify({
-                    'success': True,
-                    'is_valid': False
-                })
-            else:
-                return jsonify({
-                    'success': True,
-                    'is_valid': True
-                })
+                error_403 = True
+                abort(403)
+            return jsonify({
+                'success': True
+            })
 
         if username is None or password is None:
             error_422 = True
@@ -183,5 +179,7 @@ def post_user():
             abort(404)
         elif error_422:
             abort(422)
+        elif error_403:
+            abort(403)
         else:
             abort(500)

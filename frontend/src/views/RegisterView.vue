@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { host } from '@/host.js';
 import FooterComponent from '@/components/FooterComponent.vue'
 import InputText from '@/components/InputText.vue'
 import ErrorList from '@/components/ErrorList.vue'
@@ -83,7 +84,7 @@ export default {
         }
     },
     register () {
-        fetch('http://127.0.0.1:5000/users', {
+        fetch(host + '/users', {
             method: 'POST',
             body: JSON.stringify({
                 'username': this.username,
@@ -118,6 +119,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
     .buttom1{
         padding: 5px;

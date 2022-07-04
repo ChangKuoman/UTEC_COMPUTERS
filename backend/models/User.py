@@ -33,6 +33,12 @@ class User(db.Model):
         }
 
 
+    @staticmethod
+    def check_token(token):
+        user = User.query.filter(User.token==token).filter(User.token_expire_date > func.now()).one_or_none()
+        return user
+
+
     def check_password(self, password):
         if bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8')):
             return True
