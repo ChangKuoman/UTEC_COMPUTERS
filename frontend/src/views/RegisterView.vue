@@ -96,8 +96,14 @@ export default {
         .then(response => response.json())
         .then(JsonResponse => {
             if (JsonResponse['success'] === true) {
+                localStorage.setItem('token', JsonResponse['user']['token'])
+                if (JsonResponse['user']['role'] === 'admin') {
+                    this.$root.data_session.admin = true
+                }
+                this.$root.data_session.logged = true
+
                 alert('Successful registration')
-                this.$router.push('/login')
+                this.$router.push('/simulator')
             }
             else {
                 this.error.list.push(JsonResponse['message'])

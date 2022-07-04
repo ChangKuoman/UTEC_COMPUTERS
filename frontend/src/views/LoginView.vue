@@ -81,13 +81,13 @@ export default {
         .then(response => response.json())
         .then(JsonResponse => {
             if (JsonResponse['success'] === true) {
-                localStorage.setItem('token', JsonResponse['token'])
+                localStorage.setItem('token', JsonResponse['user']['token'])
 
                 if (JsonResponse['user']['role'] === 'admin') {
                     this.$root.data_session.admin = true
                 }
                 this.$root.data_session.logged = true
-                this.$root.user_info = JsonResponse['user']
+            //    this.$root.user_info = JsonResponse['user']
 
                 this.$router.push('/simulator')
             }

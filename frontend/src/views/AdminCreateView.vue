@@ -33,7 +33,7 @@
                 />
             </div>
         </div>
-        
+
     </div>
 </template>
 
@@ -58,7 +58,7 @@ export default {
     },
     mounted () {
         if (localStorage.getItem('token')) {
-            if (this.$root.user_info.role === 'admin') {
+           // if (this.$root.user_info.role === 'admin') {
                 fetch('http://127.0.0.1:5000/motherboards', { method: 'GET' })
                 .then(response => response.json())
                 .then(JsonResponse => {
@@ -96,10 +96,10 @@ export default {
                     this.error = true
                 })
             }
-            else {
-                this.$router.push('/simulator')
-            }
-        }
+         //   else {
+           //     this.$router.push('/simulator')
+           // }
+   //     }
         else {
             this.$router.push('/login')
         }

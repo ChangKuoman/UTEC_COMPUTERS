@@ -1,6 +1,7 @@
 from flask import abort, jsonify, request
 from models.User import User
 from server.routes.__init__ import api
+from sqlalchemy import func
 
 
 @api.route('/users', methods=['GET'])
@@ -120,6 +121,8 @@ def post_user():
         role = body.get('role', None)
 
         login = body.get('login', None)
+        check_token = body.get('check_token', None)
+        token = body.get('token', None)
         if login:
             user = User.query.filter(User.username==username).one_or_none()
             if user is None:
@@ -138,6 +141,19 @@ def post_user():
                 'success': True,
                 'user': user.format()
             })
+
+        if check_token:
+            user = User.query.filter(User.token==token).filter(User.token_expire_date > func.now()).one_or_none()
+            if user is None:
+                return jsonify({
+                    'success': True,
+                    'is_valid': False
+                })
+            else:
+                return jsonify({
+                    'success': True,
+                    'is_valid': True
+                })
 
         if username is None or password is None:
             error_422 = True
@@ -158,6 +174,7 @@ def post_user():
         return jsonify({
             'success': True,
             'created_id': new_user_id,
+            'user': new_user.format(),
             'users': dictionary_users,
             'total_users': len(selection_users)
         })

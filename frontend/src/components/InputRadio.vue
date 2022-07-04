@@ -3,15 +3,17 @@
         <h2>{{ title }}</h2>
         <ul v-bind="$attrs">
             <li v-for="(element, index) in objects" :key="index">
-                <input
-                    type="radio"
-                    :checked="element === modelValue"
-                    @click="$emit('update:modelValue', element)"
-                />
-                <label>{{element.name}}</label>
-                <div>
-                    <p>Description: {{element.description}}</p>
-                    <p>Price: S/. {{element.price.toFixed(2)}}</p>
+                <div class="description_name">
+                    <input
+                        type="radio"
+                        :checked="element === modelValue"
+                        @click="$emit('update:modelValue', element)"
+                    />
+                    <label>{{element.name}}</label>
+                </div>
+                <div class="description_prod">
+                    <p><span class="weight600">Description:</span> {{element.description}}</p>
+                    <p><span class="weight600">Price:</span> S/. {{element.price.toFixed(2)}}</p>
                 </div>
             </li>
         </ul>
@@ -41,3 +43,21 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.description_name{
+    width: auto;
+    padding-top: 9px;
+    padding-bottom: 9px;
+}
+.description_prod{
+    width: auto;
+    padding: 15px;
+    margin-left: 18px;
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, .2);
+}
+.weight600{
+    font-weight: 600;
+}
+</style>
