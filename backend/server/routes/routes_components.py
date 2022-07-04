@@ -115,6 +115,8 @@ def patch_component(id):
 @api.route('/components', methods=['POST'])
 def post_component():
     error_422 = False
+    error_401 = False
+    error_403 = False
     try:
         body = request.get_json()
 
@@ -159,5 +161,9 @@ def post_component():
     except:
         if error_422:
             abort(422)
+        elif error_401:
+            abort(401)
+        elif error_403:
+            abort(403)
         else:
             abort(500)

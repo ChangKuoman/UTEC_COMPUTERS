@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { host } from '@/host.js';
 import AdminNavigator from '@/components/AdminNavigator.vue'
 import DeleteMotherboard from '@/components/DeleteMotherboard.vue'
 import DeleteComponent from '@/components/DeleteComponent.vue'
@@ -87,7 +88,7 @@ export default {
     methods: {
         getCompatibles() {
             this.errors.compatible.clear()
-            fetch('http://127.0.0.1:5000/compatibles', { method: 'GET' })
+            fetch(host + '/compatibles', { method: 'GET' })
             .then(response => response.json())
             .then(JsonResponse => {
                 if (JsonResponse['success'] === true){
@@ -103,7 +104,7 @@ export default {
         },
         getMotherboards () {
             this.errors.motherboard.clear()
-            fetch('http://127.0.0.1:5000/motherboards', { method: 'GET' })
+            fetch(host + '/motherboards', { method: 'GET' })
             .then(response => response.json())
             .then(JsonResponse => {
                 if (JsonResponse['success'] === true){
@@ -119,7 +120,7 @@ export default {
         },
         getComponents () {
             this.errors.component.clear()
-            fetch('http://127.0.0.1:5000/components', { method: 'GET' })
+            fetch(host + '/components', { method: 'GET' })
             .then(response => response.json())
             .then(JsonResponse => {
                 if (JsonResponse['success'] === true){
@@ -136,14 +137,30 @@ export default {
     },
     mounted () {
         if (localStorage.getItem('token')) {
-            if (this.$root.user_info.role === 'admin') {
-                this.getComponents()
-                this.getCompatibles()
-                this.getMotherboards()
-            }
-            else {
-                this.$router.push('/simulator')
-            }
+            fetch(host + '/users', {
+                method: 'POST',
+                body: JSON.stringify({
+                    'token': localStorage.getItem('token'),
+                    'admin': true
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(JsonResponse => {
+                if (JsonResponse['success'] === true) {
+                    this.getComponents()
+                    this.getCompatibles()
+                    this.getMotherboards()
+                }
+                else {
+                    this.$router.push('/')
+                }
+            })
+            .catch(() => {
+                this.$router.push('/login')
+            })
         }
         else {
             this.$router.push('/login')
@@ -191,11 +208,11 @@ export default {
         height: 500px;
         padding: 20px;
         overflow: scroll;
-        
+
         display: flex;
         justify-content: center;
 
-        
+
         box-shadow: 0 8px 15px rgba(0, 0, 0, .2);
     }
     .AD_2_2_1::-webkit-scrollbar {
