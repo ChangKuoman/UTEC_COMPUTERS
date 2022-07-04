@@ -19,7 +19,7 @@ test("product-simulation-2", async () => {
     props: {
       product: {
         name: "producto",
-        price: 10.00,
+        price: 10.0,
       },
     },
   });
@@ -32,7 +32,7 @@ test("product-simulation-3", async () => {
     props: {
       product: {
         name: "producto",
-        price: 10.00,
+        price: 10.0,
       },
     },
   });
@@ -45,7 +45,7 @@ test("product-simulation-4", async () => {
     props: {
       product: {
         name: "producto",
-        price: 10.00,
+        price: 10.0,
       },
     },
   });

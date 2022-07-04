@@ -53,8 +53,8 @@ test("delete-compatible-9", async () => {
   const wrapper = mount(DeleteCompatible, {
     props: {
       compatible_list: [
-        { id:1, motherboard:"motherboard1", component:"component1" },
-        { id:2, motherboard:"motherboard2", component:"component2"},
+        { id: 1, motherboard: "motherboard1", component: "component1" },
+        { id: 2, motherboard: "motherboard2", component: "component2" },
       ],
     },
   });

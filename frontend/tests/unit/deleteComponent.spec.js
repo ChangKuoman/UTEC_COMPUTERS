@@ -53,8 +53,8 @@ test("delete-component-9", async () => {
   const wrapper = mount(DeleteComponent, {
     props: {
       component_list: [
-        { id:1, name:"component1"},
-        { id:2, name:"component2"},
+        { id: 1, name: "component1" },
+        { id: 2, name: "component2" },
       ],
     },
   });

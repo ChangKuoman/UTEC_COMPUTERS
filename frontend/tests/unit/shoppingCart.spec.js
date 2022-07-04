@@ -18,9 +18,7 @@ test("shopping-cart-1", async () => {
 test("shopping-cart-2", async () => {
   const wrapper = mount(ShoppingCart, {
     props: {
-      total_products: [
-        { name: "product1", price: 17.1 },
-      ],
+      total_products: [{ name: "product1", price: 17.1 }],
       total_price: 17.1,
     },
   });
@@ -33,7 +31,7 @@ test("shopping-cart-3", async () => {
     props: {
       total_products: [
         { name: "product1", price: 17.1 },
-        { name: "product2", price: 20.87}
+        { name: "product2", price: 20.87 },
       ],
       total_price: 37.97,
     },
@@ -47,7 +45,7 @@ test("shopping-cart-4", async () => {
     props: {
       total_products: [
         { name: "product1", price: 17.1 },
-        { name: "product2", price: 20.87}
+        { name: "product2", price: 20.87 },
       ],
       total_price: 37.97,
     },

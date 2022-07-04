@@ -19,19 +19,19 @@ test("input-radio-2", async () => {
         {
           name: "product1",
           description: "description1",
-          price: 15.8
+          price: 15.8,
         },
         {
           name: "product2",
           description: "description2",
-          price: 48.5
-        }
+          price: 48.5,
+        },
       ],
       modelValue: {
         name: "product1",
         description: "description1",
-        price: 15.8
-      }
+        price: 15.8,
+      },
     },
   });
 

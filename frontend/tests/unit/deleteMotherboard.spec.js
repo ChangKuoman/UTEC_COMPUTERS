@@ -23,8 +23,8 @@ test("delete-motherboard-3", async () => {
   const wrapper = mount(DeleteMotherboard, {
     props: {
       motherboard_list: [
-        { id:1, name:"motherboard1"},
-        { id:2, name:"motherboard2"},
+        { id: 1, name: "motherboard1" },
+        { id: 2, name: "motherboard2" },
       ],
     },
   });
@@ -36,8 +36,8 @@ test("delete-motherboard-4", async () => {
   const wrapper = mount(DeleteMotherboard, {
     props: {
       motherboard_list: [
-        { id:1, name:"motherboard1"},
-        { id:2, name:"motherboard2"},
+        { id: 1, name: "motherboard1" },
+        { id: 2, name: "motherboard2" },
       ],
     },
   });
@@ -49,8 +49,8 @@ test("delete-motherboard-5", async () => {
   const wrapper = mount(DeleteMotherboard, {
     props: {
       motherboard_list: [
-        { id:1, name:"motherboard1"},
-        { id:2, name:"motherboard2"},
+        { id: 1, name: "motherboard1" },
+        { id: 2, name: "motherboard2" },
       ],
     },
   });
