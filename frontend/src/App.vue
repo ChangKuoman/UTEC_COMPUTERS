@@ -4,7 +4,7 @@
       <!--BOX-LOGO-->
       <div class="box_LOGO">
         <router-link to="/">
-          <img class="img-64" src="@/assets/img/logo.png" alt="Logo"/>
+          <img class="img-64" src="@/assets/img/logo.png" alt="Logo" />
         </router-link>
       </div>
       <!--BOX-EMPRESA_NAME-->
@@ -17,368 +17,418 @@
       <!--CONTENEDOR_BOTONES-->
 
       <!--CUANDO NO ESTA LOGEADO-->
-      <div class="CONTENEDOR_BOTONES" v-if = "!data_session.logged">
-
+      <div class="CONTENEDOR_BOTONES" v-if="!data_session.logged">
         <div class="box_boton">
-          <router-link class="h_1" v-if = "!data_session.logged" to="/login">LOGIN</router-link>
+          <router-link class="h_1" v-if="!data_session.logged" to="/login"
+            >LOGIN</router-link
+          >
         </div>
         <div class="box_boton">
-          <router-link class="h_1" v-if = "!data_session.logged" to="/register">REGISTER</router-link>
+          <router-link class="h_1" v-if="!data_session.logged" to="/register"
+            >REGISTER</router-link
+          >
         </div>
-
       </div>
 
       <!--CUANDO ESTA LOGEADO-->
-      <div class="CONTENEDOR_BOTONES" v-if = "data_session.logged">
-
+      <div class="CONTENEDOR_BOTONES" v-if="data_session.logged">
         <button @click="show_despliegue" class="box_boton">
-            <i id="boton_despliegue" class='bx bxs-user-circle'></i>
+          <i id="boton_despliegue" class="bx bxs-user-circle"></i>
         </button>
 
-        <div v-if = "despliegue">
+        <div v-if="despliegue">
           <!--CUANDO ESTA LOGEADO Y NO ES ADMIN-->
-          <div class="CONTENEDOR_BOTONES_LOGIN" v-if = "!data_session.admin">
+          <div class="CONTENEDOR_BOTONES_LOGIN" v-if="!data_session.admin">
             <div class="boton_3">
-              <router-link class="text_white" v-if = "data_session.logged" to="/simulator">SIMULATE!</router-link>
+              <router-link
+                class="text_white"
+                v-if="data_session.logged"
+                to="/simulator"
+                >SIMULATE!</router-link
+              >
             </div>
             <div class="boton_3">
-              <router-link class="text_white" v-if = "data_session.logged" to="/profile">PROFILE</router-link>
+              <router-link
+                class="text_white"
+                v-if="data_session.logged"
+                to="/profile"
+                >PROFILE</router-link
+              >
             </div>
             <div class="boton_3">
-              <button class="text_white" id="cursor_pointer" @click.prevent = "logout_session" v-if = "data_session.logged">LOGOUT</button>
+              <button
+                class="text_white"
+                id="cursor_pointer"
+                @click.prevent="logout_session"
+                v-if="data_session.logged"
+              >
+                LOGOUT
+              </button>
             </div>
           </div>
           <!--CUANDO ESTA LOGEADO Y ES ADMIN-->
-          <div class="CONTENEDOR_BOTONES_LOGIN" v-if = "data_session.admin">
+          <div class="CONTENEDOR_BOTONES_LOGIN" v-if="data_session.admin">
             <div class="boton_3">
-              <router-link class="text_white" v-if = "data_session.admin" to="/admin">ADMIN</router-link>
+              <router-link
+                class="text_white"
+                v-if="data_session.admin"
+                to="/admin"
+                >ADMIN</router-link
+              >
             </div>
 
             <div class="boton_3">
-              <router-link class="text_white" v-if = "data_session.logged" to="/simulator">SIMULATE!</router-link>
+              <router-link
+                class="text_white"
+                v-if="data_session.logged"
+                to="/simulator"
+                >SIMULATE!</router-link
+              >
             </div>
             <div class="boton_3">
-              <router-link class="text_white" v-if = "data_session.logged" to="/profile">PROFILE</router-link>
+              <router-link
+                class="text_white"
+                v-if="data_session.logged"
+                to="/profile"
+                >PROFILE</router-link
+              >
             </div>
             <div class="boton_3">
-              <button class="text_white" id="cursor_pointer" @click.prevent = "logout_session" v-if = "data_session.logged">LOGOUT</button>
+              <button
+                class="text_white"
+                id="cursor_pointer"
+                @click.prevent="logout_session"
+                v-if="data_session.logged"
+              >
+                LOGOUT
+              </button>
             </div>
-
           </div>
         </div>
-
       </div>
-
-
     </nav>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
-import { host } from '@/host.js';
+import { host } from "@/host.js";
 
 export default {
-  name: 'navComponent',
-  data () {
+  name: "navComponent",
+  data() {
     return {
       data_session: {
         logged: false,
         admin: false,
       },
-      despliegue: false
-    }
+      despliegue: false,
+    };
   },
-  mounted () {
-    if (localStorage.getItem('token')){
-        fetch(host + '/users', {
-            method: 'POST',
-            body: JSON.stringify({
-                'token': localStorage.getItem('token')
-            }),
-            headers: {
-                'Content-Type': 'application/json'
+  mounted() {
+    if (localStorage.getItem("token")) {
+      fetch(host + "/users", {
+        method: "POST",
+        body: JSON.stringify({
+          token: localStorage.getItem("token"),
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((JsonResponse) => {
+          if (JsonResponse["success"] === true) {
+            this.data_session.logged = true;
+            if (JsonResponse["user"]["role"] === "admin") {
+              this.data_session.admin = true;
             }
-        })
-        .then(response => response.json())
-        .then(JsonResponse => {
-            if (JsonResponse['success'] === true) {
-              this.data_session.logged = true
-              if (JsonResponse['user']['role'] === 'admin') {
-                this.data_session.admin = true
-              }
-            }
-            else {
-                this.$router.push('/login')
-            }
+          } else {
+            this.$router.push("/login");
+          }
         })
         .catch(() => {
-            this.$router.push('/login')
-        })
-    }
-    else {
-        this.$router.push('/login')
+          this.$router.push("/login");
+        });
+    } else {
+      this.$router.push("/login");
     }
   },
   methods: {
-    logout_session () {
-      localStorage.removeItem('token')
-      this.data_session.logged = false
-      this.data_session.admin = false
-      this.$router.push('/')
+    logout_session() {
+      localStorage.removeItem("token");
+      this.data_session.logged = false;
+      this.data_session.admin = false;
+      this.$router.push("/");
     },
     show_despliegue() {
-      this.despliegue = !this.despliegue
-    }
-  }
-}
+      this.despliegue = !this.despliegue;
+    },
+  },
+};
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap");
 
-  html{
-    font-family: 'Lato', sans-serif;
-  }
-  button{
-    font-family: 'Lato', sans-serif;
-  }
-  a:link { text-decoration: none; }
-  a:visited { text-decoration: none; }
-  a:hover { text-decoration: none; }
-  a:active { text-decoration: none; }
-  .no-dots{
-    list-style-type: none;
-  }
-  .img-64 {
-    height: 64px;
-    width: 64px;
-  }
-  .wallpaper{
-    width: auto;
-    margin: 0%;
-    height: auto;
-    background-size: cover;
+html {
+  font-family: "Lato", sans-serif;
+}
+button {
+  font-family: "Lato", sans-serif;
+}
+a:link {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+a:active {
+  text-decoration: none;
+}
+.no-dots {
+  list-style-type: none;
+}
+.img-64 {
+  height: 64px;
+  width: 64px;
+}
+.wallpaper {
+  width: auto;
+  margin: 0%;
+  height: auto;
+  background-size: cover;
 
-    background: linear-gradient(to left top, rgba(0, 255, 255, 1) 0%/*bottom-right color*/, rgba(255, 0, 255, 0.5) 50% /*middle color*/, rgba(255, 255, 0, 1) 100% /*top-left color*/),linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1))/*"faked" black background make sure to add last or it will appear before the transparent/colored layer*/;
-    }
-  .header{
-    height: 70px;
-    margin: 0, 0, 0, 0;
+  background: linear-gradient(
+      to left top,
+      rgba(0, 255, 255, 1) 0% /*bottom-right color*/,
+      rgba(255, 0, 255, 0.5) 50% /*middle color*/,
+      rgba(255, 255, 0, 1) 100% /*top-left color*/
+    ),
+    linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1))
+      /*"faked" black background make sure to add last or it will appear before the transparent/colored layer*/;
+}
+.header {
+  height: 70px;
+  margin: 0, 0, 0, 0;
 
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 
-    align-items: center;
+  align-items: center;
 
-    background: linear-gradient(to bottom,  rgb(255, 255, 255) 0%,rgb(249, 254, 255) 100%);
-  }
+  background: linear-gradient(
+    to bottom,
+    rgb(255, 255, 255) 0%,
+    rgb(249, 254, 255) 100%
+  );
+}
 
-  body{
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
-  .mostrarContenedor{
-    border: 3px solid rgb(255, 255, 255);
-  }
+body {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.mostrarContenedor {
+  border: 3px solid rgb(255, 255, 255);
+}
 
-  .box_LOGO{
-    min-width: 12%;
-    width: auto;
-    height: 60px;
-    display:flex;
+.box_LOGO {
+  min-width: 12%;
+  width: auto;
+  height: 60px;
+  display: flex;
 
-    align-items: center;
-    justify-content: center;
-  }
-  .box_EMPRESA_NAME{
-    min-width: 40%;
-    width: auto;
-    height: 60px;
-    display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.box_EMPRESA_NAME {
+  min-width: 40%;
+  width: auto;
+  height: 60px;
+  display: flex;
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    text-decoration: none;
-    text-align:center;
-  }
-  .milky {
-    font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;;
-    text-transform: uppercase;
-    display: block;
-    font-size: 50px;
-    color: #585756;
-    text-shadow: 0 8px 9px #c4b59d, 0px -2px 1px #fff;
-    font-weight: bold;
-    letter-spacing: -4px;
-    text-align: center;
-    padding: 10px 20px;
-    border-radius: 20px;
-  }
+  text-decoration: none;
+  text-align: center;
+}
+.milky {
+  font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
+  text-transform: uppercase;
+  display: block;
+  font-size: 50px;
+  color: #585756;
+  text-shadow: 0 8px 9px #c4b59d, 0px -2px 1px #fff;
+  font-weight: bold;
+  letter-spacing: -4px;
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 20px;
+}
 
-  .box_boton{
-    width: 10%;
-    min-width: 100px;
-    display: inline-block;
+.box_boton {
+  width: 10%;
+  min-width: 100px;
+  display: inline-block;
 
+  border-radius: 5px 5px;
+  border: none;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 1%;
+  margin-right: 1%;
+  padding: 1%;
 
-    border-radius: 5px 5px;
-    border: none;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    margin-left: 1%;
-    margin-right: 1%;
-    padding: 1%;
+  background: rgba(34, 132, 139, 0.932);
 
-    background: rgba(34, 132, 139, 0.932);
+  text-decoration: none;
+  text-align: center;
 
-    text-decoration: none;
-    text-align: center;
+  cursor: pointer;
+}
+.box_boton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+    0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+.h_1 {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  color: aliceblue;
+  font-size: 15px;
+  font-weight: 700;
+}
 
-    cursor: pointer;
-  }
-  .box_boton:hover{
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-  }
-  .h_1{
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    color: aliceblue;
-    font-size: 15px;
-    font-weight: 700;
-  }
+.CONTENEDOR_BOTONES {
+  min-width: 40%;
+  width: auto;
+  height: 60px;
+  display: flex;
 
-  .CONTENEDOR_BOTONES{
-    min-width: 40%;
-    width: auto;
-    height: 60px;
-    display: flex;
+  align-items: center;
+  justify-content: end;
+}
 
-    align-items: center;
-    justify-content: end;
-  }
+.contenedor_HOME {
+  width: 100%;
+  height: 950px;
 
-  .contenedor_HOME{
-
-    width: 100%;
-    height: 950px;
-
-
-    display: flex;
-    justify-content: center;
-    /*
+  display: flex;
+  justify-content: center;
+  /*
     margin-top: 1%;
     margin-bottom: 1%;
     padding: 3%;
 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .contenedor_app{
-    width: 80%;
-    height: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.contenedor_app {
+  width: 80%;
+  height: 95%;
 
-    padding: 1%;
+  padding: 1%;
 
-    background: #fffffffd;
+  background: #fffffffd;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  .Texto_presentacion{
-    width: 50%;
-    height: 400px;
-    padding: 5%;
-    border-radius: 10px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.Texto_presentacion {
+  width: 50%;
+  height: 400px;
+  padding: 5%;
+  border-radius: 10px 10px;
 
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    justify-content: center;
-    align-items: center;
-    text-align: justify;
-    font-style:italic;
-    font-family: 'Lato', sans-serif;
-    font-size: 20px;
+  justify-content: center;
+  align-items: center;
+  text-align: justify;
+  font-style: italic;
+  font-family: "Lato", sans-serif;
+  font-size: 20px;
 
-    background: #fffffffd;
-    color: #333;
-  }
+  background: #fffffffd;
+  color: #333;
+}
 
-  .box_boton2{
-    min-width: 100px;
-    display: inline-block;
+.box_boton2 {
+  min-width: 100px;
+  display: inline-block;
 
-    border-radius: 5px 5px;
-    border: none;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    margin-left: 1%;
-    margin-right: 1%;
-    padding: 5px 2px 5px 2px;
+  border-radius: 5px 5px;
+  border: none;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 1%;
+  margin-right: 1%;
+  padding: 5px 2px 5px 2px;
 
-    background: rgba(43, 44, 44, 0.932);
+  background: rgba(43, 44, 44, 0.932);
 
-    text-decoration: none;
-    text-align: center;
-  }
-  .CONTENEDOR_BOTONES_LOGIN{
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    transform: translate(-100%,30px);
+  text-decoration: none;
+  text-align: center;
+}
+.CONTENEDOR_BOTONES_LOGIN {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  transform: translate(-100%, 30px);
 
-    width: 70px;
-    height: 120px;
-    padding-left: 15px;
-    padding-right: 15px;
+  width: 70px;
+  height: 120px;
+  padding-left: 15px;
+  padding-right: 15px;
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    border-radius: 5%;
-    background: #333;
-    color: white;
-  }
+  border-radius: 5%;
+  background: #333;
+  color: white;
+}
 
-  .text_white{
-    color:white;
-    background: none;
-    border: none;
-  }
-  .boton_3 {
-    background: none;
-    border: none;
+.text_white {
+  color: white;
+  background: none;
+  border: none;
+}
+.boton_3 {
+  background: none;
+  border: none;
 
-    width: 100%;
-    cursor: pointer;
+  width: 100%;
+  cursor: pointer;
 
-    border-bottom-style: solid;
-    border-bottom-width: 2px;
-    border-bottom-color: whitesmoke;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: whitesmoke;
 
-    padding-top: 2px;
-    padding-bottom: 2px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
 
-  }
+#boton_despliegue {
+  widows: 100%;
+  height: 100%;
 
-  #boton_despliegue {
-    widows: 100%;
-    height: 100%;
-
-    color: white;
-    background:none;
-    border: none;
-    font-size: 25px;
-  }
-  #cursor_pointer{
-    cursor:pointer;
-  }
+  color: white;
+  background: none;
+  border: none;
+  font-size: 25px;
+}
+#cursor_pointer {
+  cursor: pointer;
+}
 </style>

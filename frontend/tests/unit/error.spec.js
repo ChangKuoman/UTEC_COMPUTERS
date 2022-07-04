@@ -1,8 +1,8 @@
-import { mount } from '@vue/test-utils'
-import ErrorView from '@/views/ErrorView.vue'
+import { mount } from "@vue/test-utils";
+import ErrorView from "@/views/ErrorView.vue";
 
-test('home', async () => {
-  const wrapper = mount(ErrorView)
+test("home", async () => {
+  const wrapper = mount(ErrorView);
 
-  expect(wrapper.find('img').attributes().class).toContain('img-500')
-})
+  expect(wrapper.find("img").attributes().class).toContain("img-500");
+});
