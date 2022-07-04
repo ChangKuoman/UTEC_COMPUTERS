@@ -22,10 +22,12 @@ class TestCaseMotherboards(unittest.TestCase):
         setup_db(self.app, self.database_path)
         res = self.client().post('/users', json = {
             'username': 'test-motherboard',
-            'password': 'aA.12345'
+            'password': 'aA.12345',
+            'role': 'admin'
         })
         data = json.loads(res.data)
-        self.user_id = data['created_id']
+        self.user_token = data['user']['token']
+        self.user_id = data['user']['id']
         self.id = None
 
 
@@ -34,7 +36,7 @@ class TestCaseMotherboards(unittest.TestCase):
             'name': 'test-motherboard',
             'price': 20.00,
             'description': 'interesting',
-            'create_by': self.user_id
+            'token': self.user_token
         }
         res = self.client().post('/motherboards', json=new_motherboard)
         data = json.loads(res.data)
@@ -66,7 +68,7 @@ class TestCaseMotherboards(unittest.TestCase):
             'name': 'test-motherboard',
             'price': 20.00,
             'description': 'interesting',
-            'create_by': self.user_id
+            'token': self.user_token
         }
         res_motherboard = self.client().post('/motherboards', json=motherboard)
         data_motherboard = json.loads(res_motherboard.data)
@@ -86,7 +88,7 @@ class TestCaseMotherboards(unittest.TestCase):
             'name': 'test-motherboard',
             'price': 20.00,
             'description': 'interesting',
-            'create_by': self.user_id
+            'token': self.user_token
         }
         motherboard_res = self.client().post('/motherboards', json=motherboard)
         motherboard_data = json.loads(motherboard_res.data)
@@ -116,7 +118,7 @@ class TestCaseMotherboards(unittest.TestCase):
             'name': 'test-motherboard',
             'price': 20.00,
             'description': 'interesting',
-            'create_by': self.user_id
+            'token': self.user_token
         }
         motherboard_res = self.client().post('/motherboards', json=motherboard)
         motherboard_data = json.loads(motherboard_res.data)
@@ -129,7 +131,6 @@ class TestCaseMotherboards(unittest.TestCase):
         self.assertEqual(data['deleted_id'], str(motherboard_data['created_id']))
 
 
-    # este da 404
     def test_delete_motherboard_fail(self):
         res = self.client().delete('/motherboards/0')
         data = json.loads(res.data)
@@ -145,13 +146,13 @@ class TestCaseMotherboards(unittest.TestCase):
             'name': 'test-motherboard',
             'price': 20.00,
             'description': 'interesting',
-            'create_by': self.user_id
+            'token': self.user_token
         }
         motherboard_res = self.client().post('/motherboards', json=motherboard)
         motherboard_data = json.loads(motherboard_res.data)
         self.id = motherboard_data['created_id']
         new_data = {
-            'modify_by': self.user_id,
+            'token': self.user_token,
             'description': 'something'
         }
         res = self.client().patch(
@@ -166,13 +167,12 @@ class TestCaseMotherboards(unittest.TestCase):
         self.assertTrue(data['total_motherboards'])
 
 
-    # este da 422
     def test_patch_motherboard_fail(self):
         motherboard = {
             'name': 'test-motherboard',
             'price': 20.00,
             'description': 'interesting',
-            'create_by': self.user_id
+            'token': self.user_token
         }
         motherboard_res = self.client().post('/motherboards', json=motherboard)
         motherboard_data = json.loads(motherboard_res.data)
