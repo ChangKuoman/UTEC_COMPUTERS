@@ -45,19 +45,19 @@ export default {
 </script>
 
 <style scoped>
-.description_name{
-    width: auto;
-    padding-top: 9px;
-    padding-bottom: 9px;
-}
-.description_prod{
-    width: auto;
-    padding: 15px;
-    margin-left: 18px;
-    border-radius: 10px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, .2);
-}
-.weight600{
-    font-weight: 600;
-}
+    .description_name{
+        width: auto;
+        padding-top: 9px;
+        padding-bottom: 9px;
+    }
+    .description_prod{
+        width: auto;
+        padding: 15px;
+        margin-left: 18px;
+        border-radius: 10px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, .2);
+    }
+    .weight600{
+        font-weight: 600;
+    }
 </style>

@@ -110,14 +110,8 @@
                                             :objects="lists.psu"
                                             title="PSU"
                                         />
-                                        <InputRadio
-                                            v-if="lists.peripheral.length"
-                                            class="no-dots"
-                                            v-model="simulation.peripheral"
-                                            :objects="lists.peripheral"
-                                            title="PERIPHERAL"
-                                        />
-                                        <!--
+                                        
+                                        
                                         <div v-if="lists.peripheral.length">
                                             <h4>Peripheral</h4>
                                             <ul class="no-dots">
@@ -133,7 +127,7 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                        -->
+                                        
                                         <div v-if="!lists.hdd.length && !lists.cpu.length && !lists.psu.length && !lists.peripheral.length">
                                             We are sorry, there are no components here
                                         </div>
@@ -475,5 +469,20 @@ export default {
     }
     .margin_right_20{
         margin-right: 20px;
+    }
+    .description_name{
+        width: auto;
+        padding-top: 9px;
+        padding-bottom: 9px;
+    }
+    .description_prod{
+        width: auto;
+        padding: 15px;
+        margin-left: 18px;
+        border-radius: 10px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, .2);
+    }
+    .weight600{
+        font-weight: 600;
     }
 </style>
