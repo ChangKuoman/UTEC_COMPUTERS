@@ -12,18 +12,35 @@
 </template>
 
 <script>
+import { host } from '@/host.js';
 import AdminNavigator from '@/components/AdminNavigator.vue'
 
 export default {
     components: { AdminNavigator },
     mounted () {
         if (localStorage.getItem('token')){
-         //   if (this.$root.user_info.role === 'admin') {
-                // here nothing happens
-           // }
-          //  else {
-           //     this.$router.push('/simulator')
-          //  }
+            fetch(host + '/users', {
+                method: 'POST',
+                body: JSON.stringify({
+                    'token': localStorage.getItem('token'),
+                    'admin': true
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(JsonResponse => {
+                if (JsonResponse['success'] === true) {
+                    // Here nothing happens
+                }
+                else {
+                    this.$router.push('/')
+                }
+            })
+            .catch(() => {
+                this.$router.push('/login')
+            })
         }
         else {
             this.$router.push('/login')

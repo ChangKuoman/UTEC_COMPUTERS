@@ -28,10 +28,20 @@ def error_422(error):
         'message': 'Unprocessable'
     }), 422
 
+
 @api.app_errorhandler(403)
-def error_422(error):
+def error_403(error):
     return jsonify({
         'success': False,
         'code': 403,
         'message': 'Forbidden'
     }), 403
+
+
+@api.app_errorhandler(401)
+def error_401(error):
+    return jsonify({
+        'success': False,
+        'code': 401,
+        'message': 'Unauthorized'
+    }), 401

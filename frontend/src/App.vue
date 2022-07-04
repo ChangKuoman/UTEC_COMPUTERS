@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import { host } from '@/host.js';
 
 export default {
   name: 'navComponent',
@@ -90,7 +91,33 @@ export default {
   },
   mounted () {
     if (localStorage.getItem('token')){
-      localStorage.removeItem('token')
+        fetch(host + '/users', {
+            method: 'POST',
+            body: JSON.stringify({
+                'token': localStorage.getItem('token')
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(JsonResponse => {
+            if (JsonResponse['success'] === true) {
+              this.data_session.logged = true
+              if (JsonResponse['user']['role'] === 'admin') {
+                this.data_session.admin = true
+              }
+            }
+            else {
+                this.$router.push('/login')
+            }
+        })
+        .catch(() => {
+            this.$router.push('/login')
+        })
+    }
+    else {
+        this.$router.push('/login')
     }
   },
   methods: {

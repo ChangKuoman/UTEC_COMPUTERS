@@ -113,6 +113,7 @@ def patch_user(id):
 def post_user():
     error_404 = False
     error_422 = False
+    error_401 = False
     error_403 = False
     try:
         body = request.get_json()
@@ -123,6 +124,7 @@ def post_user():
 
         login = body.get('login', None)
         token = body.get('token', None)
+        admin = body.get('admin', None)
         if login:
             user = User.query.filter(User.username==username).one_or_none()
             if user is None:
@@ -145,6 +147,9 @@ def post_user():
         if token:
             user = User.check_token(token)
             if user is None:
+                error_401 = True
+                abort(401)
+            if admin and user.role != 'admin':
                 error_403 = True
                 abort(403)
             return jsonify({
@@ -180,6 +185,8 @@ def post_user():
             abort(404)
         elif error_422:
             abort(422)
+        elif error_401:
+            abort(401)
         elif error_403:
             abort(403)
         else:
