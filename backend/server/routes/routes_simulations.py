@@ -67,7 +67,7 @@ def delete_simulation(id):
 @api.route('/simulations', methods=['POST'])
 def post_simulation():
     error_422 = False
-    error_403 = True
+    error_401 = True
     try:
         body = request.get_json()
 
@@ -83,8 +83,8 @@ def post_simulation():
 
         user = User.check_token(token)
         if user is None:
-            error_403 = True
-            abort(403)
+            error_401 = True
+            abort(401)
         create_by = user.id
 
         new_simulation = Simulation(id_motherboard=id_motherboard, total_price=total_price, create_by=create_by)
@@ -108,7 +108,7 @@ def post_simulation():
     except:
         if error_422:
             abort(422)
-        if error_403:
-            abort(403)
+        if error_401:
+            abort(401)
         else:
             abort(500)

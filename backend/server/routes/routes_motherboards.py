@@ -1,6 +1,7 @@
 from flask import abort, jsonify, request
 from models.MotherBoard import MotherBoard
 from server.routes.__init__ import api
+from models.User import User
 
 
 @api.route('/motherboards', methods=['GET'])
@@ -112,17 +113,23 @@ def patch_motherboard(id):
 @api.route('/motherboards', methods=['POST'])
 def post_motherboard():
     error_422 = False
+    error_401 = False
     try:
         body = request.get_json()
 
         price = body.get('price', None)
         name = body.get('name', None)
         description = body.get('description', None)
-        create_by = body.get('create_by', None)
+        token = body.get('token', None)
 
-        if price is None or name is None or description is None or create_by is None:
+        if price is None or name is None or description is None or token is None:
             error_422 = True
             abort(422)
+        user = User.check_token(token)
+        if user is None:
+            error_401 = True
+            abort(401)
+        create_by = user.id
 
         new_motherboard = MotherBoard(price=price, name=name, description=description, create_by=create_by)
         new_motherboard_id = new_motherboard.insert()
@@ -141,5 +148,7 @@ def post_motherboard():
     except:
         if error_422:
             abort(422)
+        if error_401:
+            abort(401)
         else:
             abort(500)

@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { host } from '@/host.js';
 import InputText from '@/components/InputText.vue'
 import ErrorList from '@/components/ErrorList.vue'
 
@@ -70,13 +71,13 @@ export default {
             }
         },
         createMotherboard () {
-            fetch('http://127.0.0.1:5000/motherboards', {
+            fetch(host + '/motherboards', {
                 method: 'POST',
                 body: JSON.stringify({
                     'name': this.name,
                     'description': this.description,
                     'price': this.price,
-                    'create_by': this.$root.user_info.id
+                    'token': localStorage.getItem('token')
                 }),
                 headers: {
                     'Content-Type': 'application/json'
