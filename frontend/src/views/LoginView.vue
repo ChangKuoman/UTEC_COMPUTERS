@@ -116,6 +116,7 @@ export default {
         margin-right:10px;
 
         border-radius: 5px;
+        color: white;
         cursor: pointer;
         border: none;
         background: #333;
