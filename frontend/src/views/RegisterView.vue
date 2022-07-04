@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { host } from '@/host.js';
 import FooterComponent from '@/components/FooterComponent.vue'
 import InputText from '@/components/InputText.vue'
 import ErrorList from '@/components/ErrorList.vue'
@@ -83,7 +84,7 @@ export default {
         }
     },
     register () {
-        fetch('http://127.0.0.1:5000/users', {
+        fetch(host + '/users', {
             method: 'POST',
             body: JSON.stringify({
                 'username': this.username,
@@ -96,8 +97,14 @@ export default {
         .then(response => response.json())
         .then(JsonResponse => {
             if (JsonResponse['success'] === true) {
+                localStorage.setItem('token', JsonResponse['user']['token'])
+                if (JsonResponse['user']['role'] === 'admin') {
+                    this.$root.data_session.admin = true
+                }
+                this.$root.data_session.logged = true
+
                 alert('Successful registration')
-                this.$router.push('/login')
+                this.$router.push('/simulator')
             }
             else {
                 this.error.list.push(JsonResponse['message'])
@@ -112,6 +119,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
     .buttom1{
         padding: 5px;

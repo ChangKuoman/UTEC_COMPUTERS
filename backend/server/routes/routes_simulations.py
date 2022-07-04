@@ -2,6 +2,7 @@ from flask import abort, jsonify, request
 from models.Simulation import Simulation
 from models.SimulationComponent import SimulationComponent
 from server.routes.__init__ import api
+from models.User import User
 
 
 @api.route('/simulations', methods=['GET'])
@@ -66,6 +67,7 @@ def delete_simulation(id):
 @api.route('/simulations', methods=['POST'])
 def post_simulation():
     error_422 = False
+    error_401 = True
     try:
         body = request.get_json()
 
@@ -73,10 +75,17 @@ def post_simulation():
         total_price = body.get('total_price', None)
         create_by = body.get('create_by', None)
         components_id = body.get('components_id', None)
+        token = body.get('token', None)
 
-        if id_motherboard is None or total_price is None or create_by is None:
+        if id_motherboard is None or total_price is None or token is None:
             error_422 = True
             abort(422)
+
+        user = User.check_token(token)
+        if user is None:
+            error_401 = True
+            abort(401)
+        create_by = user.id
 
         new_simulation = Simulation(id_motherboard=id_motherboard, total_price=total_price, create_by=create_by)
         new_simulation_id = new_simulation.insert()
@@ -99,5 +108,7 @@ def post_simulation():
     except:
         if error_422:
             abort(422)
+        if error_401:
+            abort(401)
         else:
             abort(500)
