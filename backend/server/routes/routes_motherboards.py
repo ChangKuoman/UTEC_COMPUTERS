@@ -114,6 +114,7 @@ def patch_motherboard(id):
 def post_motherboard():
     error_422 = False
     error_401 = False
+    error_403 = False
     try:
         body = request.get_json()
 
@@ -129,6 +130,9 @@ def post_motherboard():
         if user is None:
             error_401 = True
             abort(401)
+        if user.role != 'admin':
+            error_403 = True
+            abort(403)
         create_by = user.id
 
         new_motherboard = MotherBoard(price=price, name=name, description=description, create_by=create_by)
@@ -148,7 +152,9 @@ def post_motherboard():
     except:
         if error_422:
             abort(422)
-        if error_401:
+        elif error_401:
             abort(401)
+        elif error_403:
+            abort(403)
         else:
             abort(500)

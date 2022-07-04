@@ -1,6 +1,7 @@
 from flask import abort, jsonify, request
 from models.Component import Component
 from server.routes.__init__ import api
+from models.User import User
 
 
 @api.route('/components', methods=['GET'])
@@ -121,11 +122,19 @@ def post_component():
         name = body.get('name', None)
         component_type = body.get('type', None)
         price = body.get('price', None)
-        create_by = body.get('create_by', None)
+        token = body.get('token', None)
 
-        if description is None or name is None or component_type is None or price is None or create_by is None:
+        if description is None or name is None or component_type is None or price is None or token is None:
             error_422 = True
             abort(422)
+        user = User.check_token(token)
+        if user is None:
+            error_401 = True
+            abort(401)
+        if user.role != 'admin':
+            error_403 = True
+            abort(403)
+        create_by = user.id
 
         new_component = Component(
             description=description,
