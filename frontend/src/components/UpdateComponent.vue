@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { host } from '@/host.js';
 import InputText from '@/components/InputText.vue'
 import ErrorList from '@/components/ErrorList.vue'
 
@@ -65,7 +66,7 @@ export default {
         }
     },
     mounted () {
-        fetch('http://127.0.0.1:5000/components', { method: 'GET' })
+        fetch(host + '/components', { method: 'GET' })
         .then(response => response.json())
         .then(JsonResponse => {
             if (JsonResponse['success'] === true){
@@ -119,10 +120,10 @@ export default {
             const description = this.description!='' ? {'description': this.description} : {}
             const price = this.price!=0 ? {'price': this.price} : {}
             const type = this.type!='' ? {'type': this.type} : {}
-            const modify_by = {'modify_by': this.$root.user_info.id}
-            const result = Object.assign(name, description, price, type, modify_by)
+            const token = {'token': localStorage.getItem('token')}
+            const result = Object.assign(name, description, price, type, token)
 
-            fetch('http://127.0.0.1:5000/components/' + this.component.id, {
+            fetch(host + '/components/' + this.component.id, {
                 method: 'PATCH',
                 body: JSON.stringify(
                     result

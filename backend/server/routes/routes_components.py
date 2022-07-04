@@ -67,6 +67,8 @@ def delete_component(id):
 def patch_component(id):
     error_404 = False
     error_422 = False
+    error_401 = False
+    error_403 = False
     try:
         component_to_patch = Component.query.filter(Component.id==id).one_or_none()
 
@@ -75,11 +77,18 @@ def patch_component(id):
             abort(404)
 
         body = request.get_json()
-        if 'modify_by' not in body:
+        if 'token' not in body:
             error_422 = True
             abort(422)
+        user = User.check_token(body.get('token'))
+        if user is None:
+            error_401 = True
+            abort(401)
+        if user.role != 'admin':
+            error_403 = True
+            abort(403)
 
-        component_to_patch.modify_by = body.get('modify_by')
+        component_to_patch.modify_by = user.id
         if 'description' in body:
             component_to_patch.description = body.get('description')
         if 'price' in body:
@@ -106,8 +115,12 @@ def patch_component(id):
         print(e)
         if error_404:
             abort(404)
-        if error_422:
+        elif error_422:
             abort(422)
+        elif error_401:
+            abort(401)
+        elif error_403:
+            abort(403)
         else:
             abort(500)
 
