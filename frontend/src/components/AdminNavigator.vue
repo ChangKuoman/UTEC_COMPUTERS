@@ -67,7 +67,7 @@ export default {
         font-weight: 600;
         transition: 0.5s;
     }
-    .menu li part_menu:hover{
+    .menu li .part_menu:hover{
         color:#161919;
     }
     .AdminNav input {

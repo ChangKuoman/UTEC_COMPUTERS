@@ -2,6 +2,7 @@
     <div>
         <div class="contenedor_HOME">
             <div class="Texto_presentacion">
+                <h2>Register</h2>
                 <form class="padding20" @change = "error.clear">
                     <InputText
                         v-model="username"
