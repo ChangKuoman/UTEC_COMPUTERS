@@ -19,114 +19,127 @@
                                 :objects="lists.motherboard"
                                 title="CHOOSE A MOTHERBOARD:"
                             />
-                            <button class="buttom1" @click.prevent="choose_motherboard">CHOOSE ↪</button>
                         </form>
+                        <button class="buttom1" @click.prevent="choose_motherboard">CHOOSE ↪</button>
                     </div>
-                    <div v-if="errors.motherboard">
+                    <div class="SIM_4" v-if="errors.motherboard">
                         <p>{{errors.motherboard}}</p>
-                        <button @click.prevent="goHome">↩ Home</button>
+                        <button class="buttom1" @click.prevent="goHome">↩ Home</button>
                     </div>
                 </div>
 
                 <div v-if = "second_part">
-                    <div class="SIM_3">
-                        <button class="buttom1" @click.prevent="goBack">
-                            ↩ BACK
-                        </button>
-                        <button class="buttom2" @click.prevent="resetProducts">
-                            <img class = "img-20" src="@/assets/img/button_reset.png" />
-                        </button>
-                    </div>
-                    <div class="SIM_2" v-if="!errors.component">
-                        <h2 class="SIM_4">
-                            NOW, CHOOSE THE COMPONENTS
-                        </h2>
-                        <div>
-                            <div>
+                    <div class="flex_row">
+                        <div class="margin_right_20">
+                            <div class="SIM_3">
+                                <button class="buttom1" @click.prevent="goBack">
+                                    ↩ BACK
+                                </button>
+                                <button class="buttom2" @click.prevent="resetProducts">
+                                    <img class = "img-20" src="@/assets/img/button_reset.png" />
+                                </button>
+                            </div>
+                            <div class="SIM_2" v-if="!errors.component">
+                                <h2 class="SIM_4">
+                                    NOW, CHOOSE THE COMPONENTS
+                                </h2>
                                 <div>
-                                    <h3>YOUR MOTHERBOARD:  {{simulation.motherboard.name}}</h3>
-                                    <p>MotherBoard Price:  S/. {{simulation.motherboard.price.toFixed(2)}}</p>
+                                    <div>
+                                        <div>
+                                            <h3>YOUR MOTHERBOARD:  {{simulation.motherboard.name}}</h3>
+                                            <p>MotherBoard Price:  S/. {{simulation.motherboard.price.toFixed(2)}}</p>
+                                        </div>
+                                    </div>
+                                    <form class="Component">
+                                        <h3>
+                                            COMPONENTS THAT NEED COMPATIBILITY:
+                                        </h3>
+
+                                        <InputRadio
+                                            v-if="lists.ram.length"
+                                            class="no-dots"
+                                            v-model="simulation.ram"
+                                            :objects="lists.ram"
+                                            title="RAM"
+                                        />
+                                        <InputRadio
+                                            v-if="lists.ssd.length"
+                                            class="no-dots"
+                                            v-model="simulation.ssd"
+                                            :objects="lists.ssd"
+                                            title="SSD"
+                                        />
+                                        <InputRadio
+                                            v-if="lists.gpu.length"
+                                            class="no-dots"
+                                            v-model="simulation.gpu"
+                                            :objects="lists.gpu"
+                                            title="GPU"
+                                        />
+                                        <InputRadio
+                                            v-if="lists.pc_cooling.length"
+                                            class="no-dots"
+                                            v-model="simulation.pc_cooling"
+                                            :objects="lists.pc_cooling"
+                                            title="PC COOLING"
+                                        />
+
+                                        <div v-if="!lists.ram.length && !lists.ssd.length && !lists.gpu.length && !lists.pc_cooling.length">
+                                            We are sorry, there are no components here
+                                        </div>
+
+                                        <h3>COMPONENTS THAT DO NOT NEED COMPATIBILITY: </h3>
+                                        <InputRadio
+                                            v-if="lists.hdd.length"
+                                            class="no-dots"
+                                            v-model="simulation.hdd"
+                                            :objects="lists.hdd"
+                                            title="HDD"
+                                        />
+                                        <InputRadio
+                                            v-if="lists.cpu.length"
+                                            class="no-dots"
+                                            v-model="simulation.cpu"
+                                            :objects="lists.cpu"
+                                            title="CPU"
+                                        />
+                                        <InputRadio
+                                            v-if="lists.psu.length"
+                                            class="no-dots"
+                                            v-model="simulation.psu"
+                                            :objects="lists.psu"
+                                            title="PSU"
+                                        />
+                                        <InputRadio
+                                            v-if="lists.peripheral.length"
+                                            class="no-dots"
+                                            v-model="simulation.peripheral"
+                                            :objects="lists.peripheral"
+                                            title="PERIPHERAL"
+                                        />
+                                        <!--
+                                        <div v-if="lists.peripheral.length">
+                                            <h4>Peripheral</h4>
+                                            <ul class="no-dots">
+                                                <li v-for = "(peripheral, index) in lists.peripheral" :key = "index">
+                                                    <div class="description_name">
+                                                        <input v-model = "simulation.peripheral" type="checkbox" :value = "peripheral" />
+                                                        <label for = "peripheral">Name: {{peripheral.name}}</label>
+                                                    </div>
+                                                    <div class="description_prod">
+                                                        <p><span class="weight600">Description:</span> {{peripheral.description}}</p>
+                                                        <p><span class="weight600">Price:</span> S/. {{peripheral.price.toFixed(2)}}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        -->
+                                        <div v-if="!lists.hdd.length && !lists.cpu.length && !lists.psu.length && !lists.peripheral.length">
+                                            We are sorry, there are no components here
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                            <form class="Component">
-                                <h3>
-                                    COMPONENTS THAT NEED COMPATIBILITY:
-                                </h3>
-
-                                <InputRadio
-                                    v-if="lists.ram.length"
-                                    class="no-dots"
-                                    v-model="simulation.ram"
-                                    :objects="lists.ram"
-                                    title="RAM"
-                                />
-                                <InputRadio
-                                    v-if="lists.ssd.length"
-                                    class="no-dots"
-                                    v-model="simulation.ssd"
-                                    :objects="lists.ssd"
-                                    title="SSD"
-                                />
-                                <InputRadio
-                                    v-if="lists.gpu.length"
-                                    class="no-dots"
-                                    v-model="simulation.gpu"
-                                    :objects="lists.gpu"
-                                    title="GPU"
-                                />
-                                <InputRadio
-                                    v-if="lists.pc_cooling.length"
-                                    class="no-dots"
-                                    v-model="simulation.pc_cooling"
-                                    :objects="lists.pc_cooling"
-                                    title="PC COOLING"
-                                />
-
-                                <div v-if="!lists.ram.length && !lists.ssd.length && !lists.gpu.length && !lists.pc_cooling.length">
-                                    We are sorry, there are no components here
-                                </div>
-
-                                <h3>COMPONENTS THAT DO NOT NEED COMPATIBILITY: </h3>
-                                <InputRadio
-                                    v-if="lists.hdd.length"
-                                    class="no-dots"
-                                    v-model="simulation.hdd"
-                                    :objects="lists.hdd"
-                                    title="HDD"
-                                />
-                                <InputRadio
-                                    v-if="lists.cpu.length"
-                                    class="no-dots"
-                                    v-model="simulation.cpu"
-                                    :objects="lists.cpu"
-                                    title="CPU"
-                                />
-                                <InputRadio
-                                    v-if="lists.psu.length"
-                                    class="no-dots"
-                                    v-model="simulation.psu"
-                                    :objects="lists.psu"
-                                    title="PSU"
-                                />
-                                <div v-if="lists.peripheral.length">
-                                    <h4>Peripheral</h4>
-                                    <ul class="no-dots">
-                                        <li v-for = "(peripheral, index) in lists.peripheral" :key = "index">
-                                            <div class="description_name">
-                                                <input v-model = "simulation.peripheral" type="checkbox" :value = "peripheral" />
-                                                <label for = "peripheral">Name: {{peripheral.name}}</label>
-                                            </div>
-                                            <div class="description_prod">
-                                                <p>Price: S/. {{peripheral.price.toFixed(2)}}</p>
-                                                <p>Description: {{peripheral.description}}</p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div v-if="!lists.hdd.length && !lists.cpu.length && !lists.psu.length && !lists.peripheral.length">
-                                    We are sorry, there are no components here
-                                </div>
-                            </form>
                         </div>
                         <ShoppingCart
                             :total_price="total_price"
@@ -414,7 +427,7 @@ export default {
     .Component{
         min-width: 700px;
         width: 100%;
-        height: 450px;
+        height: 600px;
 
         overflow: scroll;
     }
@@ -453,5 +466,14 @@ export default {
         background: none;
         border: none;
         cursor: pointer;
+    }
+    .flex_row{
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        align-content: center;
+    }
+    .margin_right_20{
+        margin-right: 20px;
     }
 </style>

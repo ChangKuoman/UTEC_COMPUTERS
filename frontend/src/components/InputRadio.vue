@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>{{ title }}</h2>
+        <h4>{{ title }}</h4>
         <ul v-bind="$attrs">
             <li v-for="(element, index) in objects" :key="index">
                 <div class="description_name">
