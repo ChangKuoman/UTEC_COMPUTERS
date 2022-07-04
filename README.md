@@ -69,6 +69,9 @@ Nuestro proyecto es una aplicación web que permite el simulado de compra de una
 | @vue/vue3-jest            | ^27.0.0-alpha.1 |
 | babel-jest                | ^27.0.6         |
 | jest                      | ^27.0.5         |
+| eslint-config-prettier    | ^8.3.0          |
+| eslint-plugin-prettier"   | ^4.0.0          |
+| prettier                  | ^2.4.1          |
 
 ### Script a ejecutar la base de datos
 
