@@ -308,7 +308,12 @@ export default {
         .then((response) => response.json())
         .then((JsonResponse) => {
           if (JsonResponse["success"] === true) {
-            this.$router.push("/simulation/" + JsonResponse["created_id"]);
+            this.$router.push({
+              name: "simulation",
+              params: {
+                id: parseInt(JsonResponse["created_id"]),
+              },
+            });
           } else {
             alert(JsonResponse["message"]);
             this.$router.push("/");
