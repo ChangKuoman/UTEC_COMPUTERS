@@ -86,8 +86,7 @@ export default {
           }
         })
         .catch(() => {
-          alert("Something went wrong!");
-          this.$router.push("/");
+          this.$router.push({ name: "errorPage" });
         });
     } else {
       this.$router.push("/login");
