@@ -107,7 +107,7 @@ python3 dump_data.py
 | Endpoint          | POST | GET  | PATCH | DELETE |
 | :--               | :--: | :--: | :--:  | :--:   |
 | /compatibles      | ✅   | ✅  |       |        |
-| /compatibles/:id  |      | ✅   | ✅   | ✅    |
+| /compatibles/:id  |      | ✅   |       | ✅    |
 | /components       | ✅   | ✅  |       |        |
 | /components/:id   |      | ✅   | ✅   | ✅    |
 | /motherboards     | ✅   | ✅  |       |        |
