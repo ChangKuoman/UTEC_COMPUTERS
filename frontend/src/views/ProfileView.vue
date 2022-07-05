@@ -145,7 +145,12 @@ export default {
   },
   methods: {
     see_simulation(id) {
-      this.$router.push("/simulation/" + id);
+      this.$router.push({
+        name: "simulation",
+        params: {
+          id: parseInt(id),
+        },
+      });
     },
     check_change_form() {
       if (this.old_password === "") {

@@ -107,7 +107,7 @@ python3 dump_data.py
 | Endpoint          | POST | GET  | PATCH | DELETE |
 | :--               | :--: | :--: | :--:  | :--:   |
 | /compatibles      | ✅   | ✅  |       |        |
-| /compatibles/:id  |      | ✅   | ✅   | ✅    |
+| /compatibles/:id  |      | ✅   |       | ✅    |
 | /components       | ✅   | ✅  |       |        |
 | /components/:id   |      | ✅   | ✅   | ✅    |
 | /motherboards     | ✅   | ✅  |       |        |
@@ -125,7 +125,7 @@ python3 dump_data.py
 | /login            | login       | LoginView       |
 | /register         | register    | RegisterView    |
 | /simulator        | simulator   | SimulatorView   |
-| /simulation/:id   | simulation  | SimulationView  |
+| /simulation       | simulation  | SimulationView  |
 | /profile          | profile     | ProfileView     |
 | /admin            | admin       | AdminHomeView   |
 | /admin/create     | adminCreate | AdminCreateView |

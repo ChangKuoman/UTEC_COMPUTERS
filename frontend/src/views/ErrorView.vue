@@ -1,4 +1,5 @@
 <template>
+
   <div class="contenedor_HOME">
     <div class="Texto_presentacion">
       <div class="error_view">
@@ -8,6 +9,7 @@
           <router-link class="mod_color" to="/simulator">BACK</router-link>
         </div>
       </div>
+
     </div>
   </div>
 </template>

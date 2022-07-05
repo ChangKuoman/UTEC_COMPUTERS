@@ -43,10 +43,10 @@ const routes = [
     component: ErrorView,
   },
   {
-    path: "/simulation/:id",
+    path: "/simulation",
     name: "simulation",
     component: SimulationView,
-    props: (route) => ({ id: parseInt(route.params.id) }),
+    props: true,
   },
   {
     path: "/profile",
