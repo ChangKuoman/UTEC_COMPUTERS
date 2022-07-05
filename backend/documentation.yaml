@@ -1,0 +1,1806 @@
+openapi: 3.0.1
+info:
+  title: API UTEC COMPUTERS
+  description: Esta api se encarga de administrar motherboards con sus respectivos componentes. Donde genera, actualiza y borra cada uno de ellos. Así como genera una relación de compatibilidad entre la motherboard con los componentes utilizables.
+  version: 1.0.0
+servers:
+- url: http://127.0.0.1:5000/
+tags:
+- name: UTEC COMPUTERS
+  description: API que nos brinda una base de datos de motherboard relacionada con componentes segun la compatibilidades que presentan.
+
+paths:
+
+  /motherboards:
+    get:
+      tags:
+        - Motherboard
+      summary: Obtiene toda la infomacion enlistada de la base de datos de las motherboards
+      responses:
+        200:
+          description: (OK) Se ha accedido a la información de la motherboard correctamente
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ExitosoMotherboardGet'
+        404:
+          $ref: '#/components/responses/NotFound'
+    
+    post:
+      tags:
+      - Motherboard
+      summary: Crea una nueva motherboard con su informacion respectiva.
+      
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+              $ref: '#/components/schemas/BodyMotherboardPost'
+        required: true
+      
+      responses:
+        200:
+          description: (OK) La motherboard se creo exitosamente
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ExitosoMotherboardPost'
+        401:
+          $ref: '#/components/responses/Unauthorized' 
+        403:
+          $ref: '#/components/responses/Forbidden'
+        422:
+          $ref: '#/components/responses/Unprocessable'
+        500:
+          $ref: '#/components/responses/ServerError'
+    
+  /motherboards/{idMotherboard}:
+  
+    get:
+      tags:
+        - Motherboard
+      summary: Obtiene toda la información de la base de datos de una motherboard con id=idMotherboard.
+      parameters:
+      - name: idMotherboard
+        in: path
+        description: Identificador de la motherboard
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: (OK) Se ha accedido a la información de la motherboard correctamente
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ExitosoMotherboardGet'
+        404:
+          $ref: '#/components/responses/NotFound'
+          
+    patch:
+      tags:
+      - Motherboard
+      summary: Actualiza la informacion de una motherboard en la base de datos.
+      parameters:
+      - name: idMotherboard
+        in: path
+        description: Identificador de la motherboard a actualizar
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+              $ref: '#/components/schemas/BodyMotherboardPatch'
+      responses:
+        200:
+          description: (OK) La motherboard se actualizo exitosamente
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ExitosoMotherboardPatch'
+        401:
+          $ref: '#/components/responses/Unauthorized' 
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        422:
+          $ref: '#/components/responses/Unprocessable'
+        500:
+          $ref: '#/components/responses/ServerError'
+          
+    delete:
+      tags:
+        - Motherboard
+      summary: Borra todo la informacion de la motherboard seleccionada
+      parameters:
+      - name: idMotherboard
+        in: path
+        description: Identificador de la motherboard a eliminar
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: (OK) La motherboard se elimino exitosamente
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ExitosoMotherboardDelete'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/ServerError'
+    
+  /components:
+    get:
+      tags:
+      - Component
+      summary: Obtiene toda la infomacion enlistada de la base de datos de los componentes
+      responses:
+        200:
+          description: (OK) Se ha accedido a la información de la motherboard correctamente
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ExitosoComponentGet'
+        404:
+          $ref: '#/components/responses/NotFound'
+        
+    post:
+      tags:
+      - Component
+      summary: Crea un nuevo componente con su informacion respectiva.
+      
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+              $ref: '#/components/schemas/BodyComponentPost'
+        required: true
+      responses:
+        200:
+          description: (OK) El componente se creo exitosamente
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ExitosoComponentPost'
+        401:
+          $ref: '#/components/responses/Unauthorized' 
+        403:
+          $ref: '#/components/responses/Forbidden'
+        422:
+          $ref: '#/components/responses/Unprocessable'
+        500:
+          $ref: '#/components/responses/ServerError'
+  
+  /components/{idComponent}:
+  
+    get:
+        tags:
+          - Component
+        summary: Obtiene toda la información de la base de datos de un componente con id=idComponent.
+        parameters:
+        - name: idComponent
+          in: path
+          description: Identificador del componente
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: (OK) Se ha accedido a la información del componente correctamente
+            content:
+              aplication/json:
+                schema:
+                  $ref: '#/components/schemas/ExitosoComponentGet'
+          404:
+            $ref: '#/components/responses/NotFound'
+            
+    patch:
+        tags:
+        - Component
+        summary: Actualiza la informacion de un componente en la base de datos.
+        parameters:
+        - name: idComponent
+          in: path
+          description: Identificador del componente a actualizar
+          required: true
+          schema:
+            type: string
+        requestBody:
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/BodyComponetPatch'
+        responses:
+          200:
+            description: (OK) El componente se actualizo exitosamente
+            content:
+              aplication/json:
+                schema:
+                  $ref: '#/components/schemas/ExitosoComponentPatch'
+          401:
+            $ref: '#/components/responses/Unauthorized' 
+          403:
+            $ref: '#/components/responses/Forbidden'
+          404:
+            $ref: '#/components/responses/NotFound'
+          422:
+            $ref: '#/components/responses/Unprocessable'
+          500:
+            $ref: '#/components/responses/ServerError'
+      
+    delete:
+        tags:
+        - Component
+        summary: Borra todo la informacion del componente seleccionado
+        parameters:
+        - name: idComponent
+          in: path
+          description: Identificador del componente a eliminar
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: (OK) El componente se elimino exitosamente
+            content:
+              aplication/json:
+                schema:
+                  $ref: '#/components/schemas/ExitosoComponentDelete'
+          404:
+            $ref: '#/components/responses/NotFound'
+          500:
+            $ref: '#/components/responses/ServerError'
+            
+  /users:
+    
+    get:
+      tags:
+      - Users
+      summary: Obtiene toda la infomacion enlistada de la base de datos de los usuarios
+      responses:
+        200:
+          description: (OK) Se ha accedido a la información de los usuarios correctamente
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ExitosoUserGet'
+        404:
+          $ref: '#/components/responses/NotFound'
+    
+    post:
+      tags:
+      - Users
+      summary: Crea un nuevo usuario con su informacion respectiva.
+      
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+              $ref: '#/components/schemas/BodyUserPost'
+          aplication/json-login:
+            schema:
+              $ref: '#/components/schemas/BodyUserPost-Login'
+          aplication/json-token:
+            schema:
+              $ref: '#/components/schemas/BodyUserPost-Token'
+        required: true
+      responses:
+        200:
+          description: (OK) El usuario se creo exitosamente
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ExitosoUserPost'
+            aplication/json-login:
+              schema:
+                $ref: '#/components/schemas/ExitosoUserPost-Login'
+            aplication/json-token:
+              schema:
+                $ref: '#/components/schemas/ExitosoUserPost-Token'
+        401:
+          $ref: '#/components/responses/Unauthorized' 
+        403:
+          $ref: '#/components/responses/Forbidden'
+        422:
+          $ref: '#/components/responses/Unprocessable'
+        500:
+          $ref: '#/components/responses/ServerError'
+      
+    
+  /users/{idUser}:
+  
+    get:
+        tags:
+          - Users
+        summary: Obtiene toda la información de la base de datos de un usuario con id=idUser.
+        parameters:
+        - name: idUser
+          in: path
+          description: Identificador del usuario
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: (OK) Se ha accedido a la información del usuario correctamente
+            content:
+              aplication/json:
+                schema:
+                  $ref: '#/components/schemas/ExitosoUserGet'
+          404:
+            $ref: '#/components/responses/NotFound'
+            
+    patch:
+        tags:
+        - Users
+        summary: Actualiza la informacion de un usuario en la base de datos.
+        parameters:
+        - name: idUser
+          in: path
+          description: Identificador del usuario a actualizar
+          required: true
+          schema:
+            type: string
+        requestBody:
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/BodyUserPatch'
+        responses:
+          200:
+            description: (OK) El usuario se actualizo exitosamente
+            content:
+              aplication/json:
+                schema:
+                  $ref: '#/components/schemas/ExitosoUserPatch'
+          404:
+            $ref: '#/components/responses/NotFound'
+          422:
+            $ref: '#/components/responses/Unprocessable'
+          500:
+            $ref: '#/components/responses/ServerError'
+      
+    delete:
+        tags:
+        - Users
+        summary: Borra todo la informacion del usuario seleccionado
+        parameters:
+        - name: idUser
+          in: path
+          description: Identificador del usuario a eliminar
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: (OK) El usuario se elimino exitosamente
+            content:
+              aplication/json:
+                schema:
+                  $ref: '#/components/schemas/ExitosoUserDelete'
+          404:
+            $ref: '#/components/responses/NotFound'
+          500:
+            $ref: '#/components/responses/ServerError'
+            
+  
+  /compatibles:
+    get:
+      tags:
+      - Compatibles
+      summary: Obtiene toda la infomacion enlistada de la base de datos de las compatibilidades
+      responses:
+        200:
+          description: (OK) Se ha accedido a la información de las compatibilidades correctamente
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ExitosoCompatiblesGet'
+        404:
+          $ref: '#/components/responses/NotFound'
+    
+    post:
+      tags:
+      - Compatibles
+      summary: Crea un nueva compatibilidad con su informacion respectiva.
+      
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+              $ref: '#/components/schemas/BodyCompatiblesPost'
+        required: true
+      responses:
+        200:
+          description: (OK) La compatibilidad se creo exitosamente
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ExitosoCompatiblesPost'
+        401:
+          $ref: '#/components/responses/Unauthorized' 
+        403:
+          $ref: '#/components/responses/Forbidden'
+        422:
+          $ref: '#/components/responses/Unprocessable'
+        500:
+          $ref: '#/components/responses/ServerError'
+
+  /compatibles/{idCompatibles}:
+    get:
+        tags:
+          - Compatibles
+        summary: Obtiene toda la información de la base de datos de una compatibilidad con id=idCompatibles.
+        parameters:
+        - name: idCompatibles
+          in: path
+          description: Identificador de la compatibilidad
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: (OK) Se ha accedido a la información de la compatibilidad correctamente
+            content:
+              aplication/json:
+                schema:
+                  $ref: '#/components/schemas/ExitosoCompatiblesGet'
+          404:
+            $ref: '#/components/responses/NotFound'
+    
+    delete:
+        tags:
+        - Compatibles
+        summary: Borra todo la informacion de la compatibilidad seleccionada
+        parameters:
+        - name: idCompatibles
+          in: path
+          description: Identificador de la compatibilidad a eliminar
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: (OK) La compatibilidad se elimino exitosamente
+            content:
+              aplication/json:
+                schema:
+                  $ref: '#/components/schemas/ExitosoCompatiblesDelete'
+          404:
+            $ref: '#/components/responses/NotFound'
+          500:
+            $ref: '#/components/responses/ServerError'
+  
+  /simulations:
+    get:
+      tags:
+      - Simulations
+      summary: Obtiene la informacion de la base de datos de todas las simulaciones realizadas por el usuario
+      responses:
+        200:
+          description: (OK) Se ha accedido a la información de las simulaciones correctamente
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ExitosoSimulationGet'
+        404:
+          $ref: '#/components/responses/NotFound'
+    
+    post:
+      tags:
+      - Simulations
+      summary: Agrega una nueva simulacion a la lista de simulaciones realizadas por el usuario
+      
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+              $ref: '#/components/schemas/BodySimulationPost'
+        required: true
+      responses:
+        200:
+          description: (OK) La simulacion se creo exitosamente
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ExitosoSimulationPost'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        422:
+          $ref: '#/components/responses/Unprocessable'
+        500:
+          $ref: '#/components/responses/ServerError'
+  
+  /simulations/{idSimulation}:
+    get:
+        tags:
+          - Simulations
+        summary: Obtiene toda la información de una simulacion con id=idSimulation.
+        parameters:
+        - name: idSimulation
+          in: path
+          description: Identificador de la simulacion
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: (OK) Se ha accedido a la información de la simulacion correctamente
+            content:
+              aplication/json:
+                schema:
+                  $ref: '#/components/schemas/ExitosoSimulationGet'
+          404:
+            $ref: '#/components/responses/NotFound'
+    
+    delete:
+        tags:
+        - Simulations
+        summary: Borra todo la informacion de la simulacion seleccionada
+        parameters:
+        - name: idSimulation
+          in: path
+          description: Identificador de la compatibilidad a eliminar
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: (OK) La simulacion se elimino exitosamente
+            content:
+              aplication/json:
+                schema:
+                  $ref: '#/components/schemas/ExitosoSimulationDelete'
+          404:
+            $ref: '#/components/responses/NotFound'
+          500:
+            $ref: '#/components/responses/ServerError'
+  
+    
+components:
+
+  responses:
+  
+    Unauthorized:
+      description: (Unauthorized) no hay autorización para llamar al servicio
+      
+    NotFound:
+      description: (NotFound) no se encontró la información
+      
+    BadRequest:
+      description: (BadRequest) los datos enviados son incorrectos o hay datos obligatorios no enviados
+      
+    ServerError:
+      description: Error en el servidor
+    
+    Forbidden:
+      description: (Denied) no se puede realizar la accion solicitada. Denegado
+    
+    Unprocessable:
+      description: (Unprocessable) la peticion al servidor no puede ser procesada
+    
+  schemas:
+  
+      BodyMotherboardPost:
+        type: object
+        description: Cuerpo requerido para la motherboard
+        properties:
+          name:
+            type: string
+            description: Nombre de la motherboard
+          price:
+            type: integer
+            enum: [1000]
+            description: Precio de la motherboard
+          description:
+            type: string
+            description: Descripcion de la motherboard
+          token:
+            type: string
+            description: Encriptacion del usuario quien creo la motherboard
+          compatibles:
+            type: object
+            description: Componentes compatibles con la motherboard
+            properties:
+              id_motherboard:
+                type: integer
+                enum: [1]
+                description: Id de la motherboard que se le relaciona
+              motherboard:
+                type: string
+                description: Nombre de la motherboard que se relaciona
+              id_componet:
+                type: integer
+                enum: [1]
+                description: Id del componente que se relaciona
+              componet:
+                type: string
+                description: Nombre del componente que se relaciona
+            
+      BodyMotherboardPatch:
+            type: object
+            description: diccionario de motherboards
+            properties:
+              name:
+                type: string
+                description: Nombre de la motherboard
+              price:
+                type: integer
+                enum: [1000]
+                description: Precio de la motherboard
+              description:
+                type: string
+                description: Descripcion de la motherboard
+              token:
+                type: string
+                description: Encriptacion del usuario quien modifico la motherboard
+              compatibles:
+                type: object
+                description: Componentes compatibles con la motherboard
+                properties:
+                  id_motherboard:
+                    type: integer
+                    enum: [1]
+                    description: Id de la motherboard que se le relaciona
+                  motherboard:
+                    type: string
+                    description: Nombre de la motherboard que se relaciona
+                  id_componet:
+                    type: integer
+                    enum: [1]
+                    description: Id del componente que se relaciona
+                  componet:
+                    type: string
+                    description: Nombre del componente que se relaciona
+      
+      ExitosoMotherboardGet:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          motherboards:
+            type: object
+            description: diccionario de motherboards
+            properties:
+              name:
+                type: string
+                description: Nombre de la motherboard
+              price:
+                type: integer
+                enum: [1000]
+                description: Precio de la motherboard
+              description:
+                type: string
+                description: Descripcion de la motherboard
+              compatibles:
+                type: object
+                description: Componentes compatibles con la motherboard
+                properties:
+                  id_motherboard:
+                    type: integer
+                    enum: [1]
+                    description: Id de la motherboard que se le relaciona
+                  motherboard:
+                    type: string
+                    description: Nombre de la motherboard que se relaciona
+                  id_componet:
+                    type: integer
+                    enum: [1]
+                    description: Id del componente que se relaciona
+                  componet:
+                    type: string
+                    description: Nombre del componente que se relaciona
+          total_motherboards:
+            type: integer
+            enum: [1]
+            description: Total de motherboards
+              
+      ExitosoMotherboardPost:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          create_id:
+            type: integer
+            enum: [2]
+            description: Id de la nueva motherboard
+          motherboards:
+            type: object
+            description: Diccionario de motherboards
+            properties:
+              name:
+                type: string
+                description: Nombre de la motherboard
+              price:
+                type: integer
+                enum: [1000]
+                description: Precio de la motherboard
+              description:
+                type: string
+                description: Descripcion de la motherboard
+              compatibles:
+                type: object
+                description: Componentes compatibles con la motherboard
+                properties:
+                  id_motherboard:
+                    type: integer
+                    enum: [1]
+                    description: Id de la motherboard que se le relaciona
+                  motherboard:
+                    type: string
+                    description: Nombre de la motherboard que se relaciona
+                  id_componet:
+                    type: integer
+                    enum: [1]
+                    description: Id del componente que se relaciona
+                  componet:
+                    type: string
+                    description: Nombre del componente que se relaciona
+          total_motherboards:
+            type: integer
+            enum: [1]
+            description: Total de motherboards
+      
+      ExitosoMotherboardPatch:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          update_id:
+            type: integer
+            enum: [1]
+            description: Id correspondiente a la motherboard actualizada
+          motherboards:
+            type: object
+            description: diccionario de motherboards
+            properties:
+              name:
+                type: string
+                description: Nombre de la motherboard
+              price:
+                type: integer
+                enum: [1000]
+                description: Precio de la motherboard
+              description:
+                type: string
+                description: Descripcion de la motherboard
+              token:
+                type: string
+                description: Encriptacion del usuario quien modifico la motherboard
+              compatibles:
+                type: object
+                description: Componentes compatibles con la motherboard
+                properties:
+                  id_motherboard:
+                    type: integer
+                    enum: [1]
+                    description: Id de la motherboard que se le relaciona
+                  motherboard:
+                    type: string
+                    description: Nombre de la motherboard que se relaciona
+                  id_componet:
+                    type: integer
+                    enum: [1]
+                    description: Id del componente que se relaciona
+                  componet:
+                    type: string
+                    description: Nombre del componente que se relaciona
+          total_motherboards:
+            type: integer
+            enum: [1]
+            description: Total de motherboards
+            
+      ExitosoMotherboardDelete:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          deleted_id:
+            type: integer
+            enum: [1]
+            description: Id correspondiente a la motherboard eliminada
+          motherboards:
+            type: object
+            description: Diccionario de motherboards
+            properties:
+              name:
+                type: string
+                description: Nombre de la motherboard
+              price:
+                type: integer
+                enum: [1000]
+                description: Precio de la motherboard
+              description:
+                type: string
+                description: Descripcion de la motherboard
+              compatibles:
+                type: object
+                description: Componentes compatibles con la motherboard
+                properties:
+                  id_motherboard:
+                    type: integer
+                    enum: [1]
+                    description: Id de la motherboard que se le relaciona
+                  motherboard:
+                    type: string
+                    description: Nombre de la motherboard que se relaciona
+                  id_componet:
+                    type: integer
+                    enum: [1]
+                    description: Id del componente que se relaciona
+                  componet:
+                    type: string
+                    description: Nombre del componente que se relaciona
+          total_motherboards:
+            type: integer
+            enum: [1]
+            description: Total de motherboards
+      
+      
+      
+      BodyComponentPost:
+        type: object
+        description: Diccionario de componentes
+        properties:
+              name:
+                type: string
+                description: Nombre del componente
+              component_type:
+                type: string
+                description: Tipo de componente
+              token:
+                type: string
+                description: Encriptacion del usuario quien creo el componente
+              description:
+                type: string
+                description: Descripcion del componente
+              price:
+                type: integer
+                enum: [1000]
+                description: Precio del componente
+              compatibles:
+                type: object
+                description: Relacion de compatibilidad entre motherboards y componentes
+                properties:
+                  id_motherboard:
+                    type: integer
+                    enum: [1]
+                    description: Id de la motherboard que se le relaciona
+                  motherboard:
+                    type: string
+                    description: Nombre de la motherboard que se relaciona
+                  id_componet:
+                    type: integer
+                    enum: [1]
+                    description: Id del componente que se relaciona
+                  componet:
+                    type: string
+                    description: Nombre del componente que se relaciona   
+      
+      BodyComponetPatch:
+            type: object
+            description: Diccionario de componentes
+            properties:
+              name:
+                type: string
+                description: Nombre del componente
+              component_type:
+                type: string
+                description: Tipo de componente
+              description:
+                type: string
+                description: Descripcion del componente
+              price:
+                type: integer
+                enum: [1000]
+                description: Precio del 
+              token:
+                type: string
+                description: Encriptacion del usuario quien modifico el componente       
+              compatibles:
+                type: object
+                description: Relacion de compatibilidad entre motherboards y componentes
+                properties:
+                  id_motherboard:
+                    type: integer
+                    enum: [1]
+                    description: Id de la motherboard que se le relaciona
+                  motherboard:
+                    type: string
+                    description: Nombre de la motherboard que se relaciona
+                  id_componet:
+                    type: integer
+                    enum: [1]
+                    description: Id del componente que se relaciona
+                  componet:
+                    type: string
+                    description: Nombre del componente que se relaciona
+      
+      ExitosoComponentGet:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          componentes:
+            type: object
+            description: Diccionario de componentes
+            properties:
+              name:
+                type: string
+                description: Nombre del componente
+              component_type:
+                type: string
+                description: Tipo de componente
+              description:
+                type: string
+                description: Descripcion del componente
+              price:
+                type: integer
+                enum: [1000]
+                description: Precio del componente       
+              compatibles:
+                type: object
+                description: Relacion de compatibilidad entre motherboards y componentes
+                properties:
+                  id_motherboard:
+                    type: integer
+                    enum: [1]
+                    description: Id de la motherboard que se le relaciona
+                  motherboard:
+                    type: string
+                    description: Nombre de la motherboard que se relaciona
+                  id_componet:
+                    type: integer
+                    enum: [1]
+                    description: Id del componente que se relaciona
+                  componet:
+                    type: string
+                    description: Nombre del componente que se relaciona
+          total_components:
+            type: integer
+            enum: [1]
+            description: Total de componentes
+            
+      ExitosoComponentPost:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          create_id:
+            type: integer
+            enum: [2]
+            description: Id del nuevo componente
+          componentes:
+            type: object
+            description: Diccionario de componentes
+            properties:
+              name:
+                type: string
+                description: Nombre del componente
+              component_type:
+                type: string
+                description: Tipo de componente
+              token:
+                type: string
+                description: Encriptacion del usuario quien creo el componente
+              description:
+                type: string
+                description: Descripcion del componente
+              price:
+                type: integer
+                enum: [1000]
+                description: Precio del componente
+              compatibles:
+                type: object
+                description: Relacion de compatibilidad entre motherboards y componentes
+                properties:
+                  id_motherboard:
+                    type: integer
+                    enum: [1]
+                    description: Id de la motherboard que se le relaciona
+                  motherboard:
+                    type: string
+                    description: Nombre de la motherboard que se relaciona
+                  id_componet:
+                    type: integer
+                    enum: [1]
+                    description: Id del componente que se relaciona
+                  componet:
+                    type: string
+                    description: Nombre del componente que se relaciona   
+          total_components:
+            type: integer
+            enum: [1]
+            description: Total de componentes
+      
+      ExitosoComponentPatch:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          update_id:
+            type: integer
+            enum: [2]
+            description: Id correspondiente al componente acutlizado
+          components:
+            type: object
+            description: Diccionario de componentes
+            properties:
+              name:
+                type: string
+                description: Nombre del componente
+              component_type:
+                type: string
+                description: Tipo de componente
+              description:
+                type: string
+                description: Descripcion del componente
+              price:
+                type: integer
+                enum: [1000]
+                description: Precio del 
+              token:
+                type: string
+                description: Encriptacion del usuario quien modifico el componente       
+              compatibles:
+                type: object
+                description: Relacion de compatibilidad entre motherboards y componentes
+                properties:
+                  id_motherboard:
+                    type: integer
+                    enum: [1]
+                    description: Id de la motherboard que se le relaciona
+                  motherboard:
+                    type: string
+                    description: Nombre de la motherboard que se relaciona
+                  id_componet:
+                    type: integer
+                    enum: [1]
+                    description: Id del componente que se relaciona
+                  componet:
+                    type: string
+                    description: Nombre del componente que se relaciona
+          total_components:
+            type: integer
+            enum: [1]
+            description: Total de componentes 
+            
+      ExitosoComponentDelete:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          deleted_id:
+            type: integer
+            enum: [1]
+            description: Id correspondiente al componente eliminado
+          componentes:
+            type: object
+            description: Diccionario de componentes
+            properties:
+              name:
+                type: string
+                description: Nombre del componente
+              component_type:
+                type: string
+                description: Tipo de componente
+              description:
+                type: string
+                description: Descripcion del componente
+              price:
+                type: integer
+                enum: [1000]
+                description: Precio del componente       
+              compatibles:
+                type: object
+                description: Relacion de compatibilidad entre motherboards y componentes
+                properties:
+                  id_motherboard:
+                    type: integer
+                    enum: [1]
+                    description: Id de la motherboard que se le relaciona
+                  motherboard:
+                    type: string
+                    description: Nombre de la motherboard que se relaciona
+                  id_componet:
+                    type: integer
+                    enum: [1]
+                    description: Id del componente que se relaciona
+                  componet:
+                    type: string
+                    description: Nombre del componente que se relaciona
+          total_components:
+            type: integer
+            enum: [1]
+            description: Total de componentes
+      
+      
+      
+      BodyUserPost-Login:
+            type: object
+            description: Usuario generado
+            properties:
+              username:
+                type: string
+                description: Username del usuario
+              role:
+                type: string
+                description: Role que tiene en el aplicativo
+              token:
+                type: string
+                description: Contrasena encriptada del usuario
+      
+      BodyUserPost-Token:
+            type: object
+            description: Usuario generado
+            properties:
+              username:
+                type: string
+                description: Username del usuario
+              role:
+                type: string
+                description: Role que tiene en el aplicativo
+              token:
+                type: string
+                description: Contrasena encriptada del usuario
+      
+      BodyUserPost:
+            type: object
+            description: Usuario generado
+            properties:
+              username:
+                type: string
+                description: Username del usuario
+              role:
+                type: string
+                description: Role que tiene en el aplicativo
+              token:
+                type: string
+                description: Contrasena encriptada del usuario
+
+      BodyUserPatch:
+            type: object
+            description: Diccionario de users
+            properties:
+              username:
+                type: string
+                description: Username del usuario
+              role:
+                type: string
+                description: Role que tiene en el aplicativo
+              token:
+                type: string
+                description: Contrasena encriptada del usuario
+      
+      ExitosoUserGet:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          users:
+            type: object
+            description: Diccionario de users
+            properties:
+              username:
+                type: string
+                description: Username del usuario
+              role:
+                type: string
+                description: Role que tiene en el aplicativo
+              token:
+                type: string
+                description: Contrasena encriptada del usuario
+          total_users:
+            type: integer
+            enum: [1]
+            description: Total de usuarios
+      
+      ExitosoUserPost:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          user:
+            type: object
+            description: Usuario generado
+            properties:
+              username:
+                type: string
+                description: Username del usuario
+              role:
+                type: string
+                description: Role que tiene en el aplicativo
+              token:
+                type: string
+                description: Contrasena encriptada del usuario
+          users:
+            type: object
+            description: Diccionario de users
+            properties:
+              username:
+                type: string
+                description: Username del usuario
+              role:
+                type: string
+                description: Role que tiene en el aplicativo
+              token:
+                type: string
+                description: Contrasena encriptada del usuario
+          total_users:
+            type: integer
+            enum: [1]
+            description: Total de usuarios
+      
+      ExitosoUserPost-Login:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          user:
+            type: object
+            description: Usuario generado
+            properties:
+              username:
+                type: string
+                description: Username del usuario
+              role:
+                type: string
+                description: Role que tiene en el aplicativo
+              token:
+                type: string
+                description: Contrasena encriptada del usuario
+      
+      ExitosoUserPost-Token:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          user:
+            type: object
+            description: Usuario generado
+            properties:
+              username:
+                type: string
+                description: Username del usuario
+              role:
+                type: string
+                description: Role que tiene en el aplicativo
+              token:
+                type: string
+                description: Contrasena encriptada del usuario
+      
+      ExitosoUserPatch:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          update_id:
+            type: integer
+            enum: [2]
+            description: Id correspondiente al Usuario acutlizado
+          users:
+            type: object
+            description: Diccionario de users
+            properties:
+              username:
+                type: string
+                description: Username del usuario
+              role:
+                type: string
+                description: Role que tiene en el aplicativo
+              token:
+                type: string
+                description: Contrasena encriptada del usuario
+          total_users:
+            type: integer
+            enum: [1]
+            description: Total de usuarios  
+            
+      ExitosoUserDelete:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          deleted_id:
+            type: integer
+            enum: [1]
+            description: Id correspondiente al usuario que se ha eliminado
+          users:
+            type: object
+            description: Diccionario de users
+            properties:
+              username:
+                type: string
+                description: Username del usuario
+              role:
+                type: string
+                description: Role que tiene en el aplicativo
+              token:
+                type: string
+                description: Contrasena encriptada del usuario
+          total_users:
+            type: integer
+            enum: [1]
+            description: Total de usuarios
+      
+      
+      BodyCompatiblesPost:
+            type: object
+            description: Diccionario de compatibilidades
+            properties:
+              id_motherboard:
+                type: integer
+                enum: [1]
+                description: Id de la motherboard que se le relaciona
+              motherboard:
+                type: string
+                description: Nombre de la motherboard que se relaciona
+              id_componet:
+                type: integer
+                enum: [1]
+                description: Id del componente que se relaciona
+              componet:
+                type: string
+                description: Nombre del componente que se relaciona
+          
+      ExitosoCompatiblesGet:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          compatible:
+            type: object
+            description: Diccionario de compatibilidades
+            properties:
+              id_motherboard:
+                type: integer
+                enum: [1]
+                description: Id de la motherboard que se le relaciona
+              motherboard:
+                type: string
+                description: Nombre de la motherboard que se relaciona
+              id_componet:
+                type: integer
+                enum: [1]
+                description: Id del componente que se relaciona
+              componet:
+                type: string
+                description: Nombre del componente que se relaciona
+          total_compatibles:
+            type: integer
+            enum: [1]
+            description: Total de compatibilidades
+      
+      ExitosoCompatiblesPost:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          create_id:
+            type: integer
+            enum: [1]
+            description: Id de la nueva compatibilidad
+          compatibles:
+            type: object
+            description: Diccionario de compatibilidades
+            properties:
+              id_motherboard:
+                type: integer
+                enum: [1]
+                description: Id de la motherboard que se le relaciona
+              motherboard:
+                type: string
+                description: Nombre de la motherboard que se relaciona
+              id_componet:
+                type: integer
+                enum: [1]
+                description: Id del componente que se relaciona
+              componet:
+                type: string
+                description: Nombre del componente que se relaciona
+          total_compatibles:
+            type: integer
+            enum: [1]
+            description: Total de compatibilidades
+            
+      ExitosoCompatiblesDelete:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          deleted_id:
+            type: integer
+            enum: [1]
+            description: Id correspondiente a la compatabilidad eliminada
+          compatibles:
+            type: object
+            description: Diccionario de compatibilidades
+            properties:
+              id_motherboard:
+                type: integer
+                enum: [1]
+                description: Id de la motherboard que se le relaciona
+              motherboard:
+                type: string
+                description: Nombre de la motherboard que se relaciona
+              id_componet:
+                type: integer
+                enum: [1]
+                description: Id del componente que se relaciona
+              componet:
+                type: string
+                description: Nombre del componente que se relaciona
+          total_compatibles:
+            type: integer
+            enum: [1]
+            description: Total de compatibilidades
+      
+      
+      
+      BodySimulationPost:
+            type: object
+            description: Diccionario de simulaciones
+            properties:
+              token:
+                type: string
+                description: Encriptacion del usuario quien obvtuvo esta simulacion
+              total_price:
+                type: integer
+                enum: [1000]
+                description: Precio total obtenido de la simulacion
+              components:
+                type: object
+                description: Diccionario de componentes
+                properties:
+                  name:
+                    type: string
+                    description: Nombre del componente
+                  component_type:
+                    type: string
+                    description: Tipo de componente
+                  description:
+                    type: string
+                    description: Descripcion del componente
+                  price:
+                    type: integer
+                    enum: [1000]
+                    description: Precio del componente       
+                  compatibles:
+                    type: object
+                    properties:
+                      id_motherboard:
+                        type: integer
+                        enum: [1]
+                        description: Id de la motherboard que se le relaciona
+                      motherboard:
+                        type: string
+                        description: Nombre de la motherboard que se relaciona
+                      id_componet:
+                        type: integer
+                        enum: [1]
+                        description: Id del componente que se relaciona
+                      componet:
+                        type: string
+                        description: Nombre del componente que se relaciona
+              motherboard:
+                type: object
+                description: Diccionario de motherboards
+                properties:
+                  name:
+                    type: string
+                    description: Nombre de la motherboard
+                  price:
+                    type: integer
+                    enum: [1000]
+                    description: Precio de la motherboard
+                  description:
+                    type: string
+                    description: Descripcion de la motherboard
+                  compatibles:
+                    type: object
+                    properties:
+                      id_motherboard:
+                        type: integer
+                        enum: [1]
+                        description: Id de la motherboard que se le relaciona
+                      motherboard:
+                        type: string
+                        description: Nombre de la motherboard que se relaciona
+                      id_componet:
+                        type: integer
+                        enum: [1]
+                        description: Id del componente que se relaciona
+                      componet:
+                        type: string
+                        description: Nombre del componente que se relaciona 
+      
+      ExitosoSimulationGet:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          simulations:
+            type: object
+            description: Diccionario de simulaciones
+            properties:
+              token:
+                type: string
+                description: Encriptacion del usuario quien obvtuvo esta simulacion
+              total_price:
+                type: integer
+                enum: [1000]
+                description: Precio total obtenido de la simulacion
+              components:
+                type: object
+                description: Diccionario de componentes
+                properties:
+                  name:
+                    type: string
+                    description: Nombre del componente
+                  component_type:
+                    type: string
+                    description: Tipo de componente
+                  description:
+                    type: string
+                    description: Descripcion del componente
+                  price:
+                    type: integer
+                    enum: [1000]
+                    description: Precio del componente       
+                  compatibles:
+                    type: object
+                    properties:
+                      id_motherboard:
+                        type: integer
+                        enum: [1]
+                        description: Id de la motherboard que se le relaciona
+                      motherboard:
+                        type: string
+                        description: Nombre de la motherboard que se relaciona
+                      id_componet:
+                        type: integer
+                        enum: [1]
+                        description: Id del componente que se relaciona
+                      componet:
+                        type: string
+                        description: Nombre del componente que se relaciona
+              motherboard:
+                type: object
+                description: Diccionario de motherboards
+                properties:
+                  name:
+                    type: string
+                    description: Nombre de la motherboard
+                  price:
+                    type: integer
+                    enum: [1000]
+                    description: Precio de la motherboard
+                  description:
+                    type: string
+                    description: Descripcion de la motherboard
+                  compatibles:
+                    type: object
+                    properties:
+                      id_motherboard:
+                        type: integer
+                        enum: [1]
+                        description: Id de la motherboard que se le relaciona
+                      motherboard:
+                        type: string
+                        description: Nombre de la motherboard que se relaciona
+                      id_componet:
+                        type: integer
+                        enum: [1]
+                        description: Id del componente que se relaciona
+                      componet:
+                        type: string
+                        description: Nombre del componente que se relaciona
+          total_simualtions:
+            type: integer
+            enum: [1]
+            description: Total de simulaciones 
+      
+      ExitosoSimulationPost:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          create_id:
+            type: integer
+            enum: [1]
+            description: Id de la nueva simulacion
+          simulations:
+            type: object
+            description: Diccionario de simulaciones
+            properties:
+              token:
+                type: string
+                description: Encriptacion del usuario quien obvtuvo esta simulacion
+              total_price:
+                type: integer
+                enum: [1000]
+                description: Precio total obtenido de la simulacion
+              components:
+                type: object
+                description: Diccionario de componentes
+                properties:
+                  name:
+                    type: string
+                    description: Nombre del componente
+                  component_type:
+                    type: string
+                    description: Tipo de componente
+                  description:
+                    type: string
+                    description: Descripcion del componente
+                  price:
+                    type: integer
+                    enum: [1000]
+                    description: Precio del componente       
+                  compatibles:
+                    type: object
+                    properties:
+                      id_motherboard:
+                        type: integer
+                        enum: [1]
+                        description: Id de la motherboard que se le relaciona
+                      motherboard:
+                        type: string
+                        description: Nombre de la motherboard que se relaciona
+                      id_componet:
+                        type: integer
+                        enum: [1]
+                        description: Id del componente que se relaciona
+                      componet:
+                        type: string
+                        description: Nombre del componente que se relaciona
+              motherboard:
+                type: object
+                description: Diccionario de motherboards
+                properties:
+                  name:
+                    type: string
+                    description: Nombre de la motherboard
+                  price:
+                    type: integer
+                    enum: [1000]
+                    description: Precio de la motherboard
+                  description:
+                    type: string
+                    description: Descripcion de la motherboard
+                  compatibles:
+                    type: object
+                    properties:
+                      id_motherboard:
+                        type: integer
+                        enum: [1]
+                        description: Id de la motherboard que se le relaciona
+                      motherboard:
+                        type: string
+                        description: Nombre de la motherboard que se relaciona
+                      id_componet:
+                        type: integer
+                        enum: [1]
+                        description: Id del componente que se relaciona
+                      componet:
+                        type: string
+                        description: Nombre del componente que se relaciona
+          total_simualtions:
+            type: integer
+            enum: [1]
+            description: Total de simulaciones  
+      
+      ExitosoSimulationDelete:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          deleted_id:
+            type: integer
+            enum: [1]
+            description: Id correspondiente a la simulacion eliminada
+          simulations:
+            type: object
+            properties:
+              token:
+                type: string
+                description: Encriptacion del usuario quien obvtuvo esta simulacion
+              total_price:
+                type: integer
+                enum: [1000]
+                description: Precio total obtenido de la simulacion
+              components:
+                type: object
+                description: Diccionario de componentes
+                properties:
+                  name:
+                    type: string
+                    description: Nombre del componente
+                  component_type:
+                    type: string
+                    description: Tipo de componente
+                  description:
+                    type: string
+                    description: Descripcion del componente
+                  price:
+                    type: integer
+                    enum: [1000]
+                    description: Precio del componente       
+                  compatibles:
+                    type: object
+                    properties:
+                      id_motherboard:
+                        type: integer
+                        enum: [1]
+                        description: Id de la motherboard que se le relaciona
+                      motherboard:
+                        type: string
+                        description: Nombre de la motherboard que se relaciona
+                      id_componet:
+                        type: integer
+                        enum: [1]
+                        description: Id del componente que se relaciona
+                      componet:
+                        type: string
+                        description: Nombre del componente que se relaciona
+              motherboard:
+                type: object
+                description: Diccionario de motherboards
+                properties:
+                  name:
+                    type: string
+                    description: Nombre de la motherboard
+                  price:
+                    type: integer
+                    enum: [1000]
+                    description: Precio de la motherboard
+                  description:
+                    type: string
+                    description: Descripcion de la motherboard
+                  compatibles:
+                    type: object
+                    properties:
+                      id_motherboard:
+                        type: integer
+                        enum: [1]
+                        description: Id de la motherboard que se le relaciona
+                      motherboard:
+                        type: string
+                        description: Nombre de la motherboard que se relaciona
+                      id_componet:
+                        type: integer
+                        enum: [1]
+                        description: Id del componente que se relaciona
+                      componet:
+                        type: string
+                        description: Nombre del componente que se relaciona
+          total_simualtions:
+            type: integer
+            enum: [1]
+            description: Total de simulaciones
+      
