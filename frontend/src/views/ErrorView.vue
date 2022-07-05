@@ -3,7 +3,7 @@
     <h2>404 - Page Not Found</h2>
     <img class="img-500" src="@/assets/img/404_error.jpg" />
     <div class="box_boton2">
-      <router-link class="mod_color" to="/simulator">BACK</router-link>
+      <router-link class="mod_color" to="/">BACK</router-link>
     </div>
   </div>
 </template>
