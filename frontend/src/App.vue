@@ -150,8 +150,6 @@ export default {
         .catch(() => {
           this.$router.push("/login");
         });
-    } else {
-      this.$router.push("/");
     }
   },
   methods: {
