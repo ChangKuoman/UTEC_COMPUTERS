@@ -25,19 +25,19 @@ paths:
                 $ref: '#/components/schemas/ExitosoMotherboardGet'
         404:
           $ref: '#/components/responses/NotFound'
-    
+
     post:
       tags:
       - Motherboard
       summary: Crea una nueva motherboard con su informacion respectiva.
-      
+
       requestBody:
         content:
           aplication/json:
             schema:
               $ref: '#/components/schemas/BodyMotherboardPost'
         required: true
-      
+
       responses:
         200:
           description: (OK) La motherboard se creo exitosamente
@@ -46,16 +46,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExitosoMotherboardPost'
         401:
-          $ref: '#/components/responses/Unauthorized' 
+          $ref: '#/components/responses/Unauthorized'
         403:
           $ref: '#/components/responses/Forbidden'
         422:
           $ref: '#/components/responses/Unprocessable'
         500:
           $ref: '#/components/responses/ServerError'
-    
+
   /motherboards/{idMotherboard}:
-  
+
     get:
       tags:
         - Motherboard
@@ -76,7 +76,7 @@ paths:
                 $ref: '#/components/schemas/ExitosoMotherboardGet'
         404:
           $ref: '#/components/responses/NotFound'
-          
+
     patch:
       tags:
       - Motherboard
@@ -101,7 +101,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExitosoMotherboardPatch'
         401:
-          $ref: '#/components/responses/Unauthorized' 
+          $ref: '#/components/responses/Unauthorized'
         403:
           $ref: '#/components/responses/Forbidden'
         404:
@@ -110,7 +110,7 @@ paths:
           $ref: '#/components/responses/Unprocessable'
         500:
           $ref: '#/components/responses/ServerError'
-          
+
     delete:
       tags:
         - Motherboard
@@ -133,7 +133,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         500:
           $ref: '#/components/responses/ServerError'
-    
+
   /components:
     get:
       tags:
@@ -141,19 +141,19 @@ paths:
       summary: Obtiene toda la infomacion enlistada de la base de datos de los componentes
       responses:
         200:
-          description: (OK) Se ha accedido a la información de la motherboard correctamente
+          description: (OK) Se ha accedido a la información del componente correctamente
           content:
             aplication/json:
               schema:
                 $ref: '#/components/schemas/ExitosoComponentGet'
         404:
           $ref: '#/components/responses/NotFound'
-        
+
     post:
       tags:
       - Component
       summary: Crea un nuevo componente con su informacion respectiva.
-      
+
       requestBody:
         content:
           aplication/json:
@@ -168,16 +168,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExitosoComponentPost'
         401:
-          $ref: '#/components/responses/Unauthorized' 
+          $ref: '#/components/responses/Unauthorized'
         403:
           $ref: '#/components/responses/Forbidden'
         422:
           $ref: '#/components/responses/Unprocessable'
         500:
           $ref: '#/components/responses/ServerError'
-  
+
   /components/{idComponent}:
-  
+
     get:
         tags:
           - Component
@@ -198,7 +198,7 @@ paths:
                   $ref: '#/components/schemas/ExitosoComponentGet'
           404:
             $ref: '#/components/responses/NotFound'
-            
+
     patch:
         tags:
         - Component
@@ -223,7 +223,7 @@ paths:
                 schema:
                   $ref: '#/components/schemas/ExitosoComponentPatch'
           401:
-            $ref: '#/components/responses/Unauthorized' 
+            $ref: '#/components/responses/Unauthorized'
           403:
             $ref: '#/components/responses/Forbidden'
           404:
@@ -232,7 +232,7 @@ paths:
             $ref: '#/components/responses/Unprocessable'
           500:
             $ref: '#/components/responses/ServerError'
-      
+
     delete:
         tags:
         - Component
@@ -255,9 +255,9 @@ paths:
             $ref: '#/components/responses/NotFound'
           500:
             $ref: '#/components/responses/ServerError'
-            
+
   /users:
-    
+
     get:
       tags:
       - Users
@@ -271,12 +271,12 @@ paths:
                 $ref: '#/components/schemas/ExitosoUserGet'
         404:
           $ref: '#/components/responses/NotFound'
-    
+
     post:
       tags:
       - Users
       summary: Crea un nuevo usuario con su informacion respectiva.
-      
+
       requestBody:
         content:
           aplication/json:
@@ -303,17 +303,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExitosoUserPost-Token'
         401:
-          $ref: '#/components/responses/Unauthorized' 
+          $ref: '#/components/responses/Unauthorized'
         403:
           $ref: '#/components/responses/Forbidden'
         422:
           $ref: '#/components/responses/Unprocessable'
         500:
           $ref: '#/components/responses/ServerError'
-      
-    
+
+
   /users/{idUser}:
-  
+
     get:
         tags:
           - Users
@@ -334,7 +334,7 @@ paths:
                   $ref: '#/components/schemas/ExitosoUserGet'
           404:
             $ref: '#/components/responses/NotFound'
-            
+
     patch:
         tags:
         - Users
@@ -364,7 +364,7 @@ paths:
             $ref: '#/components/responses/Unprocessable'
           500:
             $ref: '#/components/responses/ServerError'
-      
+
     delete:
         tags:
         - Users
@@ -387,8 +387,8 @@ paths:
             $ref: '#/components/responses/NotFound'
           500:
             $ref: '#/components/responses/ServerError'
-            
-  
+
+
   /compatibles:
     get:
       tags:
@@ -403,12 +403,12 @@ paths:
                 $ref: '#/components/schemas/ExitosoCompatiblesGet'
         404:
           $ref: '#/components/responses/NotFound'
-    
+
     post:
       tags:
       - Compatibles
       summary: Crea un nueva compatibilidad con su informacion respectiva.
-      
+
       requestBody:
         content:
           aplication/json:
@@ -423,7 +423,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExitosoCompatiblesPost'
         401:
-          $ref: '#/components/responses/Unauthorized' 
+          $ref: '#/components/responses/Unauthorized'
         403:
           $ref: '#/components/responses/Forbidden'
         422:
@@ -452,7 +452,7 @@ paths:
                   $ref: '#/components/schemas/ExitosoCompatiblesGet'
           404:
             $ref: '#/components/responses/NotFound'
-    
+
     delete:
         tags:
         - Compatibles
@@ -475,7 +475,7 @@ paths:
             $ref: '#/components/responses/NotFound'
           500:
             $ref: '#/components/responses/ServerError'
-  
+
   /simulations:
     get:
       tags:
@@ -490,12 +490,12 @@ paths:
                 $ref: '#/components/schemas/ExitosoSimulationGet'
         404:
           $ref: '#/components/responses/NotFound'
-    
+
     post:
       tags:
       - Simulations
       summary: Agrega una nueva simulacion a la lista de simulaciones realizadas por el usuario
-      
+
       requestBody:
         content:
           aplication/json:
@@ -515,7 +515,7 @@ paths:
           $ref: '#/components/responses/Unprocessable'
         500:
           $ref: '#/components/responses/ServerError'
-  
+
   /simulations/{idSimulation}:
     get:
         tags:
@@ -537,7 +537,7 @@ paths:
                   $ref: '#/components/schemas/ExitosoSimulationGet'
           404:
             $ref: '#/components/responses/NotFound'
-    
+
     delete:
         tags:
         - Simulations
@@ -560,32 +560,32 @@ paths:
             $ref: '#/components/responses/NotFound'
           500:
             $ref: '#/components/responses/ServerError'
-  
-    
+
+
 components:
 
   responses:
-  
+
     Unauthorized:
       description: (Unauthorized) no hay autorización para llamar al servicio
-      
+
     NotFound:
       description: (NotFound) no se encontró la información
-      
+
     BadRequest:
       description: (BadRequest) los datos enviados son incorrectos o hay datos obligatorios no enviados
-      
+
     ServerError:
       description: Error en el servidor
-    
+
     Forbidden:
       description: (Denied) no se puede realizar la accion solicitada. Denegado
-    
+
     Unprocessable:
       description: (Unprocessable) la peticion al servidor no puede ser procesada
-    
+
   schemas:
-  
+
       BodyMotherboardPost:
         type: object
         description: Cuerpo requerido para la motherboard
@@ -610,18 +610,18 @@ components:
               id_motherboard:
                 type: integer
                 enum: [1]
-                description: Id de la motherboard que se le relaciona
+                description: Id de la motherboard que se relaciona
               motherboard:
                 type: string
                 description: Nombre de la motherboard que se relaciona
-              id_componet:
+              id_component:
                 type: integer
                 enum: [1]
                 description: Id del componente que se relaciona
-              componet:
+              component:
                 type: string
                 description: Nombre del componente que se relaciona
-            
+
       BodyMotherboardPatch:
             type: object
             description: diccionario de motherboards
@@ -646,18 +646,18 @@ components:
                   id_motherboard:
                     type: integer
                     enum: [1]
-                    description: Id de la motherboard que se le relaciona
+                    description: Id de la motherboard que se relaciona
                   motherboard:
                     type: string
                     description: Nombre de la motherboard que se relaciona
-                  id_componet:
+                  id_component:
                     type: integer
                     enum: [1]
                     description: Id del componente que se relaciona
-                  componet:
+                  component:
                     type: string
                     description: Nombre del componente que se relaciona
-      
+
       ExitosoMotherboardGet:
         type: object
         properties:
@@ -685,22 +685,22 @@ components:
                   id_motherboard:
                     type: integer
                     enum: [1]
-                    description: Id de la motherboard que se le relaciona
+                    description: Id de la motherboard que se relaciona
                   motherboard:
                     type: string
                     description: Nombre de la motherboard que se relaciona
-                  id_componet:
+                  id_component:
                     type: integer
                     enum: [1]
                     description: Id del componente que se relaciona
-                  componet:
+                  component:
                     type: string
                     description: Nombre del componente que se relaciona
           total_motherboards:
             type: integer
             enum: [1]
             description: Total de motherboards
-              
+
       ExitosoMotherboardPost:
         type: object
         properties:
@@ -732,22 +732,22 @@ components:
                   id_motherboard:
                     type: integer
                     enum: [1]
-                    description: Id de la motherboard que se le relaciona
+                    description: Id de la motherboard que se relaciona
                   motherboard:
                     type: string
                     description: Nombre de la motherboard que se relaciona
-                  id_componet:
+                  id_component:
                     type: integer
                     enum: [1]
                     description: Id del componente que se relaciona
-                  componet:
+                  component:
                     type: string
                     description: Nombre del componente que se relaciona
           total_motherboards:
             type: integer
             enum: [1]
             description: Total de motherboards
-      
+
       ExitosoMotherboardPatch:
         type: object
         properties:
@@ -782,22 +782,22 @@ components:
                   id_motherboard:
                     type: integer
                     enum: [1]
-                    description: Id de la motherboard que se le relaciona
+                    description: Id de la motherboard que se relaciona
                   motherboard:
                     type: string
                     description: Nombre de la motherboard que se relaciona
-                  id_componet:
+                  id_component:
                     type: integer
                     enum: [1]
                     description: Id del componente que se relaciona
-                  componet:
+                  component:
                     type: string
                     description: Nombre del componente que se relaciona
           total_motherboards:
             type: integer
             enum: [1]
             description: Total de motherboards
-            
+
       ExitosoMotherboardDelete:
         type: object
         properties:
@@ -829,24 +829,24 @@ components:
                   id_motherboard:
                     type: integer
                     enum: [1]
-                    description: Id de la motherboard que se le relaciona
+                    description: Id de la motherboard que se relaciona
                   motherboard:
                     type: string
                     description: Nombre de la motherboard que se relaciona
-                  id_componet:
+                  id_component:
                     type: integer
                     enum: [1]
                     description: Id del componente que se relaciona
-                  componet:
+                  component:
                     type: string
                     description: Nombre del componente que se relaciona
           total_motherboards:
             type: integer
             enum: [1]
             description: Total de motherboards
-      
-      
-      
+
+
+
       BodyComponentPost:
         type: object
         description: Diccionario de componentes
@@ -874,18 +874,18 @@ components:
                   id_motherboard:
                     type: integer
                     enum: [1]
-                    description: Id de la motherboard que se le relaciona
+                    description: Id de la motherboard que se relaciona
                   motherboard:
                     type: string
                     description: Nombre de la motherboard que se relaciona
-                  id_componet:
+                  id_component:
                     type: integer
                     enum: [1]
                     description: Id del componente que se relaciona
-                  componet:
+                  component:
                     type: string
-                    description: Nombre del componente que se relaciona   
-      
+                    description: Nombre del componente que se relaciona
+
       BodyComponetPatch:
             type: object
             description: Diccionario de componentes
@@ -902,10 +902,10 @@ components:
               price:
                 type: integer
                 enum: [1000]
-                description: Precio del 
+                description: Precio del componente
               token:
                 type: string
-                description: Encriptacion del usuario quien modifico el componente       
+                description: Encriptacion del usuario quien modifico el componente
               compatibles:
                 type: object
                 description: Relacion de compatibilidad entre motherboards y componentes
@@ -913,18 +913,18 @@ components:
                   id_motherboard:
                     type: integer
                     enum: [1]
-                    description: Id de la motherboard que se le relaciona
+                    description: Id de la motherboard que se relaciona
                   motherboard:
                     type: string
                     description: Nombre de la motherboard que se relaciona
-                  id_componet:
+                  id_component:
                     type: integer
                     enum: [1]
                     description: Id del componente que se relaciona
-                  componet:
+                  component:
                     type: string
                     description: Nombre del componente que se relaciona
-      
+
       ExitosoComponentGet:
         type: object
         properties:
@@ -947,7 +947,7 @@ components:
               price:
                 type: integer
                 enum: [1000]
-                description: Precio del componente       
+                description: Precio del componente
               compatibles:
                 type: object
                 description: Relacion de compatibilidad entre motherboards y componentes
@@ -959,18 +959,18 @@ components:
                   motherboard:
                     type: string
                     description: Nombre de la motherboard que se relaciona
-                  id_componet:
+                  id_component:
                     type: integer
                     enum: [1]
                     description: Id del componente que se relaciona
-                  componet:
+                  component:
                     type: string
                     description: Nombre del componente que se relaciona
           total_components:
             type: integer
             enum: [1]
             description: Total de componentes
-            
+
       ExitosoComponentPost:
         type: object
         properties:
@@ -1008,22 +1008,22 @@ components:
                   id_motherboard:
                     type: integer
                     enum: [1]
-                    description: Id de la motherboard que se le relaciona
+                    description: Id de la motherboard que se relaciona
                   motherboard:
                     type: string
                     description: Nombre de la motherboard que se relaciona
-                  id_componet:
+                  id_component:
                     type: integer
                     enum: [1]
                     description: Id del componente que se relaciona
-                  componet:
+                  component:
                     type: string
-                    description: Nombre del componente que se relaciona   
+                    description: Nombre del componente que se relaciona
           total_components:
             type: integer
             enum: [1]
             description: Total de componentes
-      
+
       ExitosoComponentPatch:
         type: object
         properties:
@@ -1034,7 +1034,7 @@ components:
             type: integer
             enum: [2]
             description: Id correspondiente al componente acutlizado
-          components:
+          componentes:
             type: object
             description: Diccionario de componentes
             properties:
@@ -1050,10 +1050,10 @@ components:
               price:
                 type: integer
                 enum: [1000]
-                description: Precio del 
+                description: Precio del componente
               token:
                 type: string
-                description: Encriptacion del usuario quien modifico el componente       
+                description: Encriptacion del usuario quien modifico el componente
               compatibles:
                 type: object
                 description: Relacion de compatibilidad entre motherboards y componentes
@@ -1061,22 +1061,22 @@ components:
                   id_motherboard:
                     type: integer
                     enum: [1]
-                    description: Id de la motherboard que se le relaciona
+                    description: Id de la motherboard que se relaciona
                   motherboard:
                     type: string
                     description: Nombre de la motherboard que se relaciona
-                  id_componet:
+                  id_component:
                     type: integer
                     enum: [1]
                     description: Id del componente que se relaciona
-                  componet:
+                  component:
                     type: string
                     description: Nombre del componente que se relaciona
           total_components:
             type: integer
             enum: [1]
-            description: Total de componentes 
-            
+            description: Total de componentes
+
       ExitosoComponentDelete:
         type: object
         properties:
@@ -1103,7 +1103,7 @@ components:
               price:
                 type: integer
                 enum: [1000]
-                description: Precio del componente       
+                description: Precio del componente
               compatibles:
                 type: object
                 description: Relacion de compatibilidad entre motherboards y componentes
@@ -1111,24 +1111,24 @@ components:
                   id_motherboard:
                     type: integer
                     enum: [1]
-                    description: Id de la motherboard que se le relaciona
+                    description: Id de la motherboard que se relaciona
                   motherboard:
                     type: string
                     description: Nombre de la motherboard que se relaciona
-                  id_componet:
+                  id_component:
                     type: integer
                     enum: [1]
                     description: Id del componente que se relaciona
-                  componet:
+                  component:
                     type: string
                     description: Nombre del componente que se relaciona
           total_components:
             type: integer
             enum: [1]
             description: Total de componentes
-      
-      
-      
+
+
+
       BodyUserPost-Login:
             type: object
             description: Usuario generado
@@ -1138,11 +1138,11 @@ components:
                 description: Username del usuario
               role:
                 type: string
-                description: Role que tiene en el aplicativo
+                description: Role que tiene el usuario en el aplicativo
               token:
                 type: string
                 description: Contrasena encriptada del usuario
-      
+
       BodyUserPost-Token:
             type: object
             description: Usuario generado
@@ -1152,11 +1152,11 @@ components:
                 description: Username del usuario
               role:
                 type: string
-                description: Role que tiene en el aplicativo
+                description: Role que tiene el usuario en el aplicativo
               token:
                 type: string
                 description: Contrasena encriptada del usuario
-      
+
       BodyUserPost:
             type: object
             description: Usuario generado
@@ -1166,25 +1166,25 @@ components:
                 description: Username del usuario
               role:
                 type: string
-                description: Role que tiene en el aplicativo
+                description: Role que tiene el usuario en el aplicativo
               token:
                 type: string
                 description: Contrasena encriptada del usuario
 
       BodyUserPatch:
             type: object
-            description: Diccionario de users
+            description: Usuario generado
             properties:
               username:
                 type: string
                 description: Username del usuario
               role:
                 type: string
-                description: Role que tiene en el aplicativo
+                description: Role que tiene el usuario en el aplicativo
               token:
                 type: string
                 description: Contrasena encriptada del usuario
-      
+
       ExitosoUserGet:
         type: object
         properties:
@@ -1208,7 +1208,7 @@ components:
             type: integer
             enum: [1]
             description: Total de usuarios
-      
+
       ExitosoUserPost:
         type: object
         properties:
@@ -1224,7 +1224,7 @@ components:
                 description: Username del usuario
               role:
                 type: string
-                description: Role que tiene en el aplicativo
+                description: Role que tiene el usuario en el aplicativo
               token:
                 type: string
                 description: Contrasena encriptada del usuario
@@ -1237,7 +1237,7 @@ components:
                 description: Username del usuario
               role:
                 type: string
-                description: Role que tiene en el aplicativo
+                description: Role que tiene el usuario en el aplicativo
               token:
                 type: string
                 description: Contrasena encriptada del usuario
@@ -1245,7 +1245,7 @@ components:
             type: integer
             enum: [1]
             description: Total de usuarios
-      
+
       ExitosoUserPost-Login:
         type: object
         properties:
@@ -1261,11 +1261,11 @@ components:
                 description: Username del usuario
               role:
                 type: string
-                description: Role que tiene en el aplicativo
+                description: Role que tiene el usuario en el aplicativo
               token:
                 type: string
                 description: Contrasena encriptada del usuario
-      
+
       ExitosoUserPost-Token:
         type: object
         properties:
@@ -1281,11 +1281,11 @@ components:
                 description: Username del usuario
               role:
                 type: string
-                description: Role que tiene en el aplicativo
+                description: Role que tiene el usuario en el aplicativo
               token:
                 type: string
                 description: Contrasena encriptada del usuario
-      
+
       ExitosoUserPatch:
         type: object
         properties:
@@ -1305,15 +1305,15 @@ components:
                 description: Username del usuario
               role:
                 type: string
-                description: Role que tiene en el aplicativo
+                description: Role que tiene el usuario en el aplicativo
               token:
                 type: string
                 description: Contrasena encriptada del usuario
           total_users:
             type: integer
             enum: [1]
-            description: Total de usuarios  
-            
+            description: Total de usuarios
+
       ExitosoUserDelete:
         type: object
         properties:
@@ -1333,7 +1333,7 @@ components:
                 description: Username del usuario
               role:
                 type: string
-                description: Role que tiene en el aplicativo
+                description: Role que tiene el usuario en el aplicativo
               token:
                 type: string
                 description: Contrasena encriptada del usuario
@@ -1341,8 +1341,8 @@ components:
             type: integer
             enum: [1]
             description: Total de usuarios
-      
-      
+
+
       BodyCompatiblesPost:
             type: object
             description: Diccionario de compatibilidades
@@ -1350,18 +1350,18 @@ components:
               id_motherboard:
                 type: integer
                 enum: [1]
-                description: Id de la motherboard que se le relaciona
+                description: Id de la motherboard que se relaciona
               motherboard:
                 type: string
                 description: Nombre de la motherboard que se relaciona
-              id_componet:
+              id_component:
                 type: integer
                 enum: [1]
                 description: Id del componente que se relaciona
-              componet:
+              component:
                 type: string
                 description: Nombre del componente que se relaciona
-          
+
       ExitosoCompatiblesGet:
         type: object
         properties:
@@ -1375,22 +1375,22 @@ components:
               id_motherboard:
                 type: integer
                 enum: [1]
-                description: Id de la motherboard que se le relaciona
+                description: Id de la motherboard que se relaciona
               motherboard:
                 type: string
                 description: Nombre de la motherboard que se relaciona
-              id_componet:
+              id_component:
                 type: integer
                 enum: [1]
                 description: Id del componente que se relaciona
-              componet:
+              component:
                 type: string
                 description: Nombre del componente que se relaciona
           total_compatibles:
             type: integer
             enum: [1]
             description: Total de compatibilidades
-      
+
       ExitosoCompatiblesPost:
         type: object
         properties:
@@ -1408,22 +1408,22 @@ components:
               id_motherboard:
                 type: integer
                 enum: [1]
-                description: Id de la motherboard que se le relaciona
+                description: Id de la motherboard que se relaciona
               motherboard:
                 type: string
                 description: Nombre de la motherboard que se relaciona
-              id_componet:
+              id_component:
                 type: integer
                 enum: [1]
                 description: Id del componente que se relaciona
-              componet:
+              component:
                 type: string
                 description: Nombre del componente que se relaciona
           total_compatibles:
             type: integer
             enum: [1]
             description: Total de compatibilidades
-            
+
       ExitosoCompatiblesDelete:
         type: object
         properties:
@@ -1441,24 +1441,24 @@ components:
               id_motherboard:
                 type: integer
                 enum: [1]
-                description: Id de la motherboard que se le relaciona
+                description: Id de la motherboard que se relaciona
               motherboard:
                 type: string
                 description: Nombre de la motherboard que se relaciona
-              id_componet:
+              id_component:
                 type: integer
                 enum: [1]
                 description: Id del componente que se relaciona
-              componet:
+              component:
                 type: string
                 description: Nombre del componente que se relaciona
           total_compatibles:
             type: integer
             enum: [1]
             description: Total de compatibilidades
-      
-      
-      
+
+
+
       BodySimulationPost:
             type: object
             description: Diccionario de simulaciones
@@ -1486,22 +1486,22 @@ components:
                   price:
                     type: integer
                     enum: [1000]
-                    description: Precio del componente       
+                    description: Precio del componente
                   compatibles:
                     type: object
                     properties:
                       id_motherboard:
                         type: integer
                         enum: [1]
-                        description: Id de la motherboard que se le relaciona
+                        description: Id de la motherboard que se relaciona
                       motherboard:
                         type: string
                         description: Nombre de la motherboard que se relaciona
-                      id_componet:
+                      id_component:
                         type: integer
                         enum: [1]
                         description: Id del componente que se relaciona
-                      componet:
+                      component:
                         type: string
                         description: Nombre del componente que se relaciona
               motherboard:
@@ -1524,18 +1524,18 @@ components:
                       id_motherboard:
                         type: integer
                         enum: [1]
-                        description: Id de la motherboard que se le relaciona
+                        description: Id de la motherboard que se relaciona
                       motherboard:
                         type: string
                         description: Nombre de la motherboard que se relaciona
-                      id_componet:
+                      id_component:
                         type: integer
                         enum: [1]
                         description: Id del componente que se relaciona
-                      componet:
+                      component:
                         type: string
-                        description: Nombre del componente que se relaciona 
-      
+                        description: Nombre del componente que se relaciona
+
       ExitosoSimulationGet:
         type: object
         properties:
@@ -1569,203 +1569,22 @@ components:
                   price:
                     type: integer
                     enum: [1000]
-                    description: Precio del componente       
+                    description: Precio del componente
                   compatibles:
                     type: object
                     properties:
                       id_motherboard:
                         type: integer
                         enum: [1]
-                        description: Id de la motherboard que se le relaciona
+                        description: Id de la motherboard que se relaciona
                       motherboard:
                         type: string
                         description: Nombre de la motherboard que se relaciona
-                      id_componet:
+                      id_component:
                         type: integer
                         enum: [1]
                         description: Id del componente que se relaciona
-                      componet:
-                        type: string
-                        description: Nombre del componente que se relaciona
-              motherboard:
-                type: object
-                description: Diccionario de motherboards
-                properties:
-                  name:
-                    type: string
-                    description: Nombre de la motherboard
-                  price:
-                    type: integer
-                    enum: [1000]
-                    description: Precio de la motherboard
-                  description:
-                    type: string
-                    description: Descripcion de la motherboard
-                  compatibles:
-                    type: object
-                    properties:
-                      id_motherboard:
-                        type: integer
-                        enum: [1]
-                        description: Id de la motherboard que se le relaciona
-                      motherboard:
-                        type: string
-                        description: Nombre de la motherboard que se relaciona
-                      id_componet:
-                        type: integer
-                        enum: [1]
-                        description: Id del componente que se relaciona
-                      componet:
-                        type: string
-                        description: Nombre del componente que se relaciona
-          total_simualtions:
-            type: integer
-            enum: [1]
-            description: Total de simulaciones 
-      
-      ExitosoSimulationPost:
-        type: object
-        properties:
-          success:
-            type: boolean
-            description: Indica que la llamada al servicio fue satisfactoria
-          create_id:
-            type: integer
-            enum: [1]
-            description: Id de la nueva simulacion
-          simulations:
-            type: object
-            description: Diccionario de simulaciones
-            properties:
-              token:
-                type: string
-                description: Encriptacion del usuario quien obvtuvo esta simulacion
-              total_price:
-                type: integer
-                enum: [1000]
-                description: Precio total obtenido de la simulacion
-              components:
-                type: object
-                description: Diccionario de componentes
-                properties:
-                  name:
-                    type: string
-                    description: Nombre del componente
-                  component_type:
-                    type: string
-                    description: Tipo de componente
-                  description:
-                    type: string
-                    description: Descripcion del componente
-                  price:
-                    type: integer
-                    enum: [1000]
-                    description: Precio del componente       
-                  compatibles:
-                    type: object
-                    properties:
-                      id_motherboard:
-                        type: integer
-                        enum: [1]
-                        description: Id de la motherboard que se le relaciona
-                      motherboard:
-                        type: string
-                        description: Nombre de la motherboard que se relaciona
-                      id_componet:
-                        type: integer
-                        enum: [1]
-                        description: Id del componente que se relaciona
-                      componet:
-                        type: string
-                        description: Nombre del componente que se relaciona
-              motherboard:
-                type: object
-                description: Diccionario de motherboards
-                properties:
-                  name:
-                    type: string
-                    description: Nombre de la motherboard
-                  price:
-                    type: integer
-                    enum: [1000]
-                    description: Precio de la motherboard
-                  description:
-                    type: string
-                    description: Descripcion de la motherboard
-                  compatibles:
-                    type: object
-                    properties:
-                      id_motherboard:
-                        type: integer
-                        enum: [1]
-                        description: Id de la motherboard que se le relaciona
-                      motherboard:
-                        type: string
-                        description: Nombre de la motherboard que se relaciona
-                      id_componet:
-                        type: integer
-                        enum: [1]
-                        description: Id del componente que se relaciona
-                      componet:
-                        type: string
-                        description: Nombre del componente que se relaciona
-          total_simualtions:
-            type: integer
-            enum: [1]
-            description: Total de simulaciones  
-      
-      ExitosoSimulationDelete:
-        type: object
-        properties:
-          success:
-            type: boolean
-            description: Indica que la llamada al servicio fue satisfactoria
-          deleted_id:
-            type: integer
-            enum: [1]
-            description: Id correspondiente a la simulacion eliminada
-          simulations:
-            type: object
-            properties:
-              token:
-                type: string
-                description: Encriptacion del usuario quien obvtuvo esta simulacion
-              total_price:
-                type: integer
-                enum: [1000]
-                description: Precio total obtenido de la simulacion
-              components:
-                type: object
-                description: Diccionario de componentes
-                properties:
-                  name:
-                    type: string
-                    description: Nombre del componente
-                  component_type:
-                    type: string
-                    description: Tipo de componente
-                  description:
-                    type: string
-                    description: Descripcion del componente
-                  price:
-                    type: integer
-                    enum: [1000]
-                    description: Precio del componente       
-                  compatibles:
-                    type: object
-                    properties:
-                      id_motherboard:
-                        type: integer
-                        enum: [1]
-                        description: Id de la motherboard que se le relaciona
-                      motherboard:
-                        type: string
-                        description: Nombre de la motherboard que se relaciona
-                      id_componet:
-                        type: integer
-                        enum: [1]
-                        description: Id del componente que se relaciona
-                      componet:
+                      component:
                         type: string
                         description: Nombre del componente que se relaciona
               motherboard:
@@ -1803,4 +1622,184 @@ components:
             type: integer
             enum: [1]
             description: Total de simulaciones
-      
+
+      ExitosoSimulationPost:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          create_id:
+            type: integer
+            enum: [1]
+            description: Id de la nueva simulacion
+          simulations:
+            type: object
+            description: Diccionario de simulaciones
+            properties:
+              token:
+                type: string
+                description: Encriptacion del usuario quien obvtuvo esta simulacion
+              total_price:
+                type: integer
+                enum: [1000]
+                description: Precio total obtenido de la simulacion
+              components:
+                type: object
+                description: Diccionario de componentes
+                properties:
+                  name:
+                    type: string
+                    description: Nombre del componente
+                  component_type:
+                    type: string
+                    description: Tipo de componente
+                  description:
+                    type: string
+                    description: Descripcion del componente
+                  price:
+                    type: integer
+                    enum: [1000]
+                    description: Precio del componente
+                  compatibles:
+                    type: object
+                    properties:
+                      id_motherboard:
+                        type: integer
+                        enum: [1]
+                        description: Id de la motherboard que se relaciona
+                      motherboard:
+                        type: string
+                        description: Nombre de la motherboard que se relaciona
+                      id_component:
+                        type: integer
+                        enum: [1]
+                        description: Id del componente que se relaciona
+                      component:
+                        type: string
+                        description: Nombre del componente que se relaciona
+              motherboard:
+                type: object
+                description: Diccionario de motherboards
+                properties:
+                  name:
+                    type: string
+                    description: Nombre de la motherboard
+                  price:
+                    type: integer
+                    enum: [1000]
+                    description: Precio de la motherboard
+                  description:
+                    type: string
+                    description: Descripcion de la motherboard
+                  compatibles:
+                    type: object
+                    properties:
+                      id_motherboard:
+                        type: integer
+                        enum: [1]
+                        description: Id de la motherboard que se relaciona
+                      motherboard:
+                        type: string
+                        description: Nombre de la motherboard que se relaciona
+                      id_component:
+                        type: integer
+                        enum: [1]
+                        description: Id del componente que se relaciona
+                      component:
+                        type: string
+                        description: Nombre del componente que se relaciona
+          total_simualtions:
+            type: integer
+            enum: [1]
+            description: Total de simulaciones
+
+      ExitosoSimulationDelete:
+        type: object
+        properties:
+          success:
+            type: boolean
+            description: Indica que la llamada al servicio fue satisfactoria
+          deleted_id:
+            type: integer
+            enum: [1]
+            description: Id correspondiente a la simulacion eliminada
+          simulations:
+            type: object
+            properties:
+              token:
+                type: string
+                description: Encriptacion del usuario quien obvtuvo esta simulacion
+              total_price:
+                type: integer
+                enum: [1000]
+                description: Precio total obtenido de la simulacion
+              components:
+                type: object
+                description: Diccionario de componentes
+                properties:
+                  name:
+                    type: string
+                    description: Nombre del componente
+                  component_type:
+                    type: string
+                    description: Tipo de componente
+                  description:
+                    type: string
+                    description: Descripcion del componente
+                  price:
+                    type: integer
+                    enum: [1000]
+                    description: Precio del componente
+                  compatibles:
+                    type: object
+                    properties:
+                      id_motherboard:
+                        type: integer
+                        enum: [1]
+                        description: Id de la motherboard que se relaciona
+                      motherboard:
+                        type: string
+                        description: Nombre de la motherboard que se relaciona
+                      id_component:
+                        type: integer
+                        enum: [1]
+                        description: Id del componente que se relaciona
+                      component:
+                        type: string
+                        description: Nombre del componente que se relaciona
+              motherboard:
+                type: object
+                description: Diccionario de motherboards
+                properties:
+                  name:
+                    type: string
+                    description: Nombre de la motherboard
+                  price:
+                    type: integer
+                    enum: [1000]
+                    description: Precio de la motherboard
+                  description:
+                    type: string
+                    description: Descripcion de la motherboard
+                  compatibles:
+                    type: object
+                    properties:
+                      id_motherboard:
+                        type: integer
+                        enum: [1]
+                        description: Id de la motherboard que se le relaciona
+                      motherboard:
+                        type: string
+                        description: Nombre de la motherboard que se relaciona
+                      id_componet:
+                        type: integer
+                        enum: [1]
+                        description: Id del componente que se relaciona
+                      componet:
+                        type: string
+                        description: Nombre del componente que se relaciona
+          total_simualtions:
+            type: integer
+            enum: [1]
+            description: Total de simulaciones
