@@ -96,7 +96,6 @@ def patch_user(id):
         return jsonify({
             'success': True,
             'updated_id': id,
-            'users': dictionary_users,
             'total_users': len(selection_users)
         })
     except Exception as e:
@@ -177,7 +176,6 @@ def post_user():
             'success': True,
             'created_id': new_user_id,
             'user': new_user.format(),
-            'users': dictionary_users,
             'total_users': len(selection_users)
         })
     except:
