@@ -34,7 +34,6 @@ class TestCaseUsers(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data['created_id'])
         self.assertTrue(data['total_users'])
-        self.assertTrue(len(data['users']))
 
 
     def test_post_admin_success(self):
@@ -50,7 +49,6 @@ class TestCaseUsers(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data['created_id'])
         self.assertTrue(data['total_users'])
-        self.assertTrue(len(data['users']))
 
 
     def test_post_user_fail(self):

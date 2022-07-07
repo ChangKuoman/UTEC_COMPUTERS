@@ -10,7 +10,7 @@ test("error-1", async () => {
 test("error-2", async () => {
   const wrapper = mount(ErrorView);
 
-  expect(wrapper.findAll("div")).toHaveLength(2);
+  expect(wrapper.findAll("div")).toHaveLength(4);
 });
 
 test("error-3", async () => {
